@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- Maintenance Check -->
+    
+    <record id="view_maintenance_check_tree" model="ir.ui.view">
+        <field name="name">maintenance.check.tree</field>
+        <field name="model">maintenance.check</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Maintenance Check" editable="bottom">
+                <field name="name" />
+                <field name="module" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_maintenance_check_form" model="ir.ui.view">
+        <field name="name">maintenance.check.form</field>
+        <field name="model">maintenance.check</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Client Version">
+            	<group>
+	                <field name="name" select="1" />
+	                <field name="code" select="2" />
+	                <field name="module" select="2" />
+	                <field name="description" select="2" colspan="4" />
+            	</group>
+                <field name="log_ids" colspan="4">
+                    <tree string="Log">
+                        <field name="create_date" />
+                        <field name="found_problem" />
+                        <field name="fixed" />
+                    </tree>
+                    <form string="Log">
+                        <field name="create_date" />
+                        <field name="found_problem" />
+                        <field name="fixed" />
+                        <field name="description" />
+                    </form>
+                </field>
+                <group colspan="4" col="4">
+                    <button string="Check" type="object" name="do_check" />
+                    <button string="Fix" type="object" name="do_fix" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_maintenance_check_form" model="ir.actions.act_window">
+        <field name="name">Maintenance Check</field>
+        <field name="res_model">maintenance.check</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem 
+        name="Publisher Warranty" 
+        id="publisher_warranty"
+        parent="base.menu_administration"/>
+
+    <menuitem
+        action="action_maintenance_check_form"
+        id="menu_action_maintenance_check_form"
+        parent="publisher_warranty"/>
+
+<!-- Server -->
+    
+    <record id="view_maintenance_server_tree" model="ir.ui.view">
+        <field name="name">maintenance.server.tree</field>
+        <field name="model">maintenance.server</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Server">
+                <field name="portal_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_maintenance_server_form" model="ir.ui.view">
+        <field name="name">maintenance.server.form</field>
+        <field name="model">maintenance.server</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Server">
+            	<group>
+        			<field name="portal_id" select="1" />
+            	</group>
+                <notebook colspan="4">
+                    <page string="Applications/Modules">
+                    	<label for="application_ids"/>
+                        <field name="application_ids" colspan="2" nolabel="1">
+                            <tree string="Applications">
+                                <field name="name" />
+                                <field name="version" />
+                            </tree>
+                            <form string="Applications">
+                                <field name="name" />
+                                <field name="version" />
+                            </form>
+                        </field>
+                    	<label for="module_ids"/>
+                        <field name="module_ids" colspan="2" nolabel="1">
+                            <tree string="Modules">
+                                <field name="name" />
+                                <field name="version" />
+                            </tree>
+                            <form string="Modules">
+                                <field name="name" />
+                                <field name="version" />
+                            </form>
+                        </field>
+                    </page>
+                    <page string="Databases">
+                        <label string="Leave empty, if you only want to synchronize database, you are now logged in." colspan="4" />
+                        <group>
+	                        <field name="host" />
+	                        <field name="port" />
+	                        <field name="protocol" />
+	                        <field name="run_vacuum" />
+                        </group>
+                        <label for="database_ids"/>
+                        <field name="database_ids" colspan="4" nolabel="1">
+                            <tree string="Databases">
+                                <field name="db_name" />
+                                <field name="do_backup" />
+                                <field name="backup_ttl" />
+                                <field name="upload" />
+                                <button name="do_backup" string="Backup" type="object" />
+                            </tree>
+                            <form string="Databases">
+                            	<group>
+	                                <field name="db_name" />
+	                                <field name="active" />
+	                                <field name="login" />
+	                                <field name="password" password="True" />
+	                                <field name="do_backup" />
+	                                <field name="backup_ttl" />
+	                                <field name="upload" />
+	                                <field name="upload_folder" />
+	                                <button name="do_backup_9" string="Backup" type="object" />
+	                            </group>
+                            </form>
+                        </field>
+                        <group colspan="4" col="4">
+                            <button name="login_to_all_databases" string="Login to all Databases" type="object" />
+                            <button name="load_payroll_setup" string="Load Payroll Setup" type="object" />
+                            <button name="restart_ids" string="Restart" type="object" />
+                        </group>
+                    </page>
+                    <page string="Paths">
+                    	<group>
+	                        <field name="versions_archive_path" select="2" />
+	                        <field name="applications_archive_path" select="2" />
+	                        <field name="addons_path" select="2" />
+	                        <field name="server_path" select="2" />
+	                        <field name="backup_path" select="2" />
+	                        <field name="restart_cmd" select="2" />
+                    	</group>
+                    </page>
+                </notebook>
+                <group colspan="4" col="4">
+                    <button name="load_ids" string="Get Already Installed Modules" type="object" />
+                    <button name="sync_ids" string="Download and Install" type="object" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_maintenance_server_form" model="ir.actions.act_window">
+        <field name="name">Server</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">maintenance.server</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        action="action_maintenance_server_form"
+        id="menu_action_maintenance_server_form"
+        parent="publisher_warranty"/>
+
+<!-- Portal -->
+    
+    <record id="view_maintenance_portal_tree" model="ir.ui.view">
+        <field name="name">maintenance.portal.tree</field>
+        <field name="model">maintenance.portal</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Portal">
+                <field name="host" />
+                <field name="port" />
+                <field name="login" />
+                <field name="db_name" />
+                <field name="protocol" />
+                <field name="active" />
+                
+                <field name="ssh_host" />
+                <field name="ssh_port" />
+                <field name="ssh_login" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_maintenance_portal_form" model="ir.ui.view">
+        <field name="name">maintenance.portal.form</field>
+        <field name="model">maintenance.portal</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Portal">
+            	<group>
+	                <field name="host" select="1" />
+	                <field name="port" select="2" />
+	                <field name="login" select="2" />
+	                <field name="password" password="1" />
+	                <field name="db_name" select="2" />
+	                <field name="protocol" select="2" />
+	                <field name="active" select="1" />
+            	</group>
+                <separator string="SSH (for uploading backups)" colspan="4" />
+            	<group>
+	                <field name="ssh_host" select="2" />
+	                <field name="ssh_port" select="2" />
+	                <field name="ssh_login" select="2" />
+            	</group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_maintenance_portal_form" model="ir.actions.act_window">
+        <field name="name">Portal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">maintenance.portal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        action="action_maintenance_portal_form"
+        id="menu_action_maintenance_portal_form"
+        parent="publisher_warranty"/>
+        
+    <menuitem id="next_id_11" 
+        name="Configuration Wizards" 
+        parent="sandas_maintenance.menu_config"
+        sequence="1"/>
+        
+</data>
+</openerp>
+

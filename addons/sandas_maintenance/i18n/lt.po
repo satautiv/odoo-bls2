@@ -1,0 +1,759 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* activity_maintenance
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 5.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-27 13:51+0000\n"
+"PO-Revision-Date: 2015-11-27 15:53+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_active
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_active
+msgid "Active"
+msgstr "Aktyvus"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_addons_path
+msgid "Addons Path"
+msgstr "Addons kelias"
+
+#. module: sandas_maintenance
+#: model:maintenance.check,name:sandas_maintenance.maintenance_check_stock_move_account_moves
+msgid "All Menus"
+msgstr "Visi meniu"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_ids
+msgid "Application"
+msgstr "Aplikacija"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Applications"
+msgstr "Aplikacijos"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_applications_archive_path
+msgid "Applications Archive Path"
+msgstr "Aplikacijų archyvo kelias"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Applications/Modules"
+msgstr "Aplikacijos/moduliai"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Backup"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_backup_path
+msgid "Backup Path"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_backup_ttl
+msgid "Backup TTL"
+msgstr ""
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:1187
+#, python-format
+msgid "Backup failed for database %s."
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,help:sandas_maintenance.field_maintenance_server_database_backup_ttl
+msgid "Backup time to leave in days."
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_update_store_fields_osv
+msgid "Cancel"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_check_id
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_check_form
+msgid "Check"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_check_form
+msgid "Client Version"
+msgstr "Kliento versija"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_code
+msgid "Code"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.menu,name:sandas_maintenance.menu_config
+msgid "Configuration"
+msgstr "Konfiguracija"
+
+#. module: sandas_maintenance
+#: model:ir.ui.menu,name:sandas_maintenance.next_id_11
+msgid "Configuration Wizards"
+msgstr "Configuration Wizards"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_name
+msgid "Contract ID"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_create_date
+msgid "Create Date"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_create_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_create_uid
+msgid "Created by"
+msgstr "Sukūrė"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_create_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_create_date
+msgid "Created on"
+msgstr "Sukurta"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_cron_id
+msgid "Cron"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_ir_cron_log
+msgid "Cron Log"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_db_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_db_name
+msgid "Database Name"
+msgstr "Duomenų bazės pavadinimas"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_ids
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Databases"
+msgstr "Duomenų bazės"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_description
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_description
+msgid "Description"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_display_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_display_name
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_do_backup
+msgid "Do Backup"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_domain
+msgid "Domain"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_done_date
+msgid "Done Date"
+msgstr "Pabaigos data"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Download and Install"
+msgstr "Atsisiųsti ir įdiegti"
+
+#. module: sandas_maintenance
+#: selection:maintenance.contract.wizard,state:0
+msgid "Draft"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_date_to
+msgid "Ending Date"
+msgstr "Pabaigos data"
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:1015
+#: code:addons/sandas_maintenance/maintenance.py:1028
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_error
+#, python-format
+msgid "Error"
+msgstr ""
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:1016
+#, python-format
+msgid "Error in trying to run command %s. Error code: %s"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_field_ids
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_update_store_fields_osv
+msgid "Fields"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_check_form
+msgid "Fix"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_fixed
+msgid "Fixed"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_found_problem
+msgid "Found Problem"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Get Already Installed Modules"
+msgstr "Gauti jau įdiegtus modulius"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_host
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_host
+msgid "Host"
+msgstr "Host'as"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_id
+msgid "ID"
+msgstr "ID"
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:93
+#, python-format
+msgid "Invalid view, duplicate field: %s"
+msgstr ""
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:89
+#, python-format
+msgid "Invalid view, malformed tag for: %s"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module___last_update
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv___last_update
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_write_uid
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_write_uid
+msgid "Last Updated by"
+msgstr "Paskutinį kartą atnaujino"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_write_date
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_write_date
+msgid "Last Updated on"
+msgstr "Paskutinį kartą atnaujinta"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Leave empty, if you only want to synchronize database, you are now logged in."
+msgstr "Palikite tuščią, jeigu norite sinchronizuoti tik šią duomenų bazę, prie kurios dabar esate prisijungę."
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Load Payroll Setup"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_log_ids
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_check_form
+msgid "Log"
+msgstr "Logas"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_login
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_login
+msgid "Login"
+msgstr "Prisijungti"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Login to all Databases"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_update_store_fields_osv
+msgid "Maintance Update Store Fields Wizard"
+msgstr "Maintance Update Store Fields Wizard"
+
+#. module: sandas_maintenance
+#: model:ir.actions.act_window,name:sandas_maintenance.action_maintenance_check_form
+#: model:ir.model,name:sandas_maintenance.model_maintenance_check
+#: model:ir.ui.menu,name:sandas_maintenance.menu_action_maintenance_check_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_check_tree
+msgid "Maintenance Check"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_portal
+msgid "Maintenance Portal"
+msgstr "Palaikymo portalas"
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_server
+msgid "Maintenance Server"
+msgstr "Palaikymo serveris"
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_server_application
+msgid "Maintenance Server Application"
+msgstr "Palaikymo serverio aplikacija"
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_server_database
+msgid "Maintenance Server Database"
+msgstr "Palaikymo serverio duomenų bazė"
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_server_module
+msgid "Maintenance Server Module"
+msgstr "Palaikymo serverio modulis"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_module
+msgid "Module"
+msgstr "Modulis"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_ids
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Modules"
+msgstr "Moduliai"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_check_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_name
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_name
+msgid "Name"
+msgstr "Pavadinimas"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_update_store_fields_osv_parent_store_model_ids
+msgid "Parent Store"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_password
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_password
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_password
+msgid "Password"
+msgstr "Slaptažodis"
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Paths"
+msgstr "Keliai"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_port
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_port
+msgid "Port"
+msgstr "Portas"
+
+#. module: sandas_maintenance
+#: model:ir.actions.act_window,name:sandas_maintenance.action_maintenance_portal_form
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_portal_id
+#: model:ir.ui.menu,name:sandas_maintenance.menu_action_maintenance_portal_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_portal_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_portal_tree
+msgid "Portal"
+msgstr "Portalas"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_protocol
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_protocol
+msgid "Protocol"
+msgstr "Protokolas"
+
+#. module: sandas_maintenance
+#: model:ir.ui.menu,name:sandas_maintenance.publisher_warranty
+msgid "Publisher Warranty"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+msgid "Restart"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_restart_cmd
+msgid "Restart Command"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_run_vacuum
+msgid "Run Vacuum"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_portal_form
+msgid "SSH (for uploading backups)"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_ssh_host
+msgid "SSH Host"
+msgstr "SSH Host'as"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_ssh_login
+msgid "SSH Login"
+msgstr "SSH Prisijungimas"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_portal_ssh_port
+msgid "SSH Port"
+msgstr "SSH Portas"
+
+#. module: sandas_maintenance
+#: model:ir.actions.act_window,name:sandas_maintenance.action_ir_cron_log_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_ir_cron_log_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_ir_cron_log_tree
+msgid "Scheduled Actions Log"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.menu,name:sandas_maintenance.next_id_10
+msgid "Scheduler"
+msgstr "Scheduler"
+
+#. module: sandas_maintenance
+#: model:ir.ui.menu,name:sandas_maintenance.menu_action_ir_cron_log_form
+msgid "Scheduler Log"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.actions.act_window,name:sandas_maintenance.action_maintenance_server_form
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_server_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_server_id
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_server_id
+#: model:ir.ui.menu,name:sandas_maintenance.menu_action_maintenance_server_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_form
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_server_tree
+msgid "Server"
+msgstr "Serveris"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_server_path
+msgid "Server Path"
+msgstr "Serverio kelias"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_start_date
+msgid "Start Date"
+msgstr "Pradžios data"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_date_from
+msgid "Starting Date"
+msgstr "Pradžios data"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_contract_wizard_state
+msgid "States"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_success
+msgid "Success"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_update_store_fields_osv
+msgid "This wizard will create grouped invoices from tasks."
+msgstr "This wizard will create grouped invoices from tasks."
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_ir_cron_log_traceback
+msgid "Traceback"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_translation_path
+msgid "Translation Path"
+msgstr "Vertimo kelias"
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:1029
+#, python-format
+msgid "Unknown restart command in server."
+msgstr ""
+
+#. module: sandas_maintenance
+#: selection:maintenance.contract.wizard,state:0
+msgid "Unvalidated"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_update_store_fields_osv
+msgid "Update"
+msgstr "Atnaujinti"
+
+#. module: sandas_maintenance
+#: model:ir.actions.act_window,name:sandas_maintenance.action_maintenance_update_store_fields_osv
+#: model:ir.ui.menu,name:sandas_maintenance.menu_wizard_maintenance_update_store_fields_osv
+msgid "Update Store Fields"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_upload
+msgid "Upload"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_database_upload_folder
+msgid "Upload Folder"
+msgstr ""
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:1217
+#, python-format
+msgid "Upload backup failed for database %s. With command %s."
+msgstr ""
+
+#. module: sandas_maintenance
+#: code:addons/sandas_maintenance/maintenance.py:379
+#, python-format
+msgid "Vacuum failed for database %s."
+msgstr ""
+
+#. module: sandas_maintenance
+#: selection:maintenance.contract.wizard,state:0
+msgid "Validated"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_application_version
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_module_version
+msgid "Version"
+msgstr "Versija"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_versions_archive_path
+msgid "Versions Archive Path"
+msgstr "Versijų archyvo kelias"
+
+#. module: sandas_maintenance
+#: model:ir.model.fields,field_description:sandas_maintenance.field_maintenance_server_web_path
+msgid "Web Path"
+msgstr "Web serverio kelias"
+
+#. module: sandas_maintenance
+#: selection:maintenance.portal,protocol:0
+#: selection:maintenance.server,protocol:0
+msgid "http"
+msgstr "http"
+
+#. module: sandas_maintenance
+#: selection:maintenance.portal,protocol:0
+#: selection:maintenance.server,protocol:0
+msgid "https"
+msgstr "https"
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_ir_cron
+msgid "ir.cron"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_ir_model_data
+msgid "ir.model.data"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_check_log
+msgid "maintenance.check.log"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.model,name:sandas_maintenance.model_maintenance_contract_wizard
+msgid "maintenance.contract.wizard"
+msgstr ""
+
+#. module: sandas_maintenance
+#: model:ir.ui.view,arch_db:sandas_maintenance.view_maintenance_update_store_fields_osv
+msgid "or"
+msgstr "arba"
+
+#~ msgid "Unknown"
+#~ msgstr "Nežinoma"
+
+#~ msgid "Download URL"
+#~ msgstr "Atsisiuntimo URL"
+
+#~ msgid "Client Versions"
+#~ msgstr "Klientų versijos"
+
+#~ msgid "Ok"
+#~ msgstr "Gerai"
+
+#~ msgid ""
+#~ "If checked, this client version users will not be informed to upgrade "
+#~ "client."
+#~ msgstr ""
+#~ "Jeigu pažymėta, šios kliento versijos naudotojai nebus informuojami, kad "
+#~ "reikia klientą atsinaujinti."
+
+#~ msgid "Release"
+#~ msgstr "Išleidimas"
+
+#~ msgid "Connections"
+#~ msgstr "Prisijungimas"
+
+#~ msgid "Allowed"
+#~ msgstr "Leidžiamas"
+
+#~ msgid "That contract is already registered in the system."
+#~ msgstr "Ši sutartis jau užregistruotra sistemoje."
+
+#~ msgid "Current version"
+#~ msgstr "Einamoji versija"
+
+#~ msgid "Invalid arguments"
+#~ msgstr "Blogi argumentai"
+
+#, fuzzy
+#~ msgid "Server_id"
+#~ msgstr "Serveris"
+
+#~ msgid ""
+#~ "You cannot have multiple records with the same id for the same module !"
+#~ msgstr ""
+#~ "Negalima turėti keletą įrašų su tuo pačių išoriniu ID tame pačiame "
+#~ "modulyje!"
+
+#~ msgid "Directory"
+#~ msgstr "Kelias"
+
+#, fuzzy
+#~ msgid "CONTRACT #%s: "
+#~ msgstr "[CONTRACT #%s] Auto-TB"
+
+#~ msgid "User"
+#~ msgstr "Naudotojas"
+
+#~ msgid "Sandas Maintenance"
+#~ msgstr "Sandas palaikymasa"
+
+#~ msgid "Date"
+#~ msgstr "Data"
+
+#~ msgid "Current"
+#~ msgstr "Einamoji"
+
+#~ msgid "Folders"
+#~ msgstr "Aplankai"
+
+#~ msgid "File name"
+#~ msgstr "Failo pavadinimas"
+
+#~ msgid ""
+#~ "There is important update available. Please upgrade your Open ERP client "
+#~ "to version %s, download link:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Atlikti svarbus Open ERP kliento patobulinimai. Prašome atsinaujinti savo "
+#~ "Open ERP klientą į versiją %s, kliento atsisiuntimo nuoroda:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "Load Installed"
+#~ msgstr "Užkrauti įdiegtus"
+
+#~ msgid ""
+#~ "The Object name must start with x_ and not contain any special character !"
+#~ msgstr ""
+#~ "Objekto pavadinimas turi prasidėti x_ ir negali turėti jokių specialiųjų "
+#~ "ženklų !"
+
+#~ msgid "Invalid XML for View Architecture!"
+#~ msgstr "Netinkamas XML vaizdo architektūrai !"

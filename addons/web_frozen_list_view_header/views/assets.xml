@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="web_frozen_list_view_header assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="/web_frozen_list_view_header/static/lib/stickytableheaders/js/stickytableheaders.js"></script>
+                <script src="/web_frozen_list_view_header/static/src/js/web_frozen_list_view_header.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>
+

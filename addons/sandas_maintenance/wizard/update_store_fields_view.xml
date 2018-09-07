@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="view_maintenance_update_store_fields_osv" model="ir.ui.view">
+        <field name="name">Update Store Fields</field>
+        <field name="model">maintenance.update.store.fields.osv</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Fields" version="7.0">
+			    <field name="field_ids" />
+			    <newline />
+			    <field name="domain" />
+			    <newline />
+			    <field name="parent_store_model_ids" />
+                <label string="This wizard will create grouped invoices from tasks." align="0.0" colspan="4" />
+                <footer>
+                    <button name="do_update" string="Update" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_maintenance_update_store_fields_osv" model="ir.actions.act_window">
+         <field name="name">Update Store Fields</field>
+         <field name="res_model">maintenance.update.store.fields.osv</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="target">new</field>
+     </record>
+     
+     <menuitem
+        id="menu_wizard_maintenance_update_store_fields_osv"
+        name="Update Store Fields"
+        parent="sandas_maintenance.next_id_11"
+        action="action_maintenance_update_store_fields_osv" />
+ 
+</data>
+</openerp>
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="maintenance_check_stock_move_account_moves" model="maintenance.check">
+        <field name="name">All Menus</field>
+        <field name="code">all_menus</field>
+        <field name="module">sandas_maintenance</field>
+    </record>
+
+    <record id="ir_cron_vacuum" model="ir.cron">
+        <field name="name">Run Vacuum</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 01:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field name="state">code</field>
+        <field ref="sandas_maintenance.model_maintenance_server" name="model_id"/>
+        <field name="code">model.run_vacuum_cron()</field>
+    </record>
+
+    <record id="ir_cron_do_backups" model="ir.cron">
+        <field name="name">Do Backups</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 02:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field name="state">code</field>
+        <field ref="sandas_maintenance.model_maintenance_server" name="model_id"/>
+        <field name="code">model.do_backups()</field>
+    </record>
+
+    <record id="ir_cron_do_auto_installs" model="ir.cron">
+        <field name="name">Do Auto Install</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 22:00:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field name="state">code</field>
+        <field ref="sandas_maintenance.model_maintenance_server" name="model_id"/>
+        <field name="code">model.do_auto_install()</field>
+    </record>
+
+</data>
+</openerp>
+

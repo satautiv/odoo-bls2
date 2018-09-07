@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="base.open_module_tree" model="ir.actions.act_window">
+            <field name="name">Apps</field>
+            <field name="res_model">ir.module.module</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="base.view_module_filter"/>
+            <field name="help" type="html">
+              <p><b>No module found!</b></p>
+              <p>You should try others search criteria.</p>
+            </field>
+        </record>
+        
+        <record id="filter_sandas_modules" model="ir.filters">
+            <field name="model_id">ir.module.module</field>
+            <field name="domain">[['author','=','Sandas']]</field>
+            <field name="name">Sandas Modules</field>
+            <field name="is_default">1</field>
+            <field name="action_id" ref="base.open_module_tree"/>
+            <field name="user_id"></field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <menuitem 
+        name="Configuration" 
+        id="menu_config"
+        parent="base.menu_administration"/>
+	
+    <record id="ir_menu_config_additional_identifier" model="ir.model.data">
+        <field name="complete_name">base.menu_config</field>
+        <field name="module">base</field>
+        <field name="name">menu_config_sandas</field>
+        <field name="model">ir.ui.menu</field>
+        <field name="res_id" ref="menu_config"/>
+    </record>
+    
+</data>
+</openerp>
