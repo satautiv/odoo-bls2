@@ -25,7 +25,6 @@ class except_orm(Exception):
             caller = frame_codeinfo(currentframe(), 1)
             _logger.warn('except_orm is deprecated. Please use specific exceptions like UserError or AccessError. Caller: %s:%s', *caller)
         traceback.print_stack()
-        print('value', name, value)
         self.name = name
         self.value = value
         self.args = (name, value)
