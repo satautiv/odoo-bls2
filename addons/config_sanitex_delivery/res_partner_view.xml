@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+  	
+  	
+
+    <!--record id="mail.menu_contacts" model="ir.ui.menu">
+        <field eval="[(6, 0, [ref('sandas_maintenance.group_no_one_sandas')])]" name="groups_id"/>
+    </record>
+		    
+	<record id="mail.action_contacts" model="ir.actions.act_window">
+	    <field name="view_mode">tree,form,kanban</field>
+	</record>
+  	
+    <record id="mail.action_contacts_view_kanban" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+    </record>
+    <record id="mail.action_contacts_view_tree" model="ir.actions.act_window.view">
+       <field name="sequence" eval="0"/>
+    </record>
+    <record id="mail.action_contacts_view_form" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+    </record-->
+	
+        
+    <record id="view_res_partner_bls_tree" model="ir.ui.view">
+		<field name="name">res.partner BLS</field>
+		<field name="model">res.partner</field>
+		<field name="type">tree</field>
+		<field name="priority">25</field>
+		<field name="arch" type="xml">
+		    <tree string="Drivers" default_order="parent_id" create="0">
+            	<field name="possid_code"/>
+				<field name="parent_id" string="Organisation"/>
+            	<field name="street" string="Address"/>
+            	<field name="parent_ref"/>
+            	<field name="name" string="POSID Name"/>
+		    </tree>
+		</field>
+	</record>
+
+	<record id="view_res_partner_bls_no_create_button_tree" model="ir.ui.view">
+		<field name="name">res.partner BLS no create button 2</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="view_res_partner_bls_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">29</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+		    
+	<record id="action_sanitex_partner_menu" model="ir.actions.act_window">
+	    <field name="name">Partners</field>
+	    <field name="res_model">res.partner</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+        <!--field name="search_view_id" ref="view_res_partner_sanitex_search"/-->
+	    <field name="context">{'hide_print_button': True, 'disable_export': True}</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="domain">[('is_company','=',False)]</field>
+	</record>
+	
+	
+   	<record id="action_sanitex_partner_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_res_partner_bls_no_create_button_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_partner_menu"/>
+	</record>	
+    <!--record id="action_sanitex_partner_menu_search" model="ir.actions.act_window.view">
+        <field eval="3" name="sequence"/>
+        <field name="view_mode">search</field>
+        <field name="search_view_id" ref="view_res_partner_sanitex_search"/>
+        <field name="act_window_id" ref="action_sanitex_partner_menu"/>
+    </record-->
+	
+    <!--menuitem
+    	id="menu_sanitex_partners" 
+    	parent="base_routes" 
+    	name="Partners" /-->
+	
+	<menuitem id="menu_action_sanitex_partner_menu"
+	    name="Partners"
+	    parent="menu_sanitex_stocks"
+	    action="action_sanitex_partner_menu"
+	    sequence="110"/>
+
+	<record id="action_sanitex_partner_menu_all" model="ir.actions.act_window">
+	    <field name="name">All Partners</field>
+	    <field name="res_model">res.partner</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="context">{'hide_print_button': True}</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+
+   	<record id="action_sanitex_all_partner_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_res_partner_bls_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_partner_menu_all"/>
+	</record>
+
+	<menuitem id="menu_action_sanitex_all_partner_menu"
+	    name="All Partners"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_sanitex_partner_menu_all"
+	    sequence="5"/>
+
+	<record id="view_res_partner_external_form" model="ir.ui.view">
+        <field name="name">res.partner sanitex_external_id</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='internal_notes']//field[@name='comment']" position="before">
+            	<label for="owner_lang_ids"/>
+				<field name="owner_lang_ids">
+					<tree string="Owners" editable="top">
+						<field name="owner_id"/>
+						<field name="lang"/>
+					</tree>
+					<form string="Owner">
+						<group>
+							<field name="owner_id"/>
+							<field name="lang"/>
+						</group>
+					</form>
+				</field>					
+				<group>
+					<field name="external_customer_id"/>
+					<field name="external_customer_address_id"/>
+	                <field name="intermediate_id" />
+	                <field name="id_carrier" />
+				</group>
+			</xpath>
+            <xpath expr="//field[@name='ref']" position="replace">
+			</xpath>
+            <xpath expr="//label[@for='street']" position="before">
+				<field name="supplier_code"/>
+				<field name="ref" string="Comp. Code"/>
+			</xpath>
+            <xpath expr="//notebook" position="inside">
+               	<page string="History">  
+            		<field name="message_ids" widget="mail_thread"/>
+               	</page>
+			</xpath>
+			<xpath expr="//group[@name='sale']" position="after">
+			    <group name="contract">
+			        <field name="driving_contract_number"/>
+			        <field name="product_contract_number"/>
+			        <field name="customer_vip"/>
+			        <field name="sanitex_type"/>
+			        <field name="possid_code"/>
+			    </group>
+			</xpath>
+			<xpath expr="//page[@name='sales_purchases']//field[@name='supplier']" position="after">
+				<field name="supplier_code"/>
+			</xpath>
+			<field name="category_id" position="after">
+				<field name="local_partner"/>
+			</field>
+            <xpath expr="//notebook" position="inside">
+               	<page string="Documents Information">  
+            		<group name="fields_cols" colspan="4" col="4">
+						<group name="1st_fields_col" colspan="2">
+							<field name="client_code"/>
+							<field name="inidividual_actv_nr"/>
+							<field name="farmer_code"/>
+							<field name="bsn_lic_nr"/>
+							<field name="route"/>
+							<field name="bank_name"/>
+							<field name="bank_account"/>
+						</group>
+						<group name="2nd_fields_col" colspan="2">
+							<field name="alcohol_license_type"/>
+							<field name="alcohol_license_sale_type"/>
+							<field name="alcohol_license_no"/>
+							<field name="alcohol_license_date"/>
+							<field name="alcohol_license_consume"/>
+							<field name="tobac_license_type"/>
+							<field name="tobac_license_sale_type"/>
+							<field name="tobac_license_no"/>
+							<field name="tobac_license_date"/>
+						</group>
+					</group>
+               	</page>
+			</xpath>
+			<xpath expr="//form" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="edit">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+			<xpath expr="//button[@name='toggle_active']" position="before">
+				<button string="Routes" class="oe_stat_button" icon="fa-truck" name="open_route_templates" type="object" attrs="{'invisible':[('possid_code','=',False)]}"/>
+			</xpath>
+        </field>
+    </record>
+	
+
+    <!--record id="view_emails_partner_info_form_remove" model="ir.ui.view">
+        <field name="name">res.partner.emails.info.inherit.remove</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="mail.view_emails_partner_info_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_chatter']" position="replace">
+            </xpath>
+        </field>
+    </record-->
+
+	<record id="payment.view_partners_form_payment_defaultcreditcard" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+
+	<record id="account.partner_view_buttons" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+
+	<record id="sale.res_partner_view_buttons" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+
+	<record id="account.partner_view_button_contracts_count" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+        
+	<record id="view_res_partner_parent_tree" model="ir.ui.view">
+        <field name="name">res.partner sanitex_partner_tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="before">
+            	<field name="possid_code"/>
+				<field name="parent_id" string="Organisation"/>
+			</xpath>
+            <xpath expr="//field[@name='phone']" position="replace">
+			</xpath>
+            <xpath expr="//field[@name='email']" position="replace">	
+            	<field name="ref"/>	
+			</xpath>
+            <xpath expr="//tree" position="attributes">	
+            	<attribute name="default_order">parent_id</attribute>	
+			</xpath>
+        </field>
+    </record>
+        
+	<record id="view_res_country_vat_code" model="ir.ui.view">
+        <field name="name">res.country vat_code</field>
+        <field name="model">res.country</field>
+        <field name="inherit_id" ref="base.view_country_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+				<field name="vat_code"/>
+			</xpath>
+        </field>
+    </record>
+	<record id="view_search_partner_posid" model="ir.ui.view">
+        <field name="name">res.partner posid search</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+				<field name="possid_code" filter_domain="[('possid_code','=',self)]" />
+			</xpath>
+        </field>
+    </record>
+
+	<record id="portal.partner_wizard_action" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+
+	<record id="sms.send_sms_action" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+
+	<record id="mail.action_partner_mass_mail" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+
+	<record id="account.action_all_partner_invoices" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+
+	<record id="account.action_move_line_select_by_partner" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+
+	<record id="account.act_account_invoice_partner_relation" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+
+
+</data>
+</openerp>

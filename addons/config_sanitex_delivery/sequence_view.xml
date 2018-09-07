@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <!--Available document types-->
+
+    <record id="document_type_tree" model="ir.ui.view">
+        <field name="name">document.type.tree</field>
+        <field name="model">document.type</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Documents" >
+            	<field name="name"/>
+            	<field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="document_type_search" model="ir.ui.view">
+        <field name="name">document.type.search</field>
+        <field name="model">document.type</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Documents" >
+            	<field name="name"/>
+            	<field name="code"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="document_type_form" model="ir.ui.view">
+        <field name="name">document.type.form</field>
+        <field name="model">document.type</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Document">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+            	        <field name="code"/>
+            	        <field name="do_not_show"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="document_type_action" model="ir.actions.act_window">
+        <field name="name">Available Documents</field>
+        <field name="res_model">document.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+	<menuitem id="menu_document_types"
+	    name="Available Documents"
+	    parent="sandas_maintenance.menu_config"
+	    action="document_type_action"
+	    sequence="200"
+        groups="sandas_maintenance.group_no_one_sandas"/>
+
+    <!--Available document types-->
+
+    <record id="document_type_settings_tree" model="ir.ui.view">
+        <field name="name">document.type.settings.tree</field>
+        <field name="model">document.type.settings</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Documents" editable="top">
+                <field name="document_type_id" options="{'no_create': True}" domain="[('do_not_show','=',False)]"/>
+                <field name="sequence_by"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="document_type_settings_search" model="ir.ui.view">
+        <field name="name">document.type.settings.search</field>
+        <field name="model">document.type.settings</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Documents" >
+                <field name="document_type_id"/>
+                <field name="sequence_by"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="document_type_settings_form" model="ir.ui.view">
+        <field name="name">document.type.settings.form</field>
+        <field name="model">document.type.settings</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Document">
+                <sheet>
+                    <group>
+                        <field name="document_type_id"/>
+            	        <field name="sequence_by"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="document_type_settings_action" model="ir.actions.act_window">
+        <field name="name">Document Types</field>
+        <field name="res_model">document.type.settings</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+	<menuitem id="menu_document_type_settings"
+	    name="Document Types"
+	    parent="sandas_maintenance.menu_config"
+	    action="document_type_settings_action"
+	    sequence="55"/>
+
+    </data>
+</openerp>

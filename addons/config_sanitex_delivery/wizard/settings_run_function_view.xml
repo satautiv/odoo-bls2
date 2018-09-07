@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="settings_run_function_osv_form" model="ir.ui.view">
+        <field name="name">settings.run_function.form</field>
+        <field name="model">settings.run_function</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Run Function">
+                <group>
+                    <field name="object_name" />
+                    <field name="function_name" />
+                    <field name="domain" />
+                </group>
+                <footer>
+                    <button name="run" string="Run" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_settings_run_function_osv" model="ir.actions.act_window">
+        <field name="name">Run Function</field>
+        <field name="res_model">settings.run_function</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+	<menuitem id="menu_settings_run_function_osv"
+	    name="Run Function"
+	    parent="sandas_maintenance.next_id_11"
+	    action="action_settings_run_function_osv"
+	    sequence="50"/>
+</data>
+</openerp>

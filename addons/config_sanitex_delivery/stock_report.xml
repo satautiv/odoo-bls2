@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <report id="report_product_packing"
+        model="stock.route"
+        name="config_sanitex_delivery.product_packing"
+        file="config_sanitex_delivery/report/product_packing.odt"
+        string="Product Packing"
+        menu="False"
+        report_type="qweb-pdf"/>
+
+    <report id="report_drivers_packing_transfer_act"
+        model="stock.route"
+        name="config_sanitex_delivery.drivers_packing_transfer_act"
+        file="config_sanitex_delivery/report/drivers_packing_transfer_act.odt"
+        string="Drivers Transfer Act"
+        menu="False"
+        report_type="qweb-pdf"/>
+
+	<record id="report_drivers_packing_transfer_act" model="ir.actions.report">
+	    <field name="all_report_sequence">2</field>
+    </record>
+
+    <report id="report_all_report"
+        model="stock.route"
+        name="config_sanitex_delivery.all_report"
+        file="config_sanitex_delivery/report/all_report.odt"
+        string="All Reports"
+        menu="False"
+        report_type="qweb-pdf"/>
+
+    <report id="report_stock_packing_report"
+        model="stock.packing"
+        name="config_sanitex_delivery.stock_packing_report"
+        file="config_sanitex_delivery/report/stock_packing_report.odt"
+        string="Packing Transfer-Return Act"
+        menu="False"
+        report_type="qweb-pdf"/>
+
+	<record id="report_stock_packing_report" model="ir.actions.report">
+	    <field name="all_report_sequence">3</field>
+    </record>
+
+    <report
+        id="action_report_stock_correction"
+        model="stock.packing.correction"
+        string="Stock Correction"
+        report_type="qweb-pdf"
+        name="config_sanitex_delivery.report_stock_correction"
+        file="config_sanitex_delivery.report_stock_correction"
+        menu="False"
+        />
+
+    <report
+        id="action_report_stock_correction"
+        model="stock.packing.correction"
+        string="Stock Correction"
+        report_type="qweb-pdf"
+        name="config_sanitex_delivery.report_stock_correction"
+        file="config_sanitex_delivery.report_stock_correction"
+        menu="False"
+        />
+
+    <report
+        id="report_packing_return_act_report"
+        model="stock.route"
+        string="Packing Return Act"
+        report_type="qweb-pdf"
+        name="config_sanitex_delivery.packing_return_act"
+        file="config_sanitex_delivery.packing_return_act"
+        menu="False"
+        />
+
+    <report
+        id="report_driver_return_act_report"
+        model="stock.picking"
+        string="Driver Return Act (Internal Doc.)"
+        report_type="qweb-pdf"
+        name="config_sanitex_delivery.driver_return_act"
+        file="config_sanitex_delivery.driver_return_act"
+        menu="False"
+        />
+
+    <report
+        id="report_tare_to_driver_act"
+        model="stock.picking"
+        string="Drivers Transfer Act (Internal Doc.)"
+        report_type="qweb-pdf"
+        name="config_sanitex_delivery.tare_to_driver_act"
+        file="config_sanitex_delivery.tare_to_driver_act"
+        menu="False"
+        />
+
+	<record id="report_tare_to_driver_act" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+	<record id="report_driver_return_act_report" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+	<record id="report_packing_return_act_report" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+	<record id="action_report_stock_correction" model="ir.actions.report">
+	    <field name="keep_log" eval="False"/>
+    </record>
+
+	<record id="report_stock_packing_report" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+	<record id="report_drivers_packing_transfer_act" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+	<record id="report_product_packing" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+
+    <!-- Picking -->
+
+    <record id="action_stock_picking_print_report" model="ir.actions.server">
+       <field name="name">Print Picking (Document)</field>
+       <field name="type">ir.actions.server</field>
+       <field name="model_id" ref="stock.model_stock_picking"/>
+       <field name="condition" eval="True" />
+       <field name="state">code</field>
+       <field name="sequence_no">10</field>
+       <field name="code">action = records.print_picking_from_route()</field>
+       <field name="binding_model_id" ref="stock.model_stock_picking"/>
+       <field name="binding_type">report</field>
+    </record>
+
+	<record id="stock.action_report_picking" model="ir.actions.report">
+	    <field name="menu" eval="False"/>
+	    <field name="binding_model_id"/>
+    </record>
+
+	<record id="stock.action_report_delivery" model="ir.actions.report">
+	    <field name="menu" eval="False"/>
+	    <field name="binding_model_id"/>
+    </record>
+</data>
+</openerp>

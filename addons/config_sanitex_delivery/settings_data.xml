@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="cron_cron_remove_old_reports" model="ir.cron">
+        <field name="name">Remove Reports</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 02:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_printer" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_remove_reports()</field>
+    </record>
+
+    <record id="cron_cron_remove_tmp_data" model="ir.cron">
+        <field name="name">Remove from TMP</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 02:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_printer" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_remove_files_from_tmp()</field>
+    </record>
+    
+</data>
+</openerp>

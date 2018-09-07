@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="assets_backend" name="button_box" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+      <link rel="stylesheet" href="/config_sanitex_delivery/static/src/css/button_box.less" />
+      <link rel="stylesheet" href="/config_sanitex_delivery/static/src/css/many2many_tags.less" />
+    </xpath>
+  </template>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+	<report id="report_account_invoice_document_print_form"
+        model="account.invoice"
+        name="config_bls_stock.invoice_document_print_form"
+        string="Invoice Document (Print Form)"
+        menu="False"/>
+
+	<record id="report_account_invoice_document_print_form" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+</data>
+</openerp>

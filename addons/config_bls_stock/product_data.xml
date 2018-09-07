@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="uom_categ_bls" model="product.uom.categ">
+        <field name="name">BLS</field>
+    </record>
+    
+</data>
+</openerp>

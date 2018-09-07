@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>	       
+
+        <record id="view_res_company_bls_stock_form" model="ir.ui.view">
+            <field name="name">res.company BLS stock form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_res_company_sanitex_packing_form"/>
+            <field name="arch" type="xml">
+            	<group name="pod_integration_group" position="after">
+            		<group name="despatch_integration_group" string="Despatch">
+						<field name="desp_adv_cursor" />
+						<field name="despatch_api_link" />
+						<field name="despatch_import_limit" />
+					</group>
+					<group name="doxcuments_settings_group" string="Documents">
+						<field name="document_edit_config_id" />
+						<field name="price_change_url" />
+						<field name="ubl_export_limit" />
+						<field name="ubl_save_directory" />
+						<field name="save_test_ubs_to_disk" />
+						<field name="country_codes" />
+						<field name="cmr_document_sequence_id" />
+					</group>
+            	</group>
+            </field>
+        </record>
+
+
+</data>
+</openerp>

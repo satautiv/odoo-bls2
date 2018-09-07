@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="cron_cron_remove_old_report_history" model="ir.cron">
+        <field name="name">Remove Report History</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 02:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field eval="'report.print.log'" name="model"/>
+        <field eval="'remove_old_report_history_cron'" name="function"/>
+        <field eval="'()'" name="args"/>
+    </record>
+    
+</data>
+</openerp>

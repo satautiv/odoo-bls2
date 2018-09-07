@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="cron_syncronise_translations" model="ir.cron">
+        <field name="name">Synchronise Translations</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 10:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_res_lang" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_translation()</field>
+    </record>
+
+</data>
+</openerp>

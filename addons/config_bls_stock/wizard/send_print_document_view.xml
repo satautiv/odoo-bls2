@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+	<record id="view_send_print_document_wizard" model="ir.ui.view">
+        <field name="name">view.send.print.document.wizard</field>
+        <field name="model">send.print.document.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Send/Print Document">
+            	<group name="fields" colspan="4" col="2">
+					<field name="printer_id" colspan="2" help="Printer which is going to print paper forms." widget="selection" context="{'search_printer_by_wh': True}"/>
+					<field name="print_even_electronical_documents" colspan="2"/>
+				</group>
+				<footer>
+					<button name="send_documents" string="Print documents" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Close" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_send_print_document_wizard" model="ir.actions.act_window">
+        <field name="name">Print Document</field>
+        <field name="res_model">send.print.document.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_invoice" />
+        <field name="binding_type">action</field>
+    </record>
+
+
+</data>
+</openerp>

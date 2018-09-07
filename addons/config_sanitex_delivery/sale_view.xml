@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!--record id="view_sale_order_route_form" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+			<field name="priority">26</field>          
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+            		<attribute name="groups"></attribute>                              
+                </xpath>
+                <xpath expr="//h1" position="replace">
+                	<h1>
+                		<field name="name" class="oe_inline" readonly="1"/>  
+                	</h1>                               
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                	 <page string="Transportation Order Lines">
+                	 	<field name="transportation_order_line_ids" nolabel="1"/>
+                	 </page>
+                     <page string="Delivery Information">
+						<group name="delivery_info" string="Delivery"  col="4" colspan="4"> 
+							<field name="delivered_goods_time"/>     
+							<field name="delivering_goods_by_routing_program"/>  
+							<field name="delivery_number"/>
+							<field name="delivery_type"/>  
+							<field name="direction"/>
+							<field name="no_delivery"/>  
+							<field name="delivery_by_agent"/>    
+							<field name="gate_id"/>  
+							<field name="selection_sheet"/>   
+							<field name="collection_no"/>   
+							<field name="route_type"/> 
+							<field name="transport_type_id"/> 
+	                    	<field name="route_id"/>
+						</group> 
+						<group name="order_info" string="Order" col="4" colspan="4">  
+		                    <field name="owner_id"/> 
+		                    <field name="cash"/>
+		                    <field name="cash_amount"/>
+		                    <field name="alcohol"/>     
+		                    <field name="tobacco"/>   
+		                    <field name="order_type"/> 
+				    		<field name="not_combine_documents"/>
+				      		<field name="divide_vat"/> 
+				      		<field name="urgent_order"/>  
+				     		<field name="document_type"/>  
+						</group> 
+						<group>  
+							<group name="license_info" string="License">   
+						        <field name="license_text"/>  
+						        <field name="license_type"/>  
+						        <field name="license_date"/>  
+							</group> 
+							<group name="client_info" string="Client"> 
+			          			<field name="client_type"/>   
+			                    <field name="customer_region"/> 
+			                    <field name="customer_loading_type"/> 
+			                    <field name="vip_customer"/>  
+							</group>  
+						</group> 
+						<label for="container_ids"/>
+			          	<field name="container_ids"/>
+						<label for="comment"/>
+	                    <field name="comment"/>
+                    </page>  
+                   	<page string="Invoice Information">
+						<group>  
+			         		<field name="invoice_number"/>  
+			         		<field name="discount"/> 
+						</group>
+						<label for="invoice_line_ids"/>
+	                    <field name="invoice_line_ids"/>
+						<label for="text_on_invoice"/>
+			       		<field name="text_on_invoice"/> 
+                   	</page>  
+                   	<page string="History">  
+                		<field name="message_ids" widget="mail_thread"/>
+                   	</page>                                    
+                </xpath>
+            	<xpath expr="//div[@name='button_box']" position="inside">
+	            	<button class="oe_stat_button" icon="fa-file-text-o" name="open_invoices" type="object">                        
+                		<field string="Invoices" name="sani_invoice_count" widget="statinfo"/>
+                	</button>
+                </xpath-->
+            	<!--xpath expr="//field[@name='invoice_lines']" position="replace">
+	            	<field name="invoice_line_ids"/>                            
+                </xpath-->
+            	<!--xpath expr="//field[@name='order_line']/form" position="replace">
+	            	<form>
+	            		 <group>
+                         	<group>
+                                <field name="product_id" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"/>
+                                <label for="product_uom_qty" string="Ordered Quantity"/>
+                                <div>
+                                    <field context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'uom_qty_change':True, 'company_id': parent.company_id}" name="product_uom_qty" class="oe_inline"/>
+                                    <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}"/>
+                                </div>
+                                <field name="price_unit"/>     
+		                        <field name="documetn_type"/>
+		                        <field name="order_number"/>
+		                        <field name="min_exp_date"/>
+		                        <field name="max_exp_date"/>                         
+                            </group>
+                            <group>
+                                <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+                       	 		<field name="payment_term"/>
+		                        <field name="warehouse_id"/>
+		                        <field name="lot_id"/>
+		                        <field name="serial_id"/>
+                            </group>
+                        </group>
+                        <label for="name"/>
+                        <field name="name"/>
+                        <label for="invoice_line_ids"/>
+                        <field name="invoice_line_ids"/>
+                        <field name="state" invisible="1"/>
+                        <field name="invoice_status" invisible="1"/>
+                        <field name="qty_to_invoice" invisible="1"/>
+                        <field name="qty_delivered_updateable" invisible="1"/>
+                        <field name="procurement_ids" invisible="1"/>
+                        <field name="price_subtotal" invisible="1"/>
+	            	</form>
+                </xpath>
+            </field>
+        </record>
+        
+		<record id="view_sale_order_route_form2" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="config_sanitex.view_sale_order_route_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='print_quotation']" position="after">    
+                    <button name="print_quotation" string="Editable?" type="object" states="blank"/>
+                </xpath>
+                <xpath expr="//field[@name='agent_id']" position="replace">
+                    <field name="agent_id" attrs="{'readonly': [('state','!=','blank')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='salesman_activity']" position="replace">
+                    <field name="salesman_activity" attrs="{'readonly': [('state','!=','blank')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='sales_direction']" position="replace"-->
+                    <!--field name="sales_direction" attrs="{'readonly': [('state','!=','blank')]}"/>
+                </xpath>
+            </field>
+        </record-->
+		                
+        <record id="view_sale_order_route_tree" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_shipping_id"/>
+                    <field name="posid"/>
+                    <field name="direction"/>
+                    <field name="transport_type_id"/>
+                    <field name="warehouse_id" string="Warehouse" options="{'no_create': True}"/>
+                    <field name="picking_location_id"/>
+					<field name="shipping_warehouse_id"/>
+                    <field name="route_number"/> 
+                    <!-- field name="total_weight" sum="Total Weight"/-->
+                    <field name="rounded_total_weight" sum="Total Weight"/>
+                    <field name="route_state_received" invisible="1" string="Received"/>
+                    <field name="not_received" invisible="1"/>
+                    <field name="received_by" string="Received By"/>
+                    <field name="task_at" string="Task At"/>
+                    <field name="can_be_picked_up" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="replace">
+                	<field name="state" invisible="1"/>                                 
+                </xpath>
+                <xpath expr="//field[@name='invoice_status']" position="replace">                                
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                	<attribute name="invisible">1</attribute>                                  
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before"> 
+                    <field name="name" string="Internal order number"/>
+					<field name="related_document_indication"/>
+                    <field name="shipping_date" />
+                </xpath>
+                <xpath expr="//field[@name='confirmation_date']" position="replace">
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_from_route_template_tree" model="ir.ui.view">
+            <field name="name">sale.order route template</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                	<field name="route_id_str"/>
+                	<field name="order_number_by_route" string="Cl. Ord. No."/>
+                	<field name="added_manually" invisible="1"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                	<attribute name="limit">100</attribute>
+                	<attribute name="create">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_no_create_button_tree" model="ir.ui.view">
+            <field name="name">sale.order no create button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                	<attribute name="create">0</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_sale_order_route_intermediate_wh_wizard_tree" model="ir.ui.view">
+            <field name="name">sale.order bls wizard</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes"> 
+                	<attribute name="decoration-success">boolean_for_intermediate_wizard</attribute>
+                	<attribute name="editable">top</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="boolean_for_intermediate_wizard" />
+                </xpath>
+            </field>
+        </record>
+        
+        
+        <record id="view_sale_order_route_colors_tree" model="ir.ui.view">
+            <field name="name">sale.order bls colors</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='task_at']" position="after">
+                    <field name="replanned" invisible="1"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes"> 
+                	<attribute name="decoration-success">route_state_received</attribute>
+                	<attribute name="decoration-danger">not_received</attribute>
+                	<attribute name="decoration-info">replanned</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_sale_order_route_wizard_tree" model="ir.ui.view">
+            <field name="name">sale.order bls wizard</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes"> 
+                	<attribute name="decoration-success">route_state_received</attribute>
+                	<attribute name="decoration-danger">not_received</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                	<button name="action_receive_wizard" string="Received" type="object"/>
+                	<button name="action_not_receive_wizard" string="Not Received" type="object"/>
+                </xpath>
+            </field>
+        </record>
+        
+        
+        <record id="view_sale_order_route_wizard2_tree" model="ir.ui.view">
+            <field name="name">sale.order bls wizard</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                	<field name="route_state_received" readonly="0"/>
+                	<field name="not_received" readonly="0"/>
+                </xpath>
+            </field>
+        </record>
+        
+        
+        <record id="view_sale_order_route_sequence_order_tree" model="ir.ui.view">
+            <field name="name">sale.order bls order by sequence</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="view_sale_order_route_colors_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes"> 
+                	<attribute name="default_order">sequence</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                	<field name="sequence" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                	<field name="release_date"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_sale_order_route_main_search" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+			<field name="priority">10</field>
+			<field name="type">search</field>
+            <field name="arch" type="xml">
+				<tree string="Sales">
+                    <field name="name" string="Collection Sheet Number"/> 
+                    <field name="partner_name" string="Buyer"/>   
+                    <field name="posid" filter_domain="[('posid','=',self)]" string="Buyer POSID"/>
+                    <field name="route_number"/>
+                    <field name="route_type"/>   
+                    <field name="shipping_date"/>  
+                    <field name="direction"/>    
+					<field name="transport_type_id"/>
+					<field name="shipping_warehouse_id"/>                                   
+                </tree>
+            </field>
+        </record>        
+	
+	<record id="view_sale_order_route_bls_form" model="ir.ui.view">
+        <field name="name">sale.order BLS FORM</field>
+        <field name="model">sale.order</field>
+		<field name="priority">20</field>
+		<field name="type">form</field>
+        <field name="arch" type="xml">
+			<form string="Sales" create="0" edit="0">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>    
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+		            	<button class="oe_stat_button" icon="fa-file-text-o" name="open_invoices" type="object">                        
+	                		<field string="Invoices" name="sani_invoice_count" widget="statinfo"/>
+	                	</button>
+						<button class="oe_stat_button" icon="fa-truck" name="action_open_all_chain" string="Open All Chain" type="object"/>
+						<button class="oe_stat_button" icon="fa-arrow-down" name="action_receive_not_received" string="Receive" type="object" attrs="{'invisible': [('not_received','=',False),('sequence','>',0)]}"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                    		<field name="invoice_number"/>
+                            <field name="partner_id" domain="[('customer','=',True),('company_type','=','company')]" context="{'search_default_customer':1, 'show_address': 1}" options="{&quot;always_reload&quot;: True}"/>
+                            <!--field name="partner_invoice_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'invoice'}" domain="partner_id and ['|',('parent_id','=',partner_id),('id','=',partner_id)] or []"/-->
+                            <field name="partner_shipping_id" context="{'default_type':'delivery'}" domain="partner_id and ['|',('parent_id','=',partner_id),('id','=',partner_id)] or []"/>
+                            <field name="posid"/>
+							<field name="internal_task_number"/>
+							<field name="route_number"/>
+                        </group>
+                        <group>
+                            <field name="date_order"/>
+                            <field name="shipping_date"/>
+                            <field name="warehouse_id" string="Order Picking Warehouse" options="{'no_create': True}"/>
+                            <field name="picking_location_id"/>
+							<field name="shipping_warehouse_id" context="{'get_all_warehouses': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="order_line">
+                                <form string="Sales Order Lines">
+                                    <group>
+                         				<group>
+                                			<field name="product_id" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist': False, 'uom':product_uom, 'company_id': parent.company_id}"/>
+                                			<label for="product_uom_qty" string="Ordered Quantity"/>
+                                			<div>
+			                                    <field context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist': False, 'product_uom':product_uom, 'uom_qty_change':True, 'company_id': parent.company_id}" name="product_uom_qty" class="oe_inline"/>
+			                                    <field name="product_uom" class="oe_inline oe_no_button"/>
+			                                </div>
+			                                <field name="price_unit" invisible="1"/>
+					                        <field name="documetn_type"/>
+					                        <field name="order_number"/>
+					                        <field name="min_exp_date"/>
+					                        <field name="max_exp_date"/>                         
+			                            </group>
+			                            <group>
+			                                <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+			                       	 		<field name="payment_term"/>
+					                        <field name="lot_id"/>
+					                        <field name="serial_id"/>
+			                            </group>
+				                        </group>
+				                        <label for="name"/>
+				                        <field name="name"/>
+				                        <label for="invoice_line_ids"/>
+				                        <field name="invoice_line_ids"/>
+				                        <group>
+											<field name="price_subtotal" invisible="1"/>
+										</group>
+                                </form>
+                                <tree string="Sales Order Lines" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="line_no" />
+									<field name="product_code"/>
+                                    <field name="product_id" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':False, 'uom':product_uom, 'company_id': parent.company_id}"/>
+                                    <field name="product_uom_qty" int_convert="1" string="Ordered Qty" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist': False, 'uom':product_uom, 'company_id': parent.company_id}"/>
+                                    <field name="picked_qty_str"/>
+                                    <field name="product_uom" context="{'company_id': parent.company_id}" options="{&quot;no_open&quot;: True}"/>
+                                    <field name="price_unit"  invisible="1"/>
+                                    <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"  invisible="1"/>
+                                    <field name="discount" groups="sale.group_discount_per_so_line"/>
+                                    <field name="price_subtotal" widget="monetary" invisible="1"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total" invisible="1">
+                                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_total"/>
+                                    <button name="button_dummy" states="draft,sent" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <field name="note" class="oe_inline" placeholder="Setup default terms and conditions in your company settings."/>
+                            <div class="oe_clear"/>
+                        </page>
+                        <page string="Other Information">
+							<group name="order_info" string="Order" >  
+								<group> 
+				                    <field name="owner_id"/> 
+				                    <field name="order_package_type"/> 
+				                    <field name="related_package_id" attrs="{'invisible': [('order_package_type','=','order')]}"/> 
+				                    <field name="pallet_qty"/> 
+				                    <field name="total_weight"/> 
+				                    <field name="cash"/>
+				                    <field name="cash_amount"/>
+				                    <field name="alcohol"/>     
+				                    <field name="tobacco"/>  
+								</group> 
+								<group>  
+				                    <field name="order_type"/> 
+						    		<field name="not_combine_documents"/>
+						      		<field name="divide_vat"/> 
+						      		<field name="urgent_order"/>  
+						     		<field name="document_type"/>  
+						     		<field name="company_id"/>  
+						     		<field name="not_received"/>  
+						     		<field name="sequence"/> 
+						     		<field name="transportation_order_id"/> 
+								</group> 
+							</group> 
+                        </page>
+	                    <page string="Delivery Information">
+							<group name="delivery_info" string="Delivery"> 
+								<group> 
+	                    			<field name="route_id" context="{'search_by_user_sale': False}"/>
+									<field name="delivered_goods_time"/>     
+									<field name="delivering_goods_by_routing_program"/>
+									<field name="delivery_type"/>  
+									<field name="direction"/>
+								</group> 
+								<group >    
+									<field name="order_number_by_route"/>
+									<field name="no_delivery"/> 
+									<field name="delivery_by_agent"/>    
+									<field name="gate_id"/>
+									<field name="transport_type_id"/> 
+								</group>  
+						        <group  name="license_info" string="License">   
+							        <field name="license_text"/>  
+							        <field name="license_type"/>  
+							        <field name="license_date"/>  
+								</group> 
+								<group name="client_info"  string="Client"> 
+				          			<field name="client_type"/>   
+	                                <field name="customer_region"/> 
+	                                <field name="customer_loading_type"/> 
+	                                <field name="vip_customer"/>  
+								</group>  
+							</group> 
+							<label for="container_ids"/>
+				          	<field name="container_ids"/>
+							<label for="comment"/>
+		                    <field name="comment"/>
+	                    </page>  
+	                   	<page string="Document Information">
+							<group>  
+				         		<field name="invoice_number"/> 
+							</group>
+							<label for="invoice_line_ids"/>
+		                    <field name="invoice_line_ids" context="{'tree_view_ref': False}"/>
+							<label for="text_on_invoice"/>
+				       		<field name="text_on_invoice"/> 
+	                   	</page>  
+	                   	<page string="History">
+							<group>
+								<field name="external_sale_order_id"/>
+				                <field name="intermediate_id" />
+				                <field name="changes_in_route_formation" />
+				                <field name="replanned" />
+							</group>
+	                		<field name="message_ids" widget="mail_thread"/>
+	                   	</page>                          
+                    </notebook>
+                </sheet>                      
+            </form>
+        </field>
+    </record> 
+	    	       	  
+    <record id="sale.action_orders" model="ir.actions.act_window"> 
+    	<field name="domain"></field>      
+    </record>
+        
+	<record id="action_sanitex_sales_menu" model="ir.actions.act_window">
+	    <field name="name">Transportation Tasks</field>
+	    <field name="res_model">sale.order</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="limit">200</field>
+	    <field name="context">{'search_by_user_sale': True, 'hide_unnecessary_header_sums':['rounded_total_weight'], 'hide_print_button': True, 'show_owner_filter': True, 'create_route_btn': True}</field>
+	</record>
+	
+   	<record id="action_sanitex_sales_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_sale_order_no_create_button_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_sales_menu"/>
+	</record>	
+	
+	<record id="action_sanitex_sales_menu_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_sale_order_route_bls_form"/>
+    	<field name="act_window_id" ref="action_sanitex_sales_menu"/>
+	</record>
+
+	<record id="action_sanitex_all_sales_menu" model="ir.actions.act_window">
+	    <field name="name">Transportation Tasks</field>
+	    <field name="res_model">sale.order</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'search_by_user_sale': False, 'search_for_template_view': False, 'show_owner_filter': True, 'create_route_btn': True}</field>
+	</record>
+
+   	<record id="action_sanitex_all_sales_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_sale_order_route_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_all_sales_menu"/>
+	</record>
+
+	<record id="action_sanitex_all_sales_menu_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_sale_order_route_bls_form"/>
+    	<field name="act_window_id" ref="action_sanitex_all_sales_menu"/>
+	</record>
+
+
+    <record id="sale.action_view_sale_advance_payment_inv" model="ir.actions.act_window">
+        <field name="binding_model_id"/>
+    </record>
+
+
+    <menuitem 
+    	id="menu_sanitex_sales" 
+    	parent="base_routes" 
+    	name="Transportation Tasks" sequence="2"/>
+	
+	<menuitem id="menu_action_sanitex_sales_menu"
+	    name="Transportation Tasks"
+	    parent="menu_sanitex_sales"
+	    action="action_sanitex_sales_menu"
+	    sequence="5"/>
+
+	<menuitem id="menu_action_sanitex_all_sales_menu"
+	    name="Transportation Tasks"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_sanitex_all_sales_menu"
+	    sequence="5"/>
+	    
+	<record id="view_sale_order_external_form" model="ir.ui.view">
+        <field name="name">sale.order sanitex_external_id</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fiscal_position_id']" position="after">
+				<group>
+					<field name="external_sale_order_id"/>
+	                <field name="intermediate_id" />
+				</group>
+			</xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="domain">[('customer','=',True),('company_type','=','company')]</attribute>
+			</xpath>
+            <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+				<attribute name="domain">partner_id and ['|',('parent_id','=',partner_id),('id','=',partner_id)] or []</attribute>
+			</xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+				<attribute name="domain">partner_id and ['|',('parent_id','=',partner_id),('id','=',partner_id)] or []</attribute>
+			</xpath>
+        </field>
+    </record>
+	    
+	<record id="view_sale_order_line_external_form" model="ir.ui.view">
+        <field name="name">sale.order sanitex_external_id</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
+				<group>
+					<group>
+						<field name="external_sale_order_line_id"/>
+					</group>
+				</group>
+			</xpath>
+        </field>
+    </record>
+	    
+	<record id="view_sale_order_new-warehouses_form" model="ir.ui.view">
+        <field name="name">sale.order new_warehouses</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sale_shipping']/field[@name='warehouse_id']" position="after">
+				<field name="picking_location_id"/>
+				<field name="shipping_warehouse_id"/>
+			</xpath>
+            <xpath expr="//group[@name='sale_shipping']/field[@name='warehouse_id']" position="replace">
+				<field name="warehouse_id" string="Order Picking Warehouse" options="{'no_create': True}" groups="stock.group_locations"/>
+			</xpath>
+        </field>
+    </record>
+        
+	<!--record id="action_sanitex_not_received_sales_menu" model="ir.actions.act_window">
+	    <field name="name">Not Received Transportation Tasks</field>
+	    <field name="res_model">sale.order</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'search_by_user_sale': False, 'search_by_user_not_received_sale': True}</field>
+	</record>
+	
+   	<record id="action_sanitex_not_received_sales_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_sale_order_route_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_not_received_sales_menu"/>
+	</record>	
+	
+	<record id="action_sanitex_not_received_sales_menu_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_sale_order_route_bls_form"/>
+    	<field name="act_window_id" ref="action_sanitex_not_received_sales_menu"/>
+	</record>
+	
+	<menuitem id="menu_action_not_received_sanitex_sales_menu"
+	    name="Not Received Transportation Tasks"
+	    parent="menu_sanitex_sales"
+	    action="action_sanitex_not_received_sales_menu"
+	    sequence="6"/-->
+
+
+
+	<menuitem id="menu_account_invoice_containers_not_received"
+	    name="Not Received Containers"
+	    parent="menu_sanitex_sales"
+	    action="action_account_invoice_container_not_received"
+	    sequence="10"/>
+
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="integration_process_multiple_osv_form" model="ir.ui.view">
+        <field name="name">integration.process.multiple.osv.form</field>
+        <field name="model">integration.process.multiple.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Process">
+            	<group>
+					<field name="process_for" />
+                </group>
+                <footer>
+                    <button name="process" string="Process" type="object"   class="oe_highlight"/>
+                    <button name="remove_skip" string="Put back to Queue" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_integration_process_multiple_osv" model="ir.actions.act_window">
+        <field name="name">Process</field>
+        <field name="res_model">integration.process.multiple.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route_integration_intermediate" />
+    </record>
+    
+    <!--record id="ir_integration_process_multiple_osv" model="ir.values">
+        <field eval="'client_action_multi'" name="key2"/>
+        <field eval="'stock.route.integration.intermediate'" name="model"/>
+        <field name="name">Process</field>
+        <field eval="'ir.actions.act_window,%d'%action_integration_process_multiple_osv" name="value"/>
+        <field eval="True" name="object"/>
+    </record-->
+    
+</data>
+</openerp>

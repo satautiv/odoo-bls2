@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_add_remove_tare_osv" model="ir.ui.view">
+        <field name="name">stock.route.add_remove.tare.osv.form</field>
+        <field name="model">stock.route.add_remove.tare.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Select Product">
+            	<label for="line_ids"/>
+				<field name="line_ids">
+					<tree editable="top" limit="100" create="0">
+						<field name="product_code"/>
+						<field name="product_id" context="{'search_by_warehouse_id': parent.warehouse_id}"/>
+						<field name="already_in_route_qty" force_save="1"/>
+						<field name="qty" />
+						<field name="difference_qty" force_save="1"/>
+					</tree>
+					<form>
+						<group>
+							<field name="product_id" context="{'search_by_warehouse_id': parent.warehouse_id}"/>
+                            <field name="already_in_route_qty" force_save="1"/>
+                            <field name="qty" />
+                            <field name="difference_qty" force_save="1"/>
+						</group>
+					</form>
+				</field>
+				<field name="warehouse_id" invisible="1"/>
+				<field name="parent_route_id" invisible="1"/>
+                <footer>
+                    <button name="select" string="Select" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_add_remove_tare_osv" model="ir.actions.act_window">
+        <field name="name">Select Product</field>
+        <field name="res_model">stock.route.add_remove.tare.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!--record id="ir_stock_route_select_orders_osv" model="ir.values">
+        <field eval="'client_action_multi'" name="key2"/>
+        <field eval="'stock.route'" name="model"/>
+        <field name="name">Select Orders</field>
+        <field eval="'ir.actions.act_window,%d'%action_stock_route_select_orders_osv" name="value"/>
+        <field eval="True" name="multi"/>
+    </record-->
+
+</data>
+</openerp>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <!-- Client Operation-->
+
+    <record id="view_internal_operation_client_tree" model="ir.ui.view">
+        <field name="name">internal.operation.client.tree</field>
+        <field name="model">internal.operation.client</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Inernal Operations">
+            	<field name="name"/>
+            	<field name="date"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+            	<field name="client_name"/>
+            	<field name="posid"/>
+            	<field name="operation_type"/>
+            	<field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_internal_operation_client_search" model="ir.ui.view">
+        <field name="name">internal.operation.client.search</field>
+        <field name="model">internal.operation.client</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <tree string="Inernal Operations">
+            	<field name="name"/>
+            	<field name="client_name"/>
+            	<field name="posid" filter_domain="[('posid','=',self)]"/>
+            	<field name="operation_type"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_internal_operation_client_form" model="ir.ui.view">
+        <field name="name">internal.operation.client.form</field>
+        <field name="model">internal.operation.client</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Inernal Operation">
+            	<header>
+                    <button name="action_done_and_print" states="draft" string="Confirm and Print" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_colors="{'draft':'red','done':'blue'}" class="oe_inline"/>
+                </header>
+			    <sheet>
+                    <hgroup>
+                        <h1><separator string="Not Confirmed" attrs="{'invisible': [('state','=','done')]}"/></h1>
+ 						<label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" /></h1>
+ 						<label for="partner_id" attrs="{'invisible': [('partner_id','=',False)]}" class="oe_edit_only"/>
+                        <h2><field name="partner_id" force_save="1" readonly="1" attrs="{'readonly': [('lines_filled_in','=',True)], 'invisible': [('partner_id','=',False)]}"/></h2>
+ 						<label for="partner_address_id" class="oe_edit_only"/>
+                        <h2><field name="posid" invisible="0" force_save="1"/> - <field name="partner_address_id"  class="oe_inline" options="{'always_reload': True}" context="{'open_search_dialog': True, 'include_posid_into_name': False}" domain="[('is_company','!=',True)]" attrs="{'readonly': [('lines_filled_in','=',True)]}"/></h2>
+ 					</hgroup>
+				    <group>
+				    	<field name="operation_type" attrs="{'readonly': [('lines_filled_in','=',True)]}"/>
+		                <field name="warehouse_id"/>
+		                <field name="location_from_id" attrs="{'invisible': ['|',('operation_type','=','to_warehouse'),('operation_type','=',False)]}" context="{'related_warehouse_id': warehouse_id}"/>
+                        <field name="location_to_id" attrs="{'invisible': ['|',('operation_type','=','from_warehouse'),('operation_type','=',False)]}" context="{'related_warehouse_id': warehouse_id}"/>
+		                <field name="date"/>
+		                <field name="owner_id" attrs="{'invisible': [('owner_id','=',False)]}"/>
+		                <field name="owner_ids" widget="many2many_tags" attrs="{'invisible': [('owner_id','!=',False)]}"/>
+				    	<field name="lines_filled_in" invisible="1"/>
+				    	<field name="posid" invisible="1" force_save="1"/>
+				    	<field name="client_name" invisible="1" force_save="1"/>
+				    	<field name="user_confirm_id" />
+	                </group>
+				    <group attrs="{'invisible': [('state','=','draft')]}">
+				    	<field name="picking_to_warehouse_ids" attrs="{'invisible': [('operation_type','=','from_warehouse')]}"/>
+		                <field name="picking_from_warehouse_ids" attrs="{'invisible': [('operation_type','=','to_warehouse')]}"/>
+	                </group>
+	               	<notebook>
+	               		<page string="Info">
+			                <label for="line_ids"/>
+			                <button name="action_generate_lines" string="Generate Lines" type="object" class="oe_highlight"/>
+		                    <field name="line_ids">
+		                    	<tree string="Lines" editable="top">
+		                    		<field name="product_code" force_save="1"/>
+		                    		<field name="product_id" domain="[('owner_id','!=',False)]" context="{'internal_operation_object': 'internal.operation.client', 'posid_id': parent.partner_address_id, 'search_by_warehouse_id': parent.warehouse_id}"/>
+		                    		<field name="debt" force_save="1"/>
+		                    		<field name="quantity"/>
+		                    	</tree>
+		                    	<form string="Line">
+			                        <group>
+			                    		<field name="product_id" domain="[('owner_id','!=',False)]" context="{'internal_operation_object': 'internal.operation.client', 'posid_id': parent.partner_address_id, 'search_by_warehouse_id': parent.warehouse_id}"/>
+		                    			<field name="debt"/>
+			                    		<field name="quantity"/>
+		                        	</group>
+		                        </form>
+		                   </field>
+					    </page>
+			    	</notebook>
+			    </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_internal_operation_client" model="ir.actions.act_window">
+        <field name="name">Tare Release/Return Client</field>
+        <field name="res_model">internal.operation.client</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+		<field name="context">{'internal_operation_object': 'internal.operation.client', 'search_operation_by_warehouse': True, 'hide_save_button': True, 'end_edit_mode_states': ['done']}</field>
+    </record>
+
+	<menuitem id="menu_action_internal_operation_client"
+	    name="Tare Release/Return Client"
+	    parent="menu_corrections"
+	    action="action_internal_operation_client"
+	    sequence="10"/>
+
+    <!-- Adjustments-->
+
+    <record id="view_internal_operation_adjustment_tree" model="ir.ui.view">
+        <field name="name">internal.operation.adjustment.tree</field>
+        <field name="model">internal.operation.adjustment</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Inernal Operations">
+            	<field name="name"/>
+            	<field name="date"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+            	<field name="operation_type"/>
+            	<field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_internal_operation_adjustment_search" model="ir.ui.view">
+        <field name="name">internal.operation.adjustment.search</field>
+        <field name="model">internal.operation.adjustment</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <tree string="Inernal Operations">
+            	<field name="name"/>
+            	<field name="operation_type"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_internal_operation_adjustment_form" model="ir.ui.view">
+        <field name="name">internal.operation.adjustment.form</field>
+        <field name="model">internal.operation.adjustment</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Inernal Operation">
+            	<header>
+                    <button name="action_done" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_colors="{'draft':'red','done':'blue'}" class="oe_inline"/>
+                </header>
+			    <sheet>
+                    <hgroup>
+                        <h1><separator string="Not Confirmed" attrs="{'invisible': [('state','=','done')]}"/></h1>
+ 						<label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" readonly="1"/></h1>
+ 					</hgroup>
+				    <group>
+				    	<field name="operation_type" attrs="{'readonly': [('lines_filled_in','=',True)]}"/>
+		                <field name="reason_id"/>
+		                <field name="warehouse_id"/>
+		                <field name="location_from_id" string="Products will be written off from" attrs="{'required': ['|',('operation_type','=','from_warehouse'),('operation_type','!=',False)], 'invisible': ['|',('operation_type','=','to_warehouse'),('operation_type','=',False)]}" context="{'related_warehouse_id': warehouse_id}"/>
+                        <field name="location_to_id" string="Products will be added to" attrs="{'required': ['|',('operation_type','=','to_warehouse'),('operation_type','!=',False)], 'invisible': ['|',('operation_type','=','from_warehouse'),('operation_type','=',False)]}" context="{'related_warehouse_id': warehouse_id}"/>
+                        <field name="date"/>
+		                <field name="owner_id" attrs="{'invisible': [('owner_id','=',False)]}"/>
+		                <field name="owner_ids" widget="many2many_tags" attrs="{'invisible': [('owner_id','!=',False)]}"/>
+				    	<field name="lines_filled_in" invisible="1"/>
+				    	<field name="user_confirm_id" />
+	                </group>
+				    <group attrs="{'invisible': [('state','=','draft')]}">
+				    	<field name="picking_to_warehouse_ids" attrs="{'invisible': [('operation_type','=','from_warehouse')]}"/>
+		                <field name="picking_from_warehouse_ids" attrs="{'invisible': [('operation_type','=','to_warehouse')]}"/>
+	                </group>
+	               	<notebook>
+	               		<page string="Info">
+			                <label for="line_ids"/>
+		                    <field name="line_ids">
+		                    	<tree string="Lines" editable="top">
+		                    		<field name="product_code" force_save="1"/>
+		                    		<field name="product_id" domain="[('owner_id','!=',False)]" context="{'operation': parent.operation_type, 'location_to_id': parent.location_to_id, 'location_from_id': parent.location_from_id, 'open_search_dialog': True, 'internal_operation_object': 'internal.operation.adjustment'}"/>
+		                    		<field name="debt" force_save="1" string="Balance"/>
+		                    		<field name="quantity"/>
+		                    	</tree>
+		                    	<form string="Line">
+			                        <group>
+			                    		<field name="product_id" domain="[('owner_id','!=',False)]" context="{'internal_operation_object': 'internal.operation.adjustment'}"/>
+		                    			<field name="debt" string="Balance"/>
+			                    		<field name="quantity"/>
+		                        	</group>
+		                        </form>
+		                   </field>
+					    </page>
+			    	</notebook>
+			    </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_internal_operation_adjustment" model="ir.actions.act_window">
+        <field name="name">Product Adjustment</field>
+        <field name="res_model">internal.operation.adjustment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+		<field name="context">{'internal_operation_object': 'internal.operation.adjustment', 'search_operation_by_warehouse': True, 'hide_save_button': True, 'end_edit_mode_states': ['done']}</field>
+    </record>
+
+	<menuitem id="menu_action_internal_operation_adjustment"
+	    name="Product Adjustment"
+	    parent="menu_corrections"
+	    action="action_internal_operation_adjustment"
+	    sequence="20"/>
+
+    <!-- Movements-->
+
+    <record id="view_internal_operation_movement_tree" model="ir.ui.view">
+        <field name="name">internal.operation.movement.tree</field>
+        <field name="model">internal.operation.movement</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Inernal Operations">
+            	<field name="name"/>
+            	<field name="date"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+				<field name="location_to_id" string="Destination Status"/>
+            	<field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_internal_operation_movement_search" model="ir.ui.view">
+        <field name="name">internal.operation.movement.search</field>
+        <field name="model">internal.operation.movement</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <tree string="Inernal Operations">
+            	<field name="name"/>
+            	<field name="operation_type"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_internal_operation_movement_form" model="ir.ui.view">
+        <field name="name">internal.operation.movement.form</field>
+        <field name="model">internal.operation.movement</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Inernal Operation">
+            	<header>
+                    <button name="action_done" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_colors="{'draft':'red','done':'blue'}" class="oe_inline"/>
+                </header>
+			    <sheet>
+                    <hgroup>
+                        <h1><separator string="Not Confirmed" attrs="{'invisible': [('state','=','done')]}"/></h1>
+ 						<label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" readonly="1"/></h1>
+ 					</hgroup>
+					<group>
+						<field name="movement_type"/>
+					</group>
+				    <group>
+				    	<group>
+							<field name="warehouse_id"/>
+							<field name="location_from_id" required="1" context="{'related_warehouse_id': warehouse_id}"/>
+	                	</group>
+				    	<group attrs="{'invisible': [('movement_type','=','dos_warehouse')]}">
+							<field name="warehouse_to_id" required="0"/>
+                        	<field name="location_to_id" string="Destination Status" domain="[('usage','=','internal'),('driver','=',False)]" required="1" context="{'related_warehouse_id': warehouse_to_id}"/>
+	                	</group>
+				    	<group attrs="{'invisible': [('movement_type','=','atlas_warehouse')]}">
+							<field name="dos_location_posid_id" required="1"/>
+	                	</group>
+					</group>
+					<group>
+						<field name="operation_type" force_save="1" readonly="1" invisible="1"/>
+		                <field name="date"/>
+		                <field name="owner_id" attrs="{'invisible': [('owner_id','=',False)]}"/>
+		                <field name="owner_ids" widget="many2many_tags" attrs="{'invisible': [('owner_id','!=',False)]}"/>
+				    	<field name="lines_filled_in" invisible="1"/>
+				    	<field name="user_confirm_id" />
+	                </group>
+				    <group attrs="{'invisible': [('state','=','draft')]}">
+				    	<field name="picking_to_warehouse_ids" context="{'form_view_ref':'config_sanitex_delivery.view_stock_picking_incoming_movements_form'}" attrs="{'invisible': [('operation_type','=','from_warehouse')]}"/>
+		                <field name="picking_from_warehouse_ids" context="{'form_view_ref':'config_sanitex_delivery.view_stock_picking_incoming_movements_form'}" attrs="{'invisible': [('operation_type','=','to_warehouse')]}"/>
+	                </group>
+	               	<notebook>
+	               		<page string="Info">
+			                <label for="line_ids"/>
+		                    <field name="line_ids">
+		                    	<tree string="Lines" editable="top">
+		                    		<field name="product_code" force_save="1"/>
+		                    		<field name="product_id" domain="[('owner_id','!=',False)]" context="{'open_search_dialog': True, 'internal_operation_object': 'internal.operation.movement', 'location_from_id': parent.location_from_id}"/>
+		                    		<field name="debt" force_save="1" string="Balance"/>
+		                    		<field name="quantity"/>
+		                    	</tree>
+		                    	<form string="Line">
+			                        <group>
+			                    		<field name="product_id" domain="[('owner_id','!=',False)]" context="{'internal_operation_object': 'internal.operation.movement'}"/>
+		                    			<field name="debt" string="Balance"/>
+			                    		<field name="quantity"/>
+		                        	</group>
+		                        </form>
+		                   </field>
+					    </page>
+			    	</notebook>
+			    </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_internal_operation_movement" model="ir.actions.act_window">
+        <field name="name">Product Movement</field>
+        <field name="res_model">internal.operation.movement</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+		<field name="context">{'internal_operation_object': 'internal.operation.movement', 'search_operation_by_warehouse': True, 'hide_save_button': True, 'end_edit_mode_states': ['done']}</field>
+    </record>
+
+	<menuitem id="menu_action_internal_operation_movement"
+	    name="Product Movement"
+	    parent="menu_corrections"
+	    action="action_internal_operation_movement"
+	    sequence="30"/>
+
+</data>
+</openerp>

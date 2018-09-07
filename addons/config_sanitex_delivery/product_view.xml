@@ -1,0 +1,910 @@
+<openerp>
+    <data>
+  <!--Owner-->
+  
+    <record id="view_product_owner_form" model="ir.ui.view">
+		<field name="name">product.owner form</field>
+		<field name="model">product.owner</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Owner" edit="1">
+			    <sheet>
+					<group>
+                        <h2>
+					        <field name="name"/>
+                        </h2>
+					</group> 
+                    <notebook>
+                        <page name="main_info_page" string="Main Information">   
+							<group>
+		        				<field name="assign_manager_information"/>
+							</group>
+							<group>
+					        	<group>
+									<field name="owner_code"/>
+									<field name="ref"/>
+									<field name="phone"/>
+									<field name="logistics_phone"/>
+									<field name="reg_address"/>
+								</group>
+					        	<group>
+									<field name="bank_name"/>
+									<field name="bank_account"/>
+								</group>
+								<label for="document_setting_line_ids"/>
+				        		<field name="document_setting_line_ids">
+									<tree string="Document Types">
+										<field name="name"/>
+										<field name="active_lines"/>
+										<field name="inactive_lines"/>
+									</tree>
+									<form string="Document Type">
+										<group>
+											<field name="document_type_settings_ids" options="{'no_create': True}" widget="many2many_tags" domain="[('sequence_by','=','own')]"/>
+										</group>
+										<label for="sequences_ids"/>
+										<field name="sequences_ids">
+											<tree string="Sequences" editable="top" decoration-muted="number_next_actual>last_number" default_Order="priority">
+												<field name="priority"/>
+												<field name="prefix" required="1"/>
+												<field name="number_next_actual"/>
+												<field name="last_number"/>
+												<field name="left_qty" readonly="1" zero_to_dash="1"/>
+												<field name="padding" readonly="1"/>
+												<field name="finished" invisible="1"/>
+											</tree>
+										</field>
+									</form>
+								</field>
+							</group>
+					 	</page>
+ 						<page name="doc_print_info_page" string="Document Print Information">
+							<group name="fields_cols" colspan="4" col="4">
+								<group name="1st_fields_col" colspan="2">
+				        			<field name="lang"/>
+				        			<field name="vat"/>
+									<field name="load_address"/>
+									<field name="registrar"/>
+									<field name="fax"/>
+									<field name="logistics_email"/>
+									<field name="waybill_declare_date_from"/>
+									<field name="waybill_declare"/>
+									<field name="company_id"/>
+									<field name="active"/>
+									<field name="product_owner_external_id"/>
+								</group>
+								<group name="2nd_fields_col" colspan="2">
+									<field name="alcohol_license_type"/>
+									<field name="alcohol_license_sale_type"/>
+									<field name="alcohol_license_no"/>
+									<field name="alcohol_license_date"/>
+									<field name="tobac_license_type"/>
+									<field name="tobac_license_sale_type"/>
+									<field name="tobac_license_no"/>
+									<field name="tobac_license_date"/>
+									<field name="ignored"/>
+								</group>
+							</group>
+							<group name="text_fields" colspan="4">
+								<label for="extra_text" colspan="4"/>
+								<field name="extra_text" colspan="4" nolabel="1"/>
+								<label for="text_invoice_end" colspan="4"/>
+								<field name="text_invoice_end" colspan="4" nolabel="1"/>
+							</group>
+							<group name="logo" colspan="4" col="1">
+								<field name="logo" widget="image"/>
+							</group>
+						</page>
+					</notebook>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_product_owner_tree" model="ir.ui.view">
+		<field name="name">product.owner tree</field>
+		<field name="model">product.owner</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Owners">
+        		<field name="product_owner_external_id"/>
+		        <field name="owner_code"/>
+		        <field name="name"/>
+		        <field name="ref" string="Code"/>
+		        <field name="assign_manager_information"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_product_owner_search" model="ir.ui.view">
+		<field name="name">product.owner search</field>
+		<field name="model">product.owner</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Owners">
+		        <field name="owner_code"/>
+		        <field name="name"/>
+        		<field name="product_owner_external_id"/>
+		        <field name="ref" string="Code"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_product_owner_stock" model="ir.actions.act_window">
+	    <field name="name">Product Owners</field>
+	    <field name="res_model">product.owner</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="context">{'find_ignored': True}</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_product_owner"
+	    name="Owners"
+	    parent="base.menu_users"
+	    action="action_product_owner_stock"
+	    sequence="200"/>
+	    
+  <!--Gate-->
+  
+    <record id="view_stock_gate_form" model="ir.ui.view">
+		<field name="name">stock.gate form</field>
+		<field name="model">stock.gate</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Gate Settings">		    
+			    <sheet>   
+					<group>
+		        		<field name="name"/>
+					</group>    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+  
+    <record id="view_stock_gate_tree" model="ir.ui.view">
+		<field name="name">stock.gate tree</field>
+		<field name="model">stock.gate</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <form string="Gate Settings">
+		    	<field name="name"/>
+		    </form>
+		</field>
+	</record>
+  
+    <record id="view_stock_gate_search" model="ir.ui.view">
+		<field name="name">stock.gate search</field>
+		<field name="model">stock.gate</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <form string="Gate Settings">
+		    	<field name="name"/>
+		    </form>
+		</field>
+	</record>
+		    
+	<record id="action_stock_gate" model="ir.actions.act_window">
+	    <field name="name">Gates</field>
+	    <field name="res_model">stock.gate</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_stock_gate"
+	    name="Gates"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_stock_gate"
+	    sequence="5"/>
+	    
+	    
+  <!--Gate Settings-->
+  
+    <record id="view_stock_gate_settings_form" model="ir.ui.view">
+		<field name="name">stock.gate.settings form</field>
+		<field name="model">stock.gate.settings</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Gate Settings">		    
+			    <sheet>   
+					<group>
+		        		<field name="gate_id"/>
+		        		<field name="partner_address_id"/>
+		        		<field name="location_id"/>
+		        		<field name="transport_type_id"/>
+					</group>    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+  
+    <record id="view_stock_gate_settings_tree" model="ir.ui.view">
+		<field name="name">stock.gate.settings tree</field>
+		<field name="model">stock.gate.settings</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <form string="Gate Settings">
+	    		<field name="gate_id"/>
+	    		<field name="partner_address_id"/>
+	    		<field name="location_id"/>
+	    		<field name="transport_type_id"/>
+		    </form>
+		</field>
+	</record>
+  
+    <record id="view_stock_gate_settings_search" model="ir.ui.view">
+		<field name="name">stock.gate.settings search</field>
+		<field name="model">stock.gate.settings</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <form string="Gate Settings">
+	    		<field name="gate_id"/>
+	    		<field name="partner_address_id"/>
+	    		<field name="location_id"/>
+	    		<field name="transport_type_id"/>
+		    </form>
+		</field>
+	</record>
+		    
+	<record id="action_stock_gate_settings" model="ir.actions.act_window">
+	    <field name="name">Gate Settings</field>
+	    <field name="res_model">stock.gate.settings</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_stock_gate_settings"
+	    name="Gate Settings"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_stock_gate_settings"
+	    sequence="5"/>
+	    
+  <!--Transport Types-->
+  
+    <record id="view_transport_type_form" model="ir.ui.view">
+		<field name="name">transport.type form</field>
+		<field name="model">transport.type</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Transport Type">		    
+			    <sheet>   
+					<group>
+		        		<field name="name"/>
+		        		<field name="code"/>
+					</group>    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+  
+    <record id="view_transport_type_tree" model="ir.ui.view">
+		<field name="name">transport.type tree</field>
+		<field name="model">transport.type</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <form string="Transport Types">
+	    		<field name="name"/>
+	    		<field name="code"/>
+		    </form>
+		</field>
+	</record>
+  
+    <record id="view_transport_type_search" model="ir.ui.view">
+		<field name="name">transport.type search</field>
+		<field name="model">transport.type</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <form string="Transport Types">
+	    		<field name="name"/>
+	    		<field name="code"/>
+		    </form>
+		</field>
+	</record>
+		    
+	<record id="action_transport_type" model="ir.actions.act_window">
+	    <field name="name">Transport Types</field>
+	    <field name="res_model">transport.type</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_transport_type"
+	    name="Transport Types"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_transport_type"
+	    sequence="5"/>
+  
+  <!---->
+    <record id="view_sanitex_product_location_stock_form" model="ir.ui.view">
+		<field name="name">sanitex.product.location.stock form</field>
+		<field name="model">sanitex.product.location.stock</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Stock" create="0">
+			    <sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Show Moves" class="oe_stat_button" icon="fa-th-list" name="get_moves_from_stock_by_location" type="object" />
+	               	</div>
+					<group>
+		        		<field name="product_code"/>
+				        <field name="product_id"/>
+		                <field name="owner_id"/>
+				        <field name="location_id" string="Driver" context="{'form_view_ref':'config_sanitex_delivery.view_stock_location_form'}"/>
+				        <field name="qty_available"/>
+					</group>    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_sanitex_product_location_stock_tree" model="ir.ui.view">
+		<field name="name">sanitex.product.location.stock tree</field>
+		<field name="model">sanitex.product.location.stock</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Stock" create="0">
+		        <field name="product_code"/>
+		        <field name="product_id"/>
+		        <field name="owner_id"/>
+		        <field name="location_name" string="Driver"/>
+		        <field name="qty_available"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_sanitex_product_location_stock_search" model="ir.ui.view">
+		<field name="name">sanitex.product.location.stock search</field>
+		<field name="model">sanitex.product.location.stock</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Stock">
+		        <field name="product_code"/>
+		        <field name="product_name" string="Tare"/>
+		        <field name="location_id" string="Driver"/>
+		        <field name="qty_available"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_sanitex_product_location_stock" model="ir.actions.act_window">
+	    <field name="name">Stock by Location</field>
+	    <field name="res_model">sanitex.product.location.stock</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree</field>
+	    <field name="domain">[('location_id.driver','=',True),('qty_available','>',0.0)]</field>
+	</record>
+	
+	<menuitem id="menu_action_sanitex_product_location_stock"
+	    name="Stock by Location"
+	    parent="stock.menu_stock_config_settings"
+	    action="action_sanitex_product_location_stock"
+	    sequence="4"/>
+	    
+	<menuitem id="menu_action_sanitex_product_location_stock_from_route_menu"
+	    name="Stock by Location"
+	    parent="menu_sanitex_stocks"
+	    action="action_sanitex_product_location_stock"
+	    sequence="4"/>
+     
+    <record id="view_sanitex_product_partner_stock_form" model="ir.ui.view">
+		<field name="name">sanitex.product.partner.stock form</field>
+		<field name="model">sanitex.product.partner.stock</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Stock" create="0">
+			    <sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Show Moves" class="oe_stat_button" icon="fa-th-list" name="get_moves_from_stock_by_partner" type="object" />
+	               	</div>
+					<group>
+		        		<field name="product_code"/>
+				        <field name="product_id"/>
+				        <field name="partner_id"/>
+				        <field name="qty_available"/>
+				        <field name="product_price"/>
+				        <field name="company_id"/>
+				        <field name="reconciliation_date"/>
+					</group>    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_sanitex_product_partner_stock_tree" model="ir.ui.view">
+		<field name="name">sanitex.product.partner.stock tree</field>
+		<field name="model">sanitex.product.partner.stock</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Stock" create="0">
+		        <field name="product_code"/>
+		        <field name="product_id"/>
+		        <field name="owner_id"/>
+		        <field name="partner_ref"/>
+		        <field name="client"/>
+		        <field name="possid"/>
+		        <field name="address"/>
+		        <field name="product_price"/>
+		        <field name="qty_available"/>
+		    </tree>
+		</field>
+	</record>
+
+    <record id="view_sanitex_product_partner_sums_stock_tree" model="ir.ui.view">
+		<field name="name">sanitex.product.partner.stock tree</field>
+		<field name="model">sanitex.product.partner.stock</field>
+		<field name="type">tree</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+		    <tree string="Stock" create="0">
+		        <field name="product_code"/>
+		        <field name="product_id"/>
+		        <field name="owner_id"/>
+		        <field name="partner_ref"/>
+		        <field name="client"/>
+		        <field name="product_price"/>
+		        <field name="qty_available"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_sanitex_product_partner_stock_search" model="ir.ui.view">
+		<field name="name">sanitex.product.partner.stock search</field>
+		<field name="model">sanitex.product.partner.stock</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Stock">
+		        <field name="product_code"/>
+		        <field name="product_name" string="Tare"/>
+		        <field name="owner_id"/>
+		        <field name="client"/>
+		        <field name="partner_ref"/>
+		        <field name="possid" filter_domain="[('possid','=',self)]"/>
+		        <field name="qty_available"/>
+		    </search>
+		</field>
+	</record>
+
+    <record id="view_sanitex_product_partner_sums_stock_search" model="ir.ui.view">
+		<field name="name">sanitex.product.partner.stock search</field>
+		<field name="model">sanitex.product.partner.stock</field>
+		<field name="type">search</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+		    <search string="Stock">
+		        <field name="product_code"/>
+		        <field name="product_name" string="Tare"/>
+		        <field name="owner_id"/>
+		        <field name="client"/>
+		        <field name="partner_ref"/>
+		        <field name="qty_available"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_sanitex_product_partner_stock" model="ir.actions.act_window">
+	    <field name="name">Stock by Partner</field>
+	    <field name="res_model">sanitex.product.partner.stock</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree</field>
+	    <field name="domain">[('qty_available','!=',0.0),('possid','!=',False)]</field>
+	</record>
+	
+	<menuitem id="menu_action_sanitex_product_partner_stock"
+	    name="Stock by Partner"
+	    parent="stock.menu_stock_config_settings"
+	    action="action_sanitex_product_partner_stock"
+	    sequence="5"/>
+	
+	<menuitem id="menu_action_sanitex_product_partner_stock_from_route_menu"
+	    name="Stock by Partner"
+	    parent="menu_sanitex_stocks"
+	    action="action_sanitex_product_partner_stock"
+	    sequence="5"/>
+
+	<record id="action_sanitex_product_partner_stock_sums" model="ir.actions.act_window">
+	    <field name="name">Stock by Partner Sums</field>
+	    <field name="res_model">sanitex.product.partner.stock</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree</field>
+    	<field name="search_view_id" ref="view_sanitex_product_partner_sums_stock_search"/>
+	    <field name="domain">[('qty_available','!=',0.0),('possid','=',False)]</field>
+	</record>
+
+
+   	<record id="action_sanitex_product_partner_stock_sums_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_sanitex_product_partner_sums_stock_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_product_partner_stock_sums"/>
+	</record>
+
+	<!--record id="action_sanitex_product_partner_stock_sums_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_sanitex_product_partner_stock_form"/>
+    	<field name="act_window_id" ref="action_sanitex_product_partner_stock_sums"/>
+	</record-->
+
+	<!--record id="action_sanitex_product_partner_stock_sums_view3" model="ir.actions.act_window.view">
+    	<field eval="3" name="sequence"/>
+    	<field name="view_mode">search</field>
+    	<field name="view_id" ref="view_sanitex_product_partner_sums_stock_search"/>
+    	<field name="act_window_id" ref="action_sanitex_product_partner_stock_sums"/>
+	</record-->
+
+	<menuitem id="menu_action_sanitex_product_partner_stock_sums_from_route_menu"
+	    name="Stock Sums by Partner"
+	    parent="menu_sanitex_stocks"
+	    action="action_sanitex_product_partner_stock_sums"
+	    sequence="6"/>
+     
+    <!-- Product -->
+    
+	<record id="action_sanitex_product_menu" model="ir.actions.act_window">
+	    <field name="name">Products</field>
+	    <field name="res_model">product.product</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'show_code_in_product_name': True}</field>
+	    <field name="domain">[]</field>
+	    <!--field name="domain">[('type_of_product','in',['package','deposit_package'])]</field-->
+	</record>
+	
+    <!--menuitem
+    	id="menu_sanitex_products" 
+    	parent="base_routes" 
+    	name="Products" /-->
+	
+	<menuitem id="menu_action_sanitex_product_menu"
+	    name="Products"
+	    parent="menu_sanitex_stocks"
+	    action="action_sanitex_product_menu"
+	    sequence="100"/>
+	
+	<record id="view_product_product_form" model="ir.ui.view">
+        <field name="name">product.product sanitex_external_id</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="after">
+				<field name="external_product_id"/>
+			</xpath>
+        </field>
+    </record>
+    
+	<record id="view_sanitex_product_product_form" model="ir.ui.view">
+		<field name="name">product.product sanitex form</field>
+		<field name="model">product.product</field>
+		<field name="type">form</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+		    <form string="Product" create="0">
+                <field name="product_variant_count" invisible="1"/>
+                <sheet>
+                    <field name="id" invisible="True"/>
+                    <div class="oe_right oe_button_box" style="width: 300px;" name="buttons">
+                    </div>
+                    <div class="oe_left" style="width: 500px;">
+                        <div class="oe_title" style="width: 390px;">
+                            <label class="oe_edit_only" for="name" string="Product Name"/>
+                            <h1><field name="name" class="oe_inline"/></h1>
+                        </div>
+                        <group>
+	                        <field name="name_english"/>
+	                        <field name="name_russian"/>
+	                    </group>
+                    </div>
+                    <notebook>
+                        <page string="Information">
+                            <group colspan="4">
+                                <group>
+                                    <!-- field name="type"/>
+                                    <field name="uom_po_id"/-->
+                                    <field name="uom_id"/>
+                                    <!-- field name="uom_english"/>
+                                    <field name="categ_id"/-->
+                                    <field name="list_price"/>
+		        					<field name="standard_price" string="Cost Price"/>
+                                    <field name="weight"/>
+                                    <field name="weight_neto"/>
+                                    <field name="average_weight"/>
+                                    <field name="product_type"/>
+                                    <field name="tlic"/>
+                                </group>
+                                <group>
+                                    <field name="active"/>
+                                    <field name="default_code"/>
+                                    <field name="company_id"/>
+                                    <field name="supplier_id" options="{&quot;always_reload&quot;: True}"/>
+                                    <field name="owner_id"/>
+                                    <field name="state"/>
+                                    <field name="type_of_product"/>
+                                    <field name="external_product_id"/>
+                                    <field name="related_product_id"/>
+                                    <field name="deposit_id"/>
+                                    <field name="vat_tariff_id"/>
+                                    <field name="certificate"/>
+                                </group>
+                            </group>
+                            <field name="description" placeholder="describe the product characteristics..."/>
+                        </page>
+                        <page string="Packaging Information" name="packaging_information">
+                            <group name="packages_sizes" colspan="4" col="4">
+                            	<group colspan="2">
+	                            	<field name="big_package_size" digits="[12,0]"/>
+	                                <field name="small_package_size" digits="[12,0]"/>
+	                                <field name="package_count_in_row"/>
+	                                <field name="packages_per_pallet"/>
+                                </group>
+                                <group colspan="2">
+	                            	<field name="minimal_qty_multiple" digits="[12,0]"/>
+	                            	<field name="minimal_qty_multiple_fs" digits="[12,0]"/>
+	                            </group>
+                            </group>
+							<label for="packing_ids"/>
+                            <field name="packing_ids">
+								<tree string="Packaging">
+                                    <field name="type"/>
+                                    <field name="material"/>
+                                    <field name="neto_weight"/>
+                                    <field name="bruto_weight"/>
+								</tree>
+								<form string="Packaging">
+									<group>
+	                                    <field name="type"/>
+	                                    <field name="material"/>
+	                                    <field name="neto_weight"/>
+	                                    <field name="bruto_weight"/>
+									</group>
+								</form>
+							</field>
+                        </page>
+                        <page name="barcode_page" string="Barcode">
+							<label for="barcode_ids"/>
+                            <field name="barcode_ids">
+								<tree string="Barcodes">
+                                    <field name="barcode"/>
+                                    <field name="type"/>
+								</tree>
+								<form string="Barcode">
+									<group>
+	                                    <field name="barcode"/>
+	                                    <field name="type"/>
+									</group>
+								</form>
+							</field>
+							<group>
+								<field name="intermediate_id"/>
+							</group>
+                        </page>
+                     	<!-- page name="supplier_page" string="Supplier">
+							<group>
+								<field name="supplier_id"/>
+								<field name="supplier_code"/>
+							</group>
+                        </page-->
+                    </notebook>
+                </sheet>
+            </form>
+		</field>
+	</record>
+        
+    <record id="view_sanitex_product_product_tree" model="ir.ui.view">
+		<field name="name">sanitex.product.product tree</field>
+		<field name="model">product.product</field>
+		<field name="type">tree</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+		    <tree string="Products">
+		        <field name="default_code" string="Product Code"/>
+		        <field name="barcode_to_show" />
+		        <field name="name"/>
+		        <field name="type_of_product"/>
+		        <field name="standard_price" string="Cost Price"/>
+		        <field name="supplier_code"/>
+		        <field name="owner_id"/>
+		    </tree>
+		</field>
+	</record>
+
+	<record id="view_sanitex_product_product_no_create_button_tree" model="ir.ui.view">
+		<field name="name">sanitex.product.product no create button</field>
+		<field name="model">product.product</field>
+		<field name="inherit_id" ref="view_sanitex_product_product_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+	
+	<record id="view_product_product_no_edit_button_form" model="ir.ui.view">
+		<field name="name">product.product no edit button</field>
+		<field name="model">product.product</field>
+		<field name="inherit_id" ref="view_sanitex_product_product_form"/>
+		<field name="mode">primary</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+			<xpath expr="//form" position="attributes">
+				<attribute name="edit">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+   	<record id="action_sanitex_product_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_sanitex_product_product_no_create_button_tree"/>
+    	<field name="act_window_id" ref="action_sanitex_product_menu"/>
+	</record>
+
+	<record id="action_sanitex_product_menu_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_product_product_no_edit_button_form"/>
+    	<field name="act_window_id" ref="action_sanitex_product_menu"/>
+	</record>
+
+    <record id="view_sanitex_product_product_search" model="ir.ui.view">
+		<field name="name">sanitex.product.product search</field>
+		<field name="model">product.product</field>
+		<field name="type">search</field>
+		<field name="priority">2</field>
+		<field name="arch" type="xml">
+		    <search string="Products">
+				<field name="name" string="Product" filter_domain="['|',('default_code','ilike',self),('name','ilike',self)]"/>
+				<field name="barcode_ids" string="Barcode"/>
+				<field name="name" />
+				<field name="type_of_product" />
+				<field name="supplier_code" string="Supplier Code"/>
+				<field name="owner_id" />
+		    </search>
+		</field>
+	</record>
+	
+  <!-- Sertifikatai -->
+  
+  
+    <record id="view_product_certificate_tree" model="ir.ui.view">
+        <field name="name">view.product.certificate.tree</field>
+        <field name="model">product.certificate</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Certificate">
+                <field name="name"/>
+                <field name="organization_id"/>
+                <field name="partner_id"/>
+                <field name="country_origin_id"/>
+        	    <field name="giving_date"/>
+                <field name="valid_from"/>
+                <field name="valid_to"/>
+                <field name="invoice_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_product_certificate_form" model="ir.ui.view">
+        <field name="name">view.product.certificate.form</field>
+        <field name="model">product.certificate</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Certificate">
+            	<group name="fields" colspan="4" col="4">
+	                <field name="name"/>
+                    <field name="organization_id"/>
+                    <field name="partner_id"/>
+	                <field name="country_origin_id"/>
+	                <field name="valid_from"/>
+	                <field name="valid_to"/>
+	                <field name="giving_date"/>
+	                <field name="invoice_id"/>
+	                <group colspan="4">
+	                	<label for="invoice_line_ids"/>
+	                    <div class="oe_inline" colspan="4">
+		                	<field name="invoice_line_ids" colspan="4" domain="(invoice_id  and [('invoice_id','=',invoice_id)] or [])"/>
+		                </div>
+	                </group>
+	                <group colspan="4">
+		                <label for="prod_lot_ids"/>
+	                    <div class="oe_inline" colspan="4">
+		                	<field name="prod_lot_ids" colspan="4" />
+		                </div>
+		            </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+	<record id="stock.act_product_location_open" model="ir.actions.act_window">
+	    <field name="src_model"/>
+	    <field name="binding_model_id"/>
+	</record>
+	
+	
+    <!-- Atsargos pagal vietas --> 
+   
+   	<record id="view_bls_stock_by_location_form" model="ir.ui.view">
+		<field name="name">bls.stock.by.location form</field>
+		<field name="model">sanitex.product.location.stock</field>
+		<field name="priority" eval="200"/>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Stock">		    
+			    <sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Show Moves" class="oe_stat_button" icon="fa-th-list" name="get_moves_from_stock_by_location" type="object" />
+	               	</div>
+					<group>
+						<field name="product_code"/>
+				        <field name="product_id"/>
+		                <field name="owner_id"/>
+				        <field name="location_id" string="Location"/>
+				        <field name="qty_available" string="Quantity Available"/>
+					</group>    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_bls_stock_by_location_tree" model="ir.ui.view">
+		<field name="name">bls.stock.by.location tree</field>
+		<field name="model">sanitex.product.location.stock</field>
+		<field name="priority" eval="200"/>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Stock">
+		    	<field name="product_code"/>
+		        <field name="product_id"/>
+		        <field name="owner_id"/>
+		        <field name="location_id"  string="Location"/>
+		        <field name="qty_available" string="Quantity Available"/>
+		    </tree>
+		</field>
+	</record>      
+            
+  	<record id="action_bls_stock_by_location" model="ir.actions.act_window">
+	    <field name="name">Stock by Location</field>
+	    <field name="res_model">sanitex.product.location.stock</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="domain">[('location_id.driver','!=',True),('qty_available','>',0.0)]</field>
+	</record>
+	
+    <record id="action_bls_stock_by_location_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_bls_stock_by_location_tree"/>
+        <field name="act_window_id" ref="action_bls_stock_by_location"/>
+    </record>
+
+    <record id="action_bls_stock_by_location_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_bls_stock_by_location_form"/>
+        <field name="act_window_id" ref="action_bls_stock_by_location"/>
+    </record>
+	
+	<menuitem id="menu_1_2_test_stock" name="Stock"
+        parent="menu_1_2_test" sequence="100" />
+        
+    <menuitem id="menu_action_bls_stock_by_location"
+	    name="Product Stock by Location"
+	    parent="menu_1_2_test_stock"
+	    action="action_bls_stock_by_location"
+	    sequence="100"/>
+
+	
+    </data>
+</openerp>

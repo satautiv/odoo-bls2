@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_transfer_product_to_wh_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.transfer_product_to_wh.osv.form</field>
+        <field name="model">stock.route.transfer_product_to_wh.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Select Product">
+				<group>
+					<field name="parent_route_id" invisible="1"/>
+					<field name="today" invisible="1"/>
+					<field name="route_id" domain="[('id','!=',parent_route_id),('date','&gt;=',today),('state','=','draft')]" attrs="{'required': [('warehouse_id','=',False)]}" on_change="on_change_route(route_id)"/>
+					<field name="warehouse_id" domain="[('responsible_user_ids','in',[uid])]" attrs="{'required': [('route_id','=',False)]}" on_change="on_change_wh(warehouse_id)"/>
+				</group>
+				<label for="line_ids"/>
+				<field name="line_ids">
+					<tree string="Lines" editable="top" create="0">
+						<field name="product_code"/>
+						<field name="product_id" context="{'search_by_route': parent.parent_route_id}" on_change="on_change_product_id(product_id, quantity, parent.parent_route_id)"/>
+		                <field name="rem_qty_by_driver"/>
+						<field name="quantity" on_change="on_change_quantity(rem_qty_by_driver, quantity)"/>
+						<field name="final_qty"/>
+					</tree>
+					<form string="Line">
+						<group>
+							<field name="product_id" context="{'search_by_route': parent.parent_route_id}" on_change="on_change_product_id(product_id, quantity, parent.parent_route_id)"/>
+							<field name="rem_qty_by_driver"/>
+							<field name="quantity" on_change="on_change_quantity(rem_qty_by_driver, quantity)"/>
+							<field name="final_qty"/>
+						</group>
+					</form>
+				</field>
+                <footer>
+                    <button name="transfer" string="Transfer" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_transfer_product_to_wh_osv" model="ir.actions.act_window">
+        <field name="name">Transfer Product to WH/Route</field>
+        <field name="res_model">stock.route.transfer_product_to_wh.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+	
+</data>
+</openerp>

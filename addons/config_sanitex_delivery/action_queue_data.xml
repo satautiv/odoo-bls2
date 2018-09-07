@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+
+    <record id="ir_cron_action_queue_1" model="ir.cron">
+        <field name="name">Run Action Queue [Extent Tasks]</field>
+        <field name="model_id" ref="config_sanitex_delivery.model_action_queue"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_the_queue(functions=['_extend_tasks'])</field>
+        <field name="interval_type">minutes</field>
+        <field name="interval_number">2</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_action_queue_2" model="ir.cron">
+        <field name="name">Run Action Queue [Export Tare Pickings]</field>
+        <field name="model_id" ref="config_sanitex_delivery.model_action_queue"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_the_queue(functions=['send_tare_qty_info'])</field>
+        <field name="interval_type">minutes</field>
+        <field name="interval_number">2</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_action_queue_3" model="ir.cron">
+        <field name="name">Run Action Queue [Send Route to i.VAZ]</field>
+        <field name="model_id" ref="config_sanitex_delivery.model_action_queue"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_the_queue(functions=['send_route_to_ivaz'])</field>
+        <field name="interval_type">minutes</field>
+        <field name="interval_number">2</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_action_queue_4" model="ir.cron">
+        <field name="name">Run Action Queue [Extent Tasks]</field>
+        <field name="model_id" ref="config_sanitex_delivery.model_action_queue"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_the_queue(functions=['_extend_tasks'])</field>
+        <field name="interval_type">minutes</field>
+        <field name="interval_number">2</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    </data>
+</openerp>

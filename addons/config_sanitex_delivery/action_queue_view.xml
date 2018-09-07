@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+	<!--INTEGRATION LOG-->
+
+    <record id="action_queue_tree" model="ir.ui.view">
+        <field name="name">action.queue.tree</field>
+        <field name="model">action.queue</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Actions">
+            	<field name="function_to_perform"/>
+            	<field name="object_for_action"/>
+            	<field name="id_of_object"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_queue_form" model="ir.ui.view">
+        <field name="name">action.queue.form</field>
+        <field name="model">action.queue</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Action">
+            	<sheet>
+            		<group>
+                        <field name="function_to_perform"/>
+                        <field name="object_for_action"/>
+                        <field name="id_of_object"/>
+                        <field name="comments"/>
+                        <field name="error_traceback"/>
+            		</group>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_queue_search" model="ir.ui.view">
+        <field name="name">action.queue.search</field>
+        <field name="model">action.queue</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Actions">
+                <field name="function_to_perform"/>
+                <field name="object_for_action"/>
+                <field name="id_of_object"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_queue_action" model="ir.actions.act_window">
+        <field name="name">Action Queue</field>
+        <field name="res_model">action.queue</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+	<menuitem id="menu_action_queue"
+	    name="Action Queue"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_queue_action"
+	    sequence="70"/>
+
+</data>
+</openerp>

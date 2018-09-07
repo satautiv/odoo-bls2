@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="cron_create_despatch_intermediates" model="ir.cron">
+        <field name="name">Create Despatch Intermediates</field>
+        <field name="interval_number">3</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_bls_stock.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.get_despatch_list_from_api()</field>
+    </record>
+    
+    <record id="cron_run_intemediate_objects_create_transp_orders" model="ir.cron">
+        <field name="name">Process Intemediate Objects Create Transportation Orders</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field name="priority">4</field>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateTransportationOrder'])</field>
+    </record>
+    
+    <record id="cron_run_intemediate_objects_create_transp_orders_2" model="ir.cron">
+        <field name="name">Process Intemediate Objects Create Transportation Orders 2</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field name="priority">4</field>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateTransportationOrder'])</field>
+    </record>
+    
+    <record id="cron_run_intemediate_objects_create_despatches" model="ir.cron">
+        <field name="name">Process Intemediate Objects Create Despatch Advices</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateDespatchAdvice'])</field>
+    </record>
+    
+    <record id="cron_run_intemediate_objects_create_despatches_2" model="ir.cron">
+        <field name="name">Process Intemediate Objects Create Despatch Advices 2</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateDespatchAdvice'])</field>
+    </record>
+    
+    <record id="cron_run_intemediate_objects_create_despatches_3" model="ir.cron">
+        <field name="name">Process Intemediate Objects Create Despatch Advices 3</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateDespatchAdvice'])</field>
+    </record>
+    
+    <record id="cron_run_intemediate_objects_create_despatches_4" model="ir.cron">
+        <field name="name">Process Intemediate Objects Create Despatch Advices 4</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateDespatchAdvice'])</field>
+    </record>
+    
+    
+</data>
+</openerp>

@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_invoice_line_sanitex_packing_form" model="ir.ui.view">
+            <field name="name">account.invoice.line sanitex</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                	<label for="sale_order_line_ids"/>
+		        	<field name="sale_order_line_ids"/>
+		        	<group>
+		        		<field name="external_invoice_line_id"/>
+		        	</group>
+            	</xpath>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_sanitex_external_form" model="ir.ui.view">
+            <field name="name">account.invoice sanitex_external_id</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[2]//field[@name='move_id']" position="after">
+		        	<field name="external_invoice_id"/>
+            	</xpath>
+                <xpath expr="//notebook//field[@name='tax_line_ids']" position="after">
+                	<label for="sale_order_line_ids"/>
+		        	<field name="sale_order_line_ids"/>
+            	</xpath>
+            </field>
+        </record>
+        
+<!-- Containers -->       
+
+
+	<record id="view_account_invoice_container_tree" model="ir.ui.view">
+        <field name="name">view.account.invoice.container.tree</field>
+        <field name="model">account.invoice.container</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Containers">
+                <field name="id_external"/>
+                <field name="code"/>
+                <field name="type"/>
+                <field name="container_no"/>
+                <field name="sscc"/>
+                <field name="valid_until"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_account_invoice_container_form" model="ir.ui.view">
+        <field name="name">view.account.invoice.container.form</field>
+        <field name="model">account.invoice.container</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Container" create="0">
+                <header>
+	            	<field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+		            	<button class="oe_stat_button" icon="fa-arrow-down" name="action_receive_not_received_container" string="Receive" type="object" attrs="{'invisible': [('route_not_received','=',False)]}"/>
+                    </div>
+	            	<group name="fields" colspan="4" col="4">
+		                <field name="id_external"/>
+		                <field name="code"/>
+	                    <field name="type"/>	
+		                <field name="container_no"/>
+		                <field name="sscc"/>
+		                <field name="valid_until"/>
+		                <field name="height"/>
+		                <field name="weight"/>
+	               		<field name="parent_container_id"/>
+	               		<field name="planned_export"/>
+	                </group>
+               		<notebook colspan="4" col="4">
+               			<page string="Lines" colspan="4" col="4">
+	               			<group name="child_container_fields" colspan="4" col="4">
+			                	<field name="invoice_id" invisible="1"/>
+			                	<label for="line_ids"/>
+			                	<field name="line_ids" nolabel="1" colspan="4">
+				                	<tree string="Container Lines">
+						                <field name="invoice_line_id" domain="[('invoice_id','=',parent.invoice_id)]"/>
+						                <field name="product_id"/>
+						                <field name="qty"/>
+						                <!--field name="lot_id"/>
+							             <field name="container_id" invisible="1"/> -->
+						            </tree>
+				                	<form string="Container Line">
+				                		<group name="container_line_fields">
+							                <field name="invoice_line_id" domain="[('invoice_id','=',parent.invoice_id)]"/>
+							                <field name="product_id"/>
+							                <field name="qty"/>
+							                <!--field name="lot_id"/>
+							                 <field name="container_id" invisible="1"/> -->
+						                </group>
+						            </form>
+			                	</field>
+			                </group>
+               			</page>
+               			<page string="Package Information"> <!--attrs="{'invisible': [('package_id','=',False)]}"-->
+			                <group name="package_info"  colspan="4" col="4">
+               					<field name="package_id"/>
+					        	<field name="owner_id"/>
+					        	<field name="delivery_date"/>
+					        	<field name="buyer_id"/>
+					        	<field name="buyer_address_id"/>
+					        	<field name="internal_order_number"/>
+					        	<field name="planned_collection"/>
+					        	<field name="picking_warehouse_id"/>
+	               				<field name="route_not_received" invisible="1"/>
+			                </group>
+               			</page>
+               			<page string="Child Containers" colspan="4" col="4">
+			                <group name="child_container_field" colspan="4" col="4">
+			                	<label for="child_container_ids"/>
+			                	<field name="child_container_ids" nolabel="1" colspan="4"/>
+			                </group>
+               			</page>
+               			<page string="Invoices" colspan="4" col="4">
+        					<group name="invoices_field" colspan="4" col="4">
+			                	<label for="invoice_ids"/>
+			                	<field name="invoice_ids" nolabel="1" colspan="4"/>
+			                </group>
+               			</page> 
+		            </notebook>
+	        	</sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_account_invoice_container_no_edit_button_form" model="ir.ui.view">
+		<field name="name">view.account.invoice.container no edit button</field>
+		<field name="model">account.invoice.container</field>
+		<field name="inherit_id" ref="view_account_invoice_container_form"/>
+		<field name="mode">primary</field>
+		<field name="priority">24</field>
+		<field name="arch" type="xml">
+			<xpath expr="//form" position="attributes">
+				<attribute name="edit">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+    
+    <record id="view_account_invoice_container_tree2" model="ir.ui.view">
+        <field name="name">view.account.invoice.container.tree</field>
+        <field name="model">account.invoice.container</field>
+		<field name="type">tree</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+		    <tree string="Containers">
+		    	<field name="owner_id" string="Own."/>
+	        	<field name="delivery_date"/>
+	        	<field name="container_no" string="Internal Order No."/>
+	        	<field name="buyer_id"/>
+	        	<field name="buyer_address_id"/>
+	        	<field name="internal_order_number"/>
+	        	<field name="picking_warehouse_id" string="Src. Warehouse"/>
+	        	<field name="destination_warehouse_id" string="Dest. Warehouse"/>
+	        	<field name="state"/>
+		    </tree>
+		</field>
+	</record>
+
+	<record id="view_account_invoice_container_no_create_button_tree" model="ir.ui.view">
+		<field name="name">view.account.invoice.container no create button</field>
+		<field name="model">account.invoice.container</field>
+		<field name="inherit_id" ref="view_account_invoice_container_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">24</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_account_invoice_container_no_create_button_tree2" model="ir.ui.view">
+		<field name="name">view.account.invoice.container no create button 2</field>
+		<field name="model">account.invoice.container</field>
+		<field name="inherit_id" ref="view_account_invoice_container_tree2"/>
+		<field name="mode">primary</field>
+		<field name="priority">24</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+        
+    <record id="view_account_invoice_container_tree_wizard" model="ir.ui.view">
+        <field name="name">view.account.invoice.container.tree bls wizard</field>
+        <field name="model">account.invoice.container</field>
+        <field name="inherit_id" ref="view_account_invoice_container_tree2"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+            	<attribute name="editable">top</attribute>
+            	<attribute name="decoration-success">route_received</attribute>
+            	<attribute name="decoration-danger">route_not_received</attribute>
+            </xpath>
+            <xpath expr="//field[@name='owner_id']" position="before">
+                <field name="route_received" invisible="1"/>
+                <field name="route_not_received" invisible="1"/>
+            	<button name="action_wizard_receive" string="Received" type="object"/>
+            	<button name="action_wizard_not_receive" string="Not Received" type="object"/>
+	        	<field name="owner_id"/>
+            </xpath>
+            <!--xpath expr="//field[@name='sender_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+            </xpath-->
+            <xpath expr="//field[@name='internal_order_number']" position="replace">
+	        	<field name="container_no"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+	        	<field name="picking_warehouse_id"/>
+            </xpath>
+        </field>
+    </record>
+	
+    <record id="view_account_invoice_container_search" model="ir.ui.view">
+        <field name="name">view.account.invoice.container.search</field>
+        <field name="model">account.invoice.container</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Container">
+		    	<field name="code"/>
+	        	<field name="sender_name" string="Owner"/>
+	        	<field name="internal_order_number"/>
+	        	<field name="buyer_name" string="Delivery Client"/>
+	        	<field name="buyer_posid" string="Delivery Address"/>
+	        	<field name="state"/>
+                <separator/>
+                <filter string="Planned Collection" domain="[('planned_collection','=',True)]" name="planned_collection_filter"/>
+                <filter string="Planned Export" domain="[('planned_export','=',True)]" name="planned_export_filter"/> 
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_account_invoice_container" model="ir.actions.act_window">
+	    <field name="name">Containers</field>
+	    <field name="res_model">account.invoice.container</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="domain">[('package_id','!=',False)]</field>
+	    <field name="context">{'search_containers_by_warehouse': True,'show_owner_filter': True}</field>
+	</record>
+	  
+	    
+    <record id="action_account_invoice_container2_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_account_invoice_container_no_create_button_tree2"/>
+        <field name="act_window_id" ref="action_account_invoice_container"/>
+    </record>
+
+    <record id="action_account_invoice_container2_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_invoice_container_no_edit_button_form"/>
+        <field name="act_window_id" ref="action_account_invoice_container"/>
+    </record>
+		    
+	<record id="action_account_invoice_container_not_received" model="ir.actions.act_window">
+	    <field name="name">Containers</field>
+	    <field name="res_model">account.invoice.container</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'not_received_containers': True}</field>
+	</record>
+	  
+	    
+    <record id="action_account_invoice_container2_not_received_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_account_invoice_container_no_create_button_tree2"/>
+        <field name="act_window_id" ref="action_account_invoice_container_not_received"/>
+    </record>
+    
+    <record id="action_view_account_invoice_container_not_received_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_invoice_container_no_edit_button_form"/>
+        <field name="act_window_id" ref="action_account_invoice_container_not_received"/>
+    </record>
+
+
+    <record id="account.menu_board_journal_1" model="ir.ui.menu">
+        <field eval="[(6, 0, [ref('sandas_maintenance.group_no_one_sandas')])]" name="groups_id"/>
+    </record>
+    
+    
+    <record id="view_account_invoice_bls_route_documents_tree" model="ir.ui.view">
+        <field name="name">view.account.invoice.bls.route.documents.tree</field>
+        <field name="model">account.invoice</field>
+		<field name="type">tree</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+		    <tree string="Document">
+		    	<field name="name" string="Doc. No."/>
+	        	<field name="date_invoice" string="Doc. Date"/>
+	        	<field name="partner_id" string="Customer"/>
+	        	<field name="partner_shipping_id" string="Address"/>
+	        	<field name="posid"/>
+	        	<field name="order_number"/>
+	        	<field name="partner_order_number" string="Customer Order No."/>
+	        	<field name="cash_amount" string="Cash"/>
+	        	<field name="state" invisible="1"/>
+		    </tree>
+		</field>
+	</record>
+
+	<!-- INVOICE -->
+
+
+    <record id="view_account_invoice_bls_documents_tree" model="ir.ui.view">
+        <field name="name">view.account.invoice.bls.documents.tree</field>
+        <field name="model">account.invoice</field>
+		<field name="type">tree</field>
+		<field name="priority">5</field>
+		<field name="arch" type="xml">
+		    <tree string="Documents">
+		    	<field name="date_invoice" string="Date"/>
+		    	<field name="owner_id"/>
+		    	<field name="picking_location_id" string="Status"/>
+		    	<field name="state"/>
+		    	<field name="all_document_numbers" string="Document No."/>
+		    	<field name="line_count"/>
+		    	<field name="partner_ref" string="Company"/>
+		    	<field name="partner_name" string="Customer"/>
+		    	<field name="partner_address" string="Address"/>
+		    	<field name="posid"/>
+		    	<field name="document_operation_type" string="Oper. type"/>
+		    	<field name="amount_untaxed" string="Sum (w/h VAT)"/>
+		    	<field name="route_number" string="Loading List"/>
+		    	<field name="route_template_number" string="Route"/>
+		    	<field name="driver_name"/>
+		    </tree>
+		</field>
+	</record>
+
+
+    <record id="view_account_invoice_bls_documents_search" model="ir.ui.view">
+        <field name="name">view.account.invoice.bls.documents.search</field>
+        <field name="model">account.invoice</field>
+		<field name="type">search</field>
+		<field name="priority">5</field>
+		<field name="arch" type="xml">
+		    <search string="Documents">
+		    	<field name="owner_id"/>
+		    	<field name="picking_location_id" string="Status"/>
+		    	<field name="state"/>
+		    	<field name="all_document_numbers" string="Document No."/>
+		    	<field name="partner_ref" string="Company"/>
+		    	<field name="partner_name" string="Customer"/>
+		    	<field name="posid" filter_domain="[('posid','=',self)]"/>
+		    	<field name="document_operation_type" string="Oper. type"/>
+		    	<field name="route_number" string="Loading List"/>
+		    	<field name="route_template_number" string="Route"/>
+		    	<field name="driver_name"/>
+		    </search>
+		</field>
+	</record>
+
+
+    <record id="view_account_invoice_bls_documents_form" model="ir.ui.view">
+        <field name="name">view.account.invoice.bls.documents.form</field>
+        <field name="model">account.invoice</field>
+		<field name="type">form</field>
+		<field name="priority">5</field>
+		<field name="arch" type="xml">
+		    <form string="Document">
+                <header>
+					<field name="state" widget="statusbar" readonly="1"/>
+                </header>
+				<div class="oe_button_box" name="button_box">
+					<button class="oe_stat_button" icon="fa-file-text-o" name="action_open_related_tasks" string="Open Tasks" type="object"/>
+					<button class="oe_stat_button" string="Open Related Documents" icon="fa-file-text-o" name="action_open_related_invoices" type="object" />
+				</div>
+				<div class="oe_title">
+					<h1>
+						<field name="all_document_numbers" readonly="1"/>
+					</h1>
+				</div>
+				<group>
+					<group>
+						<field name="partner_id"/>
+						<field name="partner_shipping_id"/>
+						<field name="posid"/>
+					</group>
+					<group>
+						<field name="date_invoice"/>
+						<field name="document_create_datetime" />
+		    			<field name="picking_location_id"/>
+		    			<field name="picking_warehouse_id"/>
+		    			<field name="owner_id"/>
+					</group>
+				</group>
+				<notebook>
+					<page string="Lines" name="lines_page">
+						<field name="invoice_line_ids">
+							<tree string="Invoice Lines">
+								<field name="product_code"/>
+								<field name="product_id"/>
+								<field name="quantity"/>
+								<field name="price_unit"/>
+							</tree>
+							<form string="Invoice Line">
+								<group>
+									<field name="product_id"/>
+									<field name="quantity"/>
+									<field name="price_unit"/>
+									<field name="external_invoice_line_id"/>
+								</group>
+							</form>
+						</field>
+						<group class="oe_subtotal_footer oe_right">
+							<field name="amount_untaxed"/>
+							<field name="amount_tax"/>
+							<field name="amount_total" class="oe_subtotal_footer_separator"/>
+						</group>
+
+					</page>
+					<page string="Route Information" name="route_info_page">
+						<group>
+							<field name="route_number"/>
+							<field name="route_template_number"/>
+							<field name="driver_name"/>
+						</group>
+					</page>
+					<page string="Document Information" name="route_info_page">
+						<group>
+							<field name="nkro_number"/>
+							<field name="nsad_number"/>
+							<field name="cash_amount"/>
+							<field name="primary_invoice_id" context="{'form_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create'}"/>
+							<field name="stock_package_id"/>
+							<field name="delivery_type"/>
+							<field name="destination_location_id"/>
+							<field name="document_operation_type" />
+							<field name="operation_type" />
+						</group>
+					</page>
+					<page string="History" name="history_info">
+						<group>
+							<field name="external_invoice_id"/>
+							<field name="intermediate_id"/>
+							<field name="create_uid" string="Created by User"/>
+							<field name="id_version"/>
+						</group>
+					</page>
+				</notebook>
+		    </form>
+		</field>
+	</record>
+
+	<record id="view_account_invoice_bls_documents_tree_no_create" model="ir.ui.view">
+		<field name="name">account.invoice tree BLS no create button 2</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="view_account_invoice_bls_documents_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">29</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+				<attribute name="edit">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_account_invoice_bls_documents_form_no_create" model="ir.ui.view">
+		<field name="name">account.invoice form BLS no create button 2</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="view_account_invoice_bls_documents_form"/>
+		<field name="mode">primary</field>
+		<field name="priority">29</field>
+		<field name="arch" type="xml">
+			<xpath expr="//form" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+				<attribute name="edit">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="action_account_invoice_bls_documents" model="ir.actions.act_window">
+	    <field name="name">Documents</field>
+	    <field name="res_model">account.invoice</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="context">{'search_invoices_by_warehouse': True}</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+
+    <record id="action_account_invoice_bls_documents_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_account_invoice_bls_documents_tree_no_create"/>
+        <field name="act_window_id" ref="action_account_invoice_bls_documents"/>
+    </record>
+
+    <record id="action_account_invoice_bls_documents_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_invoice_bls_documents_form_no_create"/>
+        <field name="act_window_id" ref="action_account_invoice_bls_documents"/>
+    </record>
+
+		<!-- Scanning tree -->
+
+
+
+
+    <record id="view_account_invoice_bls_documents_scanning_tree" model="ir.ui.view">
+        <field name="name">view.account.invoice.bls.documents.scanning.tree</field>
+        <field name="model">account.invoice</field>
+		<field name="type">tree</field>
+		<field name="priority">500</field>
+		<field name="arch" type="xml">
+		    <tree string="Documents">
+		    	<field name="all_document_numbers" string="Document No."/>
+		    	<field name="owner_id"/>
+		    	<field name="date_invoice" string="Date"/>
+		    	<field name="partner_name" string="Customer"/>
+		    	<field name="partner_address" string="Address"/>
+		    	<field name="posid"/>
+		    	<field name="state" invisible="1"/>
+		    </tree>
+		</field>
+	</record>
+
+	<record id="view_account_invoice_bls_documents_scanning_tree_with_scan_button" model="ir.ui.view">
+		<field name="name">view.account.invoice.bls.documents.scanning.tree button</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="view_account_invoice_bls_documents_scanning_tree"/>
+		<field name="mode">primary</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree/field[@name='all_document_numbers']" position="before">
+				<button name="action_scan" string="Scan" type="object"/>
+			</xpath>
+		</field>
+	</record>
+        
+</data>
+</openerp>

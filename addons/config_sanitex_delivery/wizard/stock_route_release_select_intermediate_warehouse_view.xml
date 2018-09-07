@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_release_select_intermediate_warehouse_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.release.select_intermediate_warehouse.osv.form</field>
+        <field name="model">stock.route.release.select_intermediate_warehouse.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Release Route">
+            	<label string="Select warehouse if some orders have to go there"/>
+            	<group>
+					<field name="intermediate_warehouse_id" context="{'get_all_warehouses': True}" required="1"/>
+					<field name="available_sale_ids" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="release" string="Assign" type="object" class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_route_release_select_intermediate_warehouse_osv2_form" model="ir.ui.view">
+        <field name="name">stock.route.release.select_intermediate.step2.osv.form</field>
+        <field name="model">stock.route.release.select_intermediate.step2.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Release Route">
+            	<label string="You have to select to which orders are going to selected warehouse."/>
+            	<group>
+					<field name="selected_sale_ids" nolabel="1" context="{'tree_view_ref': 'config_sanitex_delivery.view_sale_order_route_intermediate_wh_wizard_tree'}" domain="[('id','in',available_sale_ids[0][2])]"/>
+					<field name="available_sale_ids" invisible="1"/>
+                </group>
+                <footer>
+                    <!-- button name="release_and_go_back" string="Assign and Select Another Warehouse" type="object"/-->
+                    <button name="release_and_quit" string="Assign" type="object" class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</data>
+</openerp>

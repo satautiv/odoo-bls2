@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>	       
+
+        <record id="view_ir_actions_report_copy_number_form" model="ir.ui.view">
+            <field name="name">ir.actions.report.xml copy_number</field>
+            <field name="model">ir.actions.report</field>
+            <field name="inherit_id" ref="base.act_report_xml_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='print_report_name']" position="replace">
+                	<!-- field name="copy_number"/-->
+                	<field name="keep_log"/>
+                	<field name="include_in_all_reports"/>
+                	<field name="all_report_sequence"/>
+                </xpath>
+            </field>
+        </record>
+        
+</data>
+</openerp>

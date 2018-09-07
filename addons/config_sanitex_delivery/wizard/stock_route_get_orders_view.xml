@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_get_orders_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.get_orders.osv.form</field>
+        <field name="model">stock.route.get_orders.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Get Orders">
+				<group attrs="{'invisible': [('stage2','=',True)]}">
+					<field name="route_id" domain="[('id','!=',parent_route_id),('state','=','draft')]"/>
+				</group>
+				<field name="domain_order_ids" invisible="1"/>
+				<field name="parent_route_id" invisible="1"/>
+				<field name="stage2" invisible="1"/>
+            	<label for="order_ids" attrs="{'invisible': [('stage2','=',False)]}"/>
+                <field name="order_ids" domain="[('id','in',domain_order_ids)]" attrs="{'invisible': [('stage2','=',False)]}"/>
+                <footer>
+                    <button attrs="{'invisible': [('stage2','=',True)]}" name="next" string="Next" type="object"   class="oe_highlight"/>
+                    <button attrs="{'invisible': [('stage2','=',False)]}" name="get" string="Transfer" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_get_orders_osv" model="ir.actions.act_window">
+        <field name="name">Get Orders</field>
+        <field name="res_model">stock.route.get_orders.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</data>
+</openerp>

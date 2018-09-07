@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_release_select_warehouse_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.release.select_warehouse.osv.form</field>
+        <field name="model">stock.route.release.select_warehouse.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Release Route">
+            	<label string="You have to select to which warehouses this car will drive"/>
+				<field name="selected_warehouse_ids" widget="many2many_checkboxes" domain="[('id','in',available_warehouse_ids[0][2])]"/>
+				<field name="available_warehouse_ids" invisible="1"/>
+                <footer>
+                    <button name="release" string="Release" type="object"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_route_release_select_warehouse_osv2_form" model="ir.ui.view">
+        <field name="name">stock.route.release.select_warehouse.step2.osv.form</field>
+        <field name="model">stock.route.release.select_warehouse.step2.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Release Route">
+            	<label string="You have to select to which warehouse rest of the orders will go"/>
+				<field name="selected_warehouse_id" domain="[('id','in',available_warehouse_ids[0][2])]" widget="radio"/>
+				<field name="available_warehouse_ids" invisible="1"/>
+                <footer>
+                    <button name="release" string="Release" type="object"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</data>
+</openerp>

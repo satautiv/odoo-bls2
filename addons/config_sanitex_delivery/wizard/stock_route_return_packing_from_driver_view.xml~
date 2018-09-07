@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_return_driver_packing_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.return_driver_packing.osv.form</field>
+        <field name="model">stock.route.return_driver_packing.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Return Packing">
+            	<field name="done" invisible="1"/>
+            	<field name="stage" invisible="1"/>
+            	<field name="location_id" invisible="1"/>
+            	<field name="product_ids" invisible="1"/>
+            	<field name="message" attrs="{'invisible': [('done','=',False)]}"/>
+				<label for="line_ids"  attrs="{'invisible': ['|',('done','=',True)]}"/>
+            	<field name="line_ids"  attrs="{'invisible': ['|',('done','=',True)]}">
+            		<tree string="Lines" editable="top" create="0">
+		                <field name="product_code"/>
+		                <field name="product_id" context="{'search_by_route': parent.parent_route_id}"/>
+		                <field name="done" invisible="1"/>
+		                <field name="driver_qty" />
+		                <field name="to_warehouse_qty" attrs="{'readonly': [('done','=',True)]}"/>
+		                <field name="final_qty"/>
+		            </tree>
+		            <form name="line">
+	            		<group>
+			                <field name="product_id" context="{'search_by_route': parent.parent_route_id}"/>
+			                <field name="driver_qty" />
+		                	<field name="to_warehouse_qty" attrs="{'readonly': [('done','=',True)]}"/>
+			                <field name="final_qty"/>
+		                	<field name="done" invisible="1"/>
+		                </group>
+		            </form>
+		        </field>
+				<label for="line2_ids"  attrs="{'invisible': ['|',('stage','=',1),('done','=',True)]}"/>
+            	<field name="line2_ids" attrs="{'invisible': ['|',('stage','=',1),('done','=',True)]}" >
+            		<tree editable="top">
+            			<field name="product_code"/>
+            			<field name="product_id" domain="[('id','in',parent.product_ids)]"/>
+            			<field name="invisible" invisible="1"/>
+            			<field name="move_id" context="{'form_view_ref': 'config_sanitex_delivery.view_stock_move_sanitex_form'}" required="1" domain="[('product_id','=',product_id),('open','=',True),('location_dest_id','=',parent.location_id),('route_id','!=',parent.parent_route_id)]"/>
+            			<field name="to_warehouse_qty"/>
+            		</tree>
+            		<form>
+            			<field name="product_code"/>
+            			<field name="product_id" domain="[('id','in',parent.product_ids)]"/>
+            			<field name="invisible" invisible="1"/>
+            			<field name="move_id" context="{'form_view_ref': 'config_sanitex_delivery.view_stock_move_sanitex_form'}" required="1" domain="[('product_id','=',product_id),('open','=',True),('location_dest_id','=',parent.location_id),('route_id','!=',parent.parent_route_id)]"/>
+            			<field name="to_warehouse_qty"/>
+            		</form>
+            	</field>
+            	<field name="parent_route_id" invisible="1"/>
+                <footer attrs="{'invisible': ['|',('stage','=',2),('done','=',True)]}">
+                    <button name="return_packing_next" string="Next" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+                <footer attrs="{'invisible': ['|',('stage','=',1),('done','=',True)]}">
+                    <button name="return_packing" string="Return" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+                <footer attrs="{'invisible': [('done','=',False)]}">
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_return_driver_packing_osv" model="ir.actions.act_window">
+        <field name="name">Return</field>
+        <field name="res_model">stock.route.return_driver_packing.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!--record id="ir_stock_route_select_orders_osv" model="ir.values"> 
+        <field eval="'client_action_multi'" name="key2"/> 
+        <field eval="'stock.route'" name="model"/>
+        <field name="name">Select Orders</field>
+        <field eval="'ir.actions.act_window,%d'%action_stock_route_select_orders_osv" name="value"/>
+        <field eval="True" name="multi"/>
+    </record-->
+	
+</data>
+</openerp>

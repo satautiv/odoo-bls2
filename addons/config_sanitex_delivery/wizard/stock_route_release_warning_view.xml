@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_release_warning_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.release_warning.osv.form</field>
+        <field name="model">stock.route.release_warning.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Warning">
+            		<field name="message" />
+        		 <footer>
+                    <button name="release" string="Yes" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="No" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_release_warning_osv" model="ir.actions.act_window">
+        <field name="name">Warning</field>
+        <field name="res_model">stock.route.release_warning.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+</data>
+</openerp>

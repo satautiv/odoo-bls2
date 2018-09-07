@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+	<record id="view_get_ubl_zip_wizard" model="ir.ui.view">
+        <field name="name">view.get.ubl.zip.wizard.wizard</field>
+        <field name="model">get.ubl.zip.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Get UBLs">
+				<footer>
+					<button name="get_ubls" string="Get UBLs" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Close" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_get_ubl_zip_wizard2" model="ir.ui.view">
+        <field name="name">view.get.ubl.zip.wizard.wizard2</field>
+        <field name="model">get.ubl.zip.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Get UBLs">
+            	<group name="fields" colspan="4" col="2">
+			        <field name="file_name" invisible="1"/>
+				    <field name="ubl_zip" widget="binary" filename="file_name"/>
+				</group>
+				<footer>
+                    <button special="cancel" string="Close" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_get_ubl_zip_wizard" model="ir.actions.act_window">
+        <field name="name">Get UBLs</field>
+        <field name="res_model">get.ubl.zip.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <menuitem id="menu_1_2_test_test" name="TEST"
+        parent="config_sanitex_delivery.menu_1_2_test" sequence="9999" />
+        
+    <menuitem id="menu_action_get_ubl_zip_wizard"
+	    name="Get UBLs"
+	    parent="menu_1_2_test_test"
+	    action="action_get_ubl_zip_wizard"
+	    sequence="100"/>
+
+</data>
+</openerp>

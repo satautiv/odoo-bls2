@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+	<record id="view_do_invoice_result_wizard" model="ir.ui.view">
+        <field name="name">view.do.invoice.result.wizard</field>
+        <field name="model">do.invoice.result.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Result">
+            	<group name="fields" colspan="4" col="2">
+            		<h1><field name="document_package_no" nolabel="1" colspan="2"/></h1>
+					<field name="msg" nolabel="1" colspan="2"/>
+					<field name="printer_id" colspan="2" help="Printer which is going to print paper forms." widget="selection" context="{'search_printer_by_wh': True}"/>
+					<label for="created_invoice_ids"/>
+					<field name="created_invoice_ids" nolabel="1" colspan="2" context="{'form_view_ref' : 'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create',}">
+						<tree string="Invoice Lines">
+							<field name="date_invoice"/>
+		    				<field name="name"/>
+		    				<field name="category"/>
+		    				<field name="sending_type"/>
+		    				<field name="line_count"/>
+		    				<field name="print_copies"/>
+		    				<field name="partner_ref"/>
+					    	<field name="partner_name"/>
+					    	<field name="partner_address"/>
+					    	<field name="amount_total"/>
+					    	<field name="route_number"/>
+					    	<field name="route_template_number"/>
+					    	<field name="driver_name"/>
+					    	<field name="state" invisible="1"/>
+						</tree>
+					</field>
+				</group>
+				<footer>
+					<button name="send_documents" string="Send/print documents" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Close" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- record id="view_do_invoice_result_wizard2" model="ir.ui.view">
+        <field name="name">view.do.invoice.result.wizard2</field>
+        <field name="model">do.invoice.result.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Result">
+            	<group name="fields" colspan="4" col="2">
+					<field name="msg" nolabel="1" colspan="2"/>
+				</group>
+            	<span>Please insert a number of the last invoice which was printed.</span>
+            	<span>In case of printer error, it will make sure, that all documents are printed.</span>
+            	<group name="fields2" colspan="4" col="2">
+					<field name="last_printed_doc_no" nolabel="1" colspan="2"/>
+					<field name="printer_id" colspan="2" help="Printer which is going to print paper forms." widget="selection" context="{'search_printer_by_wh': True}"/>
+					<label for="created_invoice_ids"/>
+					<field name="created_invoice_ids" nolabel="1" colspan="2">
+						<tree string="Invoice Lines">
+							<field name="date_invoice"/>
+		    				<field name="time_invoice"/>
+		    				<field name="name"/>
+		    				<field name="sending_type"/>
+		    				<field name="print_copies"/>
+		    				<field name="partner_ref"/>
+					    	<field name="partner_name"/>
+					    	<field name="partner_address"/>
+					    	<field name="amount_total"/>
+					    	<field name="route_number"/>
+					    	<field name="route_template_number"/>
+					    	<field name="driver_name"/>
+					    	<field name="state" invisible="1"/>
+						</tree>
+					</field>
+				</group>
+				<footer>
+					<button name="continue_printing" string="Check" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Close" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record-->
+    
+    <record id="action_do_invoice_result_wizard" model="ir.actions.act_window">
+        <field name="name">Invoice Result</field>
+        <field name="res_model">do.invoice.result.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</data>
+</openerp>

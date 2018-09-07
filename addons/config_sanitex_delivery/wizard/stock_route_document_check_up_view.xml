@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_document_check_up_osv" model="ir.ui.view">
+        <field name="name">stock.route.document.check_up.osv.form</field>
+        <field name="model">stock.route.document.check_up.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Document Check-Up">
+                <div class="oe_right oe_button_box" name="buttons">
+                    <button string="Reset" class="oe_stat_button" icon="fa-refresh" name="reset" type="object"/>
+                </div>
+                <group>
+                    <group>
+                        <field name="id"/>
+                        <field name="all_document_count"/>
+                        <field name="checked_invoice_count"/>
+                        <field name="not_checked_invoice_count"/>
+                        <field name="electronic_invoice_count"/>
+                        <field name="collect_package_invoice_count"/>
+                    </group>
+                    <group>
+                        <field name="write_uid" string="User" readonly="1"/>
+                        <field name="write_date" string="Date, time" readonly="1"/>
+                    </group>
+                </group>
+                <label string="Scan or Write document number"/>
+                <field name="document_number" default_focus="1"/>
+                <notebook>
+                    <page string="Not Checked Documents" info_field="not_checked_invoice_count">
+                        <field name="not_checked_invoice_ids" context="{'form_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create', 'tree_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_scanning_tree_with_scan_button'}"/>
+                    </page>
+                    <page string="Checked Documents" info_field="checked_invoice_count">
+                        <field name="checked_invoice_ids" context="{'form_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create', 'tree_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_scanning_tree'}"/>
+                    </page>
+                    <page string="Digital Documents" info_field="electronic_invoice_count">
+                        <field name="electronic_invoice_ids" context="{'form_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create', 'tree_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_scanning_tree'}"/>
+                    </page>
+                    <page string="Collection Package Documents" info_field="collect_package_invoice_count">
+                        <field name="collect_package_invoice_ids" context="{'form_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create', 'tree_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_scanning_tree'}"/>
+                    </page>
+                    <page string="Scannig Log">
+                        <field name="log"/>
+                    </page>
+                </notebook>
+                    <field name="checked_invoice_count" invisible="1"/>
+                    <field name="not_checked_invoice_count" invisible="1"/>
+                    <field name="electronic_invoice_count" invisible="1"/>
+                    <field name="collect_package_invoice_count" invisible="1"/>
+                <footer>
+                    <button name="check" string="Next" type="object" class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Finish and Close" class="oe_link"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_document_check_up_osv" model="ir.actions.act_window">
+        <field name="name">Document Check-Up</field>
+        <field name="res_model">stock.route.document.check_up.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</data>
+</openerp>

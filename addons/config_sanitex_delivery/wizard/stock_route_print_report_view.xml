@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_print_report_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.print_report.osv.form</field>
+        <field name="model">stock.route.print_report.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Print">
+            	<group>
+            		<field name="report" invisible="1"/>
+            		<field name="reprint" invisible="1"/>
+            		<field name="printer_id" context="{'search_printer_by_wh': True}"/>
+            		<field name="reprint_reason" attrs="{'invisible': [('reprint','=',False)], 'required': [('reprint','=',True)]}"/>
+            		<field name="number_of_copies"/>
+            	</group>
+        		<field name="parent_route_id" invisible="1"/>
+        		 <footer>
+                    <button name="print_report" string="Print" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_print_product_packing_report_osv" model="ir.actions.act_window">
+        <field name="name">Product Packing</field>
+        <field name="res_model">stock.route.print_report.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'report_to_print':'config_sanitex_delivery.product_packing', 'search_printer_by_wh': True}</field>
+        <field name="target">new</field>
+        <field name="sequence_no">1</field>
+        <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_route_print_drivers_packing_transfer_act_osv" model="ir.actions.act_window">
+        <field name="name">Drivers Transfer Act</field>
+        <field name="res_model">stock.route.print_report.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'report_to_print':'config_sanitex_delivery.drivers_packing_transfer_act', 'search_printer_by_wh': True}</field>
+        <field name="target">new</field>
+        <field name="sequence_no">2</field>
+        <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route" />
+        <field name="binding_type">report</field>
+    </record>
+    
+    <record id="action_stock_route_print_packing_return_act_act_osv" model="ir.actions.act_window">
+        <field name="name">Packing Return Act</field>
+        <field name="res_model">stock.route.print_report.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'report_to_print':'config_sanitex_delivery.packing_return_act'}</field>
+        <field name="target">new</field>
+        <field name="sequence_no">4</field>
+        <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route" />
+        <field name="binding_type">report</field>
+    </record>
+    
+    <!--record id="action_stock_route_print_packing_report_osv" model="ir.actions.act_window">
+        <field name="name">Customer Transfer/Return Act</field>
+        <field name="res_model">stock.route.print_packing_report.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'report_to_print':'config_sanitex_delivery.customer_transfer_return_act'}</field>
+        <field name="target">new</field>
+        <field name="sequence_no">5</field>
+        <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route" />
+        <field name="binding_type">report</field>
+    </record-->
+
+</data>
+</openerp>

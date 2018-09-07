@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+	<record id="movement_document_type" model="document.type">
+        <field name="name">Movement</field>
+        <field name="code">product_movement</field>
+    </record>
+
+	<record id="adjustment_document_type" model="document.type">
+        <field name="name">Adjustment</field>
+        <field name="code">product_adjustment</field>
+    </record>
+  
+  	<!--Route-->
+	
+	<record id="sequence_route" model="ir.sequence">
+        <field name="name">Releasing Routes</field>
+        <field eval="0" name="padding"/>
+        <field name="code">released_route</field>
+    </record>
+
+	<record id="sequence_route_version" model="ir.sequence">
+        <field name="name">Route Version</field>
+        <field eval="0" name="padding"/>
+        <field name="code">route_version</field>
+    </record>
+    
+    
+  	<!--Packing-->
+	
+	<record id="sequence_stock_packing_line_number_code" model="ir.sequence">
+        <field name="name">Packing Number</field>
+        <field eval="0" name="padding"/>
+        <field name="code">stock_packing_number</field>
+    </record>
+    
+  	<!--Correction-->
+	
+	<record id="sequence_stock_packing_correction_number" model="ir.sequence">
+        <field name="name">Correction Number</field>
+        <field eval="0" name="padding"/>
+        <field name="code">stock_packing_correction_number</field>
+    </record>
+    
+  	<!--Picking-->
+	
+	<record id="sequence_stock_picking_name" model="ir.sequence">
+        <field name="name">Picking Name</field>
+        <field eval="0" name="padding"/>
+        <field name="code">stock_picking_name</field>
+    </record>
+    
+    <!-- Transportation Order -->
+    
+    <record id="sequence_transportation_order" model="ir.sequence">
+        <field name="name">Transportation Order</field>
+        <field eval="0" name="padding"/>
+        <field name="code">transportation.order</field>
+        <field name="prefix">TO</field>
+    </record>
+	
+
+</data>
+</openerp>

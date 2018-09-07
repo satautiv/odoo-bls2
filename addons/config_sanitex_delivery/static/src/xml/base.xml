@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+     <t t-extend="ListView.buttons">
+	       <t t-jquery="button.o_list_button_save" t-operation="before">
+	       		<span class="dropdown" id="button_route_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_route_filter">
+		                Route Filter
+		            </button>
+		            <div class="dropdown-menu" style="max-height:40em;">
+			            <div style="max-height:5em;">
+			            	<button id="accept_filter">OK</button>
+			            </div>
+			            <ul id="route_filter_cbs" style="max-height:34em;overflow: scroll;overflow-x: hidden;white-space: nowrap;list-style-type: none;margin-top:1em;padding-left:0px">
+			                <button id="accept_filter">OK</button>
+			            </ul>
+		            </div>
+		        </span>
+            	<!-- span class="dropdown" id="button_route_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_route_filter">
+		                Route Filter
+		            </button>
+		            <ul class="dropdown-menu" id="route_filter_cbs" style="max-height:40em;overflow: scroll;overflow-x: hidden;white-space: nowrap;">
+		                <button id="accept_filter">OK</button>
+		            </ul>
+		        </span-->
+		        <span class="dropdown" id="button_owner_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_owner_filter">
+		                Owner Filter
+		            </button>
+		            <div class="dropdown-menu" style="max-height:40em;">
+			            <div style="max-height:5em;">
+			            	<button id="accept_filter">OK</button>
+			            </div>
+			            <ul id="owner_filter_cbs" style="max-height:34em;overflow: scroll;overflow-x: hidden;white-space: nowrap;list-style-type: none;margin-top:1em;padding-left:0px">
+			                <button id="accept_filter">OK</button>
+			            </ul>
+		            </div>
+		        </span>
+		        <span class="dropdown" id="button_shipping_warehouse_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_shipping_warehouse_filter">
+		                Shipping Warehouses Filter
+		            </button>
+		            <div class="dropdown-menu" style="max-height:40em;">
+			            <div style="max-height:5em;">
+			            	<button id="accept_filter">OK</button>
+			            </div>
+			            <ul id="shipping_warehouse_filter_cbs" style="max-height:34em;overflow: scroll;overflow-x: hidden;white-space: nowrap;list-style-type: none;margin-top:1em;padding-left:0px">
+			                <button id="accept_filter">OK</button>
+			            </ul>
+		            </div>
+		        </span>
+		        <span class="dropdown" id="button_date_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_date_filter">
+		                Date Filter
+		            </button>
+		            <div class="dropdown-menu" style="max-height:40em;">
+			            <div style="max-height:5em;">
+			            	<button id="accept_filter">OK</button>
+			            </div>
+			            <ul id="date_filter_cbs" style="max-height:34em;overflow: scroll;overflow-x: hidden;white-space: nowrap;list-style-type: none;margin-top:1em;padding-left:0px">
+			                <button id="accept_filter">OK</button>
+			            </ul>
+		            </div>
+		        </span>
+		        <span class="dropdown" id="button_date_from_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_date_from_filter">
+		                Date From
+		            </button>
+		            <div class="dropdown-menu" style="max-height:40em;">
+			            <div style="max-height:5em;">
+			            	<button id="accept_filter">OK</button>
+			            </div>
+			            <ul id="date_filter_cbs" style="max-height:34em;overflow: scroll;overflow-x: hidden;white-space: nowrap;list-style-type: none;margin-top:1em;padding-left:0px">
+			                <button id="accept_filter">OK</button>
+			            </ul>
+		            </div>
+		        </span>
+		        <span class="dropdown" id="button_date_to_filter">
+		            <button href="#" class="dropdown-toggle btn btn-sm btn-default" id="button_open_date_to_filter">
+		                Date To
+		            </button>
+		            <div class="dropdown-menu" style="max-height:40em;">
+			            <div style="max-height:5em;">
+			            	<button id="accept_filter">OK</button>
+			            </div>
+			            <ul id="date_filter_cbs" style="max-height:34em;overflow: scroll;overflow-x: hidden;white-space: nowrap;list-style-type: none;margin-top:1em;padding-left:0px">
+			                <button id="accept_filter">OK</button>
+			            </ul>
+		            </div>
+		        </span>
+		        
+		        <span id="route_create_vertical_separator" style="margin-right:1em;margin-left:1em;">
+		        	<span style="border-left:2px solid #aaacb5;"/>
+		        </span>
+		        
+		        <button id="button_crate_route" class="btn btn-sm btn-default btn_create_route">Create Route</button>
+
+		        <span id="close_routes_vertical_separator" style="margin-right:1em;margin-left:1em;">
+		        	<span style="border-left:2px solid #aaacb5;"/>
+		        </span>
+
+		        <button id="button_close_routes" class="btn btn-sm btn-default btn_close_routes">Close Routes</button>
+	       </t>
+	 </t>
+	 
+	 <t t-extend="FormView.buttons">
+	 	<t t-jquery="button.o_form_button_create" t-operation="after">
+ 			<button id="button_crate_route" class="btn btn-sm btn-default btn_create_route">Create Route</button>
+	 	</t>
+	 </t>
+
+</templates>

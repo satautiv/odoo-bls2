@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<odoo>
+
+ <!-- Transportation Order -->
+ 
+    <record id="view_transportation_order_tree" model="ir.ui.view">
+        <field name="name">view.transportation.order.tree</field>
+        <field name="model">transportation.order</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transportation Order">
+           		<field name="name"/>
+            	<field name="warehouse_id"/>
+                <field name="location_id"/>
+                <field name="transport_type_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_transportation_order_form" model="ir.ui.view">
+        <field name="name">view.transportation.order.form</field>
+        <field name="model">transportation.order</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transportation Order"> 
+                <header>
+                </header>
+                <sheet>
+                	<group name="header_fields" col="4">
+	                    <group col="2">
+	                        <field name="name"/>
+	                        <field name="owner_id"/>
+	                        <field name="partner_id" domain="[('parent_id','=',False)]"/>
+	                        <field name="posid_partner_id" domain="partner_id and [('parent_id','=',partner_id)] or [('parent_id','!=',False)]"/>
+	                    </group>
+	                    <group col="2">
+	                    	<field name="invoice_ids" widget="many2many_tags"/>
+	                        <field name="transport_type_id"/>
+	                        <field name="warehouse_id" invisible="1"/>
+	                        <field name="location_id" context="{'related_warehouse_id': warehouse_id}"/>
+	                        <field name="date"/>
+	                        <field name="delivery_date"/>
+	                        <field name="no_delivery"/>
+		                    <field name="delivery_by_agent"/>
+	                    </group>
+	                </group>
+                    <notebook>
+                        <page string="Lines">
+	                        <field name="line_ids">
+		                        <tree string="Transportation Order Lines">
+		                            <field name="product_code"/>
+		                            <field name="product_id"/>
+		                            <field name="quantity"/>
+		                            <field name="uom_id"/>
+		                        </tree>
+		                        <form string="Transportation Order Line">
+		                            <sheet>
+										<group>
+										    <group>
+											    <field name="product_id" domain="['|',('type_of_product','!=','product'),'&amp;',('type_of_product','=','product'),('owner_id','=',parent.owner_id)]"/>
+											    <field name="product_code"/>
+											    <field name="uom_id"/>
+										    </group>
+					           		        <group>				
+												<span colspan="1" style="display:'inline-block';width:150px;margin: 0px 0px 0px 0px"> <b> Small Package (<field name="small_package_size" nolabel="1" class="oe_inline"/>)</b></span>
+												<field name="small_package_qty" nolabel="1" class="oe_inline" colspan="1"/>
+																
+												<span colspan="1" style="display:'inline-block';width:150px;margin: 0px 0px 0px 0px"> <b> Big Package (<field name="big_package_size" nolabel="1" class="oe_inline"/>)</b></span>
+												<field name="big_package_qty" nolabel="1" class="oe_inline" colspan="1"/>
+																					
+											    <field name="product_qty" string="Quantity"/>
+											    <label for="quantity" string="Total Quantity"/>
+											    <div>
+											        <field name="quantity" class="oe_inline"  readonly="1"/>
+											        <span class="oe_inline"> </span>
+											    </div>
+											</group>
+										    <group>
+											    <field name="lot_id"/>
+											    <field name="serial_id"/>
+										    </group>					 
+								    	</group>
+		                            </sheet>
+		                        </form>
+		                    </field>
+	                    </page>
+                    </notebook> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_transportation_order_search" model="ir.ui.view">
+        <field name="name">view.transportation.order.search</field>
+        <field name="model">transportation.order</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Transportation Order">
+            	<field name="name"/>
+           		<field name="owner_id"/>
+            	<field name="transport_type_id"/>
+            </search>
+        </field>
+    </record>
+    
+   <!-- Transportation Order Line -->
+ 
+    <record id="view_transportation_order_line_tree" model="ir.ui.view">
+        <field name="name">view.transportation.order.line.tree</field>
+        <field name="model">transportation.order.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transportation Order">
+                <field name="product_code"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="uom_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_transportation_order_line_form" model="ir.ui.view">
+        <field name="name">view.transportation.order.line.form</field>
+        <field name="model">transportation.order.line</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transportation Order Line">
+                <sheet>
+					<group>
+					    <group>
+						    <field name="product_id" domain="['|',('type_of_product','!=','product'),'&amp;',('type_of_product','=','product'),('owner_id','=',parent.owner_id)]"/>
+						    <field name="product_code"/>
+						    <field name="uom_id"/>
+					    </group>
+	      		        <group>				
+							<span colspan="1" style="display:'inline-block';width:150px;margin: 0px 0px 0px 0px"> <b> Small Package (<field name="small_package_size" nolabel="1" class="oe_inline"/>)</b></span>
+							<field name="small_package_qty" nolabel="1" class="oe_inline" colspan="1"/>
+											
+							<span colspan="1" style="display:'inline-block';width:150px;margin: 0px 0px 0px 0px"> <b> Big Package (<field name="big_package_size" nolabel="1" class="oe_inline"/>)</b></span>
+							<field name="big_package_qty" nolabel="1" class="oe_inline" colspan="1"/>
+																
+						    <field name="product_qty" string="Quantity"/>
+						    <label for="quantity" string="Total Quantity"/>
+						    <div>
+						        <field name="quantity" class="oe_inline"  readonly="1"/>
+						        <span class="oe_inline"> </span>
+						    </div>
+						</group>
+					    <group>
+						    <field name="lot_id"/>
+						    <field name="serial_id"/>
+					    </group>					 
+		    		</group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+       
+       
+</odoo>

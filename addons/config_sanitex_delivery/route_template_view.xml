@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	<!--INTEGRATION LOG-->
+
+    <record id="route_template_tree" model="ir.ui.view">
+        <field name="name">stock.route.template.tree</field>
+        <field name="model">stock.route.template</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Templates" background-decoration-success="fully_released">
+            	<field name="route_no"/>
+            	<field name="date"/>
+            	<field name="source"/>
+            	<field name="driver"/>
+            	<!--field name="shipping_warehouses"/-->
+            	<field name="shipping_warehouses_recalc"/>
+            	<field name="qty_in_warehouse"/>
+            	<field name="qty_not_received"/>
+            	<field name="qty_cancelled"/>
+            	<field name="qty_in_route"/>
+            	<field name="qty_planned"/>
+            	<field name="weight_in_warehouse" sum="1"/>
+            	<field name="picking_warehouse_id_filter" invisible="1"/>
+            	<field name="shipping_warehouse_id_filter" invisible="1"/>
+                <field name="fully_released" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+	<record id="route_template_tree_no_create_button_tree" model="ir.ui.view">
+		<field name="name">stock.route.template no create button</field>
+		<field name="model">stock.route.template</field>
+		<field name="inherit_id" ref="route_template_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">24</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="route_template_form" model="ir.ui.view">
+        <field name="name">stock.route.template.form</field>
+        <field name="model">stock.route.template</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Template" >
+            	<sheet>
+                    <div class="oe_right oe_button_box" name="buttons">
+					   	<button string="Open Sales" name="action_open_sales" type="object" class="oe_stat_button" icon="fa-archive" groups="config_sanitex_delivery.stock_route_managament_group"/>
+                        <button string="Open Routes" class="oe_stat_button" icon="fa-truck" name="action_open_routes" type="object" />
+                    </div>
+            		<group>
+                        <field name="route_no"/>
+            			<field name="route_no_id" groups="base.group_no_one"/>
+                        <field name="date"/>
+                        <field name="source"/>
+            	        <field name="driver"/>
+                        <field name="qty_in_warehouse"/>
+                        <field name="qty_not_received"/>
+            			<field name="qty_cancelled"/>
+                        <field name="qty_in_route"/>
+                        <field name="qty_planned"/>
+            			<field name="shipping_warehouses_recalc"/>
+            			<field name="weight"/>
+            			<field name="distance"/>
+            		</group>
+                    <label for="task_ids"/>
+                    <field name="task_ids" widget="many2many" context="{'check_for_replanned_tasks': active_id, 'form_view_ref':'config_sanitex_delivery.view_sale_order_route_bls_form', 'tree_view_ref': 'config_sanitex_delivery.view_sale_order_from_route_template_tree'}"/>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+	<record id="route_template_form_no_create_button_form" model="ir.ui.view">
+		<field name="name">stock.route.template form no create button</field>
+		<field name="model">stock.route.template</field>
+		<field name="inherit_id" ref="route_template_form"/>
+		<field name="mode">primary</field>
+		<field name="priority">24</field>
+		<field name="arch" type="xml">
+			<xpath expr="//form" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="route_template_search" model="ir.ui.view">
+        <field name="name">stock.route.template.search</field>
+        <field name="model">stock.route.template</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Templates">
+            	<field name="route_no"/>
+            	<field name="posid_search"/>
+            	<field name="date"/>
+                <filter string="Current" name="current" context="{'get_current_routes': True}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="route_template_action" model="ir.actions.act_window">
+        <field name="name">Route Templates</field>
+        <field name="res_model">stock.route.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="limit">200</field>
+        <field name="context">{'search_default_current': 1, 'search_by_user': True, 'search_by_user_sale': False, 'search_for_template_view': True, 'hide_unnecessary_header_sums':['weight_in_warehouse'], 'create_route_btn': True}</field>
+    </record>
+
+	<menuitem id="menu_route_template"
+	    name="Route Templates"
+	    parent="menu_picking_routes"
+	    action="route_template_action"
+	    sequence="2"/>
+
+
+	<menuitem id="config_sanitex_delivery.base_routes"
+	    action="route_template_action"/>
+
+    <record id="action_route_template_create_route" model="ir.actions.server">
+       <field name="name">Create Route</field>
+       <field name="type">ir.actions.server</field>
+       <field name="model_id" ref="config_sanitex_delivery.model_stock_route_template"/>
+       <field name="condition" eval="True" />
+       <field name="state">code</field>
+       <field name="code">action = records.action_create_route_confirm()</field>
+       <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route_template"/>
+    </record>
+
+   	<record id="action_route_template_create_route_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="route_template_tree_no_create_button_tree"/>
+    	<field name="act_window_id" ref="route_template_action"/>
+	</record>
+
+	<record id="action_route_template_create_route_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="route_template_form_no_create_button_form"/>
+    	<field name="act_window_id" ref="route_template_action"/>
+	</record>
+
+</data>
+</openerp>

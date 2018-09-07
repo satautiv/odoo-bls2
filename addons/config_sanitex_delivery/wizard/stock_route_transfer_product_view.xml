@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_transfer_product_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.transfer_product.osv.form</field>
+        <field name="model">stock.route.transfer_product.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Transfer Products">
+            	<label for="line_ids"/>
+	            <field name="line_ids">
+	        		<tree string="Lines" create="0">
+		                <field name="product_id" on_change="on_change_product_id(product_id, parent.parent_route_id)"/>
+		                <field name="qty"/>
+		                <field name="rem_qty_bydriver"/>
+		            </tree>
+		            <form name="line">
+	            		<group>
+			                <field name="product_id" on_change="on_change_product_id(product_id, parent.parent_route_id)"/>
+			                <field name="qty"/>
+			                <field name="rem_qty_bydriver"/>
+		                </group>
+		            </form>
+		        </field>
+                <footer>
+                    <button name="transfer" string="Transfer" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_transfer_product_osv" model="ir.actions.act_window">
+        <field name="name">Select Orders</field>
+        <field name="res_model">stock.route.transfer_product.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!--record id="ir_stock_route_select_orders_osv" model="ir.values"> 
+        <field eval="'client_action_multi'" name="key2"/> 
+        <field eval="'stock.route'" name="model"/>
+        <field name="name">Select Orders</field>
+        <field eval="'ir.actions.act_window,%d'%action_stock_route_select_orders_osv" name="value"/>
+        <field eval="True" name="multi"/>
+    </record-->
+	
+</data>
+</openerp>

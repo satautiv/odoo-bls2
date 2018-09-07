@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="res_users_select_default_printer_osv_form" model="ir.ui.view">
+        <field name="name">res.users.select_default_printer.osv.form</field>
+        <field name="model">res.users.select_default_printer.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Default Printer">
+            	<group>
+					<field name="new_printer_id" />
+                </group>
+                <footer>
+                    <button name="select" string="Select" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_default_printer_select_osv" model="ir.actions.act_window">
+        <field name="name">Select Default Printer</field>
+        <field name="res_model">res.users.select_default_printer.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+	<menuitem id="menu_action_default_printer_select_osv"
+	    name="Select Printer"
+	    parent="config_sanitex_delivery.menu_routes_actions"
+	    action="action_default_printer_select_osv"
+	    sequence="50"/> 
+</data>
+</openerp>

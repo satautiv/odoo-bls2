@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>	       
+
+<!-- ****************** STOCK BY LOCATION ********************** -->
+
+        <record id="view_bls_product_location_stock_form" model="ir.ui.view">
+            <field name="name">sanitex.product.location.stock BLS form</field>
+            <field name="model">sanitex.product.location.stock</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_bls_stock_by_location_form"/>
+            <field name="arch" type="xml">
+            	<field name="location_id" position="before">
+					<field name="warehouse_id" />
+            	</field>
+            	<field name="qty_available" position="after">
+					<field name="uom_id" />
+            	</field>
+            </field>
+        </record>
+        
+        <record id="view_bls_product_location_stock_tree" model="ir.ui.view">
+            <field name="name">sanitex.product.location.stock BLS tree</field>
+            <field name="model">sanitex.product.location.stock</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_bls_stock_by_location_tree"/>
+            <field name="arch" type="xml">
+            	<field name="location_id" position="before">
+					<field name="warehouse_id" />
+            	</field>
+            	<field name="qty_available" position="after">
+					<field name="uom_id" />
+            	</field>
+            </field>
+        </record>
+        
+        <record id="view_bls_stock_by_location_search" model="ir.ui.view">
+			<field name="name">bls.stock.by.location search</field>
+			<field name="model">sanitex.product.location.stock</field>
+			<field name="mode">primary</field>
+			<field name="inherit_id" ref="config_sanitex_delivery.view_sanitex_product_location_stock_search"/>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<field name="qty_available" position="after">
+					<filter string="Warehouse" context="{'group_by':'warehouse_id'}"/>
+            	</field>
+			</field>
+		</record> 
+        
+        <record id="config_sanitex_delivery.action_bls_stock_by_location" model="ir.actions.act_window">
+		    <field name="name">Product Stock by Location</field>
+		    <field name="res_model">sanitex.product.location.stock</field>
+		    <field name="type">ir.actions.act_window</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">tree,form</field>
+		    <field name="domain">[('location_id.driver','!=',True)]</field>
+		    <field name="search_view_id" ref="config_bls_stock.view_bls_stock_by_location_search"/>
+		</record>
+		
+<!-- ****************** OWNER ********************** -->
+
+		<record id="view_bls_stock_product_owner_form" model="ir.ui.view">
+            <field name="name">view.bls.stock.product.owner.form</field>
+            <field name="model">product.owner</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_product_owner_form"/>
+            <field name="arch" type="xml">
+            	<field name="assign_manager_information" position="after">
+					<field name="document_edit_config_id" />
+            	</field>
+
+            </field>
+        </record>
+
+</data>
+</openerp>

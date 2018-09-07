@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+	<record id="view_print_cmr_document_wizard" model="ir.ui.view">
+        <field name="name">view.stock.route.create.cmr.osv</field>
+        <field name="model">stock.route.create.cmr.osv</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Print CMR">
+					<!--<field name="printer_id" options="{'no_create': True}" help="Printer which is going to print paper forms." context="{'search_printer_by_wh': True}"/>-->
+                <field name="document_ids">
+                    <tree string="Documents" editable="top">
+                        <field name="all_document_numbers" readonly="1"/>
+                        <field name="owner_id" readonly="1"/>
+                        <field name="line_count" readonly="1"/>
+                        <field name="picking_location_id" string="Status" readonly="1"/>
+                        <field name="partner_name" string="Customer" readonly="1"/>
+                        <field name="partner_address" string="Address" readonly="1"/>
+                        <field name="posid" readonly="1"/>
+                        <field name="cmr_status" required="1"/>
+                        <field name="state" invisible="1"/>
+                    </tree>
+                </field>
+				<footer>
+					<button name="create_cmr" string="Print CMR" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Close" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</data>
+</openerp>

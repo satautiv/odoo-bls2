@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="cron_fix_bad_sale" model="ir.cron">
+        <field name="name">Receive Tasks</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="sale.model_sale_order" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_fix_received_tasks()</field>
+    </record>
+
+    <record id="cron_fix_bad_sale_template" model="ir.cron">
+        <field name="name">Assign Route Template to Taks</field>
+        <field name="interval_number">20</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="sale.model_sale_order" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_fix_route_template_for_task()</field>
+    </record>
+
+</data>
+</openerp>

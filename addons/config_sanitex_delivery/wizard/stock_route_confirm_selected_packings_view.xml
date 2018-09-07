@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_packing_confirm_selected_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.packing.confirm_selected.osv.form</field>
+        <field name="model">stock.route.packing.confirm_selected.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Confirm Packing">
+				<field name="parent_route_id" invisible="1"/>
+            	<label for="packing_ids"/>
+                <field name="packing_ids" domain="[('state','=','draft'),('route_id','=',parent_route_id)]"/>
+                <footer>
+                    <button name="confirm" string="Confirm" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_packing_confirm_selected_osv" model="ir.actions.act_window">
+        <field name="name">Confirm Packing</field>
+        <field name="res_model">stock.route.packing.confirm_selected.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</data>
+</openerp>

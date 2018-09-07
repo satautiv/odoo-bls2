@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <template id="config_bls_stock.assets_backend" name="config_bls_stock assets" inherit_id="web.assets_backend" >
+	        <xpath expr="." position="inside" >
+	            <script type="text/javascript" src="/config_bls_stock/static/src/js/list_controller.js" ></script>
+	            <script type="text/javascript" src="/config_bls_stock/static/src/js/form_controller.js" ></script>
+	            <script type="text/javascript" src="/config_bls_stock/static/src/js/list_renderer.js" ></script>
+	            <script type="text/javascript" src="/config_bls_stock/static/src/js/view_manager.js" ></script>
+	            <script type="text/javascript" src="/config_bls_stock/static/src/js/action_manager.js" ></script>
+	        </xpath>
+	    </template>
+</odoo>	

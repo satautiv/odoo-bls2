@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="1">
+
+    <record id="empty_stok_location" model="stock.location">
+        <field name="name">No Driver</field>
+        <field name="usage">internal</field>
+    </record>
+
+    <record id="in_movement_stock_location" model="stock.location">
+        <field name="name">On The Way</field>
+        <field name="usage">internal</field>
+    </record>
+
+    <record id="driver_parent_location" model="stock.location">
+        <field name="name">Drivers</field>
+        <field name="usage">view</field>
+    </record>
+
+    <record id="dos_location" model="stock.location">
+        <field name="name">Dos Warehouse</field>
+        <field name="usage">internal</field>
+    </record>
+
+    <record id="stock_distribution_location" model="stock.location">
+        <field name="name">Stock Distribution Location</field>
+        <field name="usage">internal</field>
+    </record>
+
+    <record id="product.decimal_stock_weight" model="decimal.precision">
+        <field name="digits">4</field>
+    </record>
+
+
+
+    <!--record id="mt_route_stage" model="mail.message.subtype">
+        <field name="name">Route Draft</field>
+        <field name="res_model">stock.route</field>
+        <field name="default" eval="False"/>
+        <field name="description">Route Draft</field>
+    </record-->
+    
+</data>
+<data noupdate="1">
+    <!-- Orders -->
+
+    <record id="cron_run_intemediate_objects_1" model="ir.cron">
+        <field name="name">Process Intemediate Objects Orders</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateOrder'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_1_1" model="ir.cron">
+        <field name="name">Process Intemediate Objects Orders 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateOrder'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_13" model="ir.cron">
+        <field name="name">Process Intemediate Objects Orders 3</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateOrder'])</field>
+    </record>
+
+    <!-- Route -->
+    <record id="cron_run_intemediate_objects_2" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateRoute</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateRoute'])</field>
+    </record>
+
+    <!-- Invoice -->
+    <record id="cron_run_intemediate_objects_3" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateInvoice</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateInvoice'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_32" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateInvoice 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateInvoice'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_33" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateInvoice 3</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateInvoice'])</field>
+    </record>
+
+    <!-- Package -->
+
+    <record id="cron_run_intemediate_objects_4" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreatePackage</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreatePackage'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_42" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreatePackage 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreatePackage'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_43" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreatePackage 3</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreatePackage'])</field>
+    </record>
+
+
+    <!-- Products -->
+    <record id="cron_run_intemediate_objects_5" model="ir.cron">
+        <field name="name">Process Intemediate Objects create_packing</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['create_packing'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_52" model="ir.cron">
+        <field name="name">Process Intemediate Objects create_packing 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['create_packing'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_53" model="ir.cron">
+        <field name="name">Process Intemediate Objects create_packing 3</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['create_packing'])</field>
+    </record>
+
+    <!-- Client -->
+    <record id="cron_run_intemediate_objects_6" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateClient</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateClient'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_61" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateClient 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateClient'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_62" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateClient 3</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateClient'])</field>
+    </record>
+
+    <!-- POSID -->
+    <record id="cron_run_intemediate_objects_7" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreatePOSID</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreatePOSID'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_72" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreatePOSID 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreatePOSID'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_73" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreatePOSID 3</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreatePOSID'])</field>
+    </record>
+
+    <!-- Owner -->
+    <record id="cron_run_intemediate_objects_8" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateOwner</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateOwner'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_82" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateOwner 2</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateOwner'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_9" model="ir.cron">
+        <field name="name">Process Intemediate Objects IVAZexport</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['IVAZexport'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_10" model="ir.cron">
+        <field name="name">Process Intemediate Objects TareDocumentExport</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['TareDocumentExport'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_11" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateSupplierInvoice</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateSupplierInvoice'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_12" model="ir.cron">
+        <field name="name">Process Intemediate Objects OrderExternalPackets</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['OrderExternalPackets'])</field>
+    </record>
+
+    <record id="cron_run_intemediate_objects_14" model="ir.cron">
+        <field name="name">Process Intemediate Objects CreateDOSLocation</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_objects(types=['CreateDOSLocation'])</field>
+    </record>
+
+    <record id="cron_cron_remove_old_objects" model="ir.cron">
+        <field name="name">Remove Old Intemediate Objects</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="time.strftime('%Y-%m-%d 02:34:00')"/>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_remove_old_objects()</field>
+    </record>
+
+    <record id="cron_fix_bad_routes" model="ir.cron">
+        <field name="name">Extend Task for Routes</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_extend_task_for_released_routes()</field>
+    </record>
+
+    <record id="cron_delete_draft_corrections" model="ir.cron">
+        <field name="name">Delete not confirmed corections</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_packing_correction" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_unlink_old_draft_corrections()</field>
+    </record>
+    
+    <record id="cron_route_show_hidden_close_buttons" model="ir.cron">
+        <field name="name">Show Hidden Close Buttons in Route</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.show_hidden_close_buttons()</field>
+    </record>
+    
+    <record id="cron_report_stuck_integration_objs" model="ir.cron">
+        <field name="name">Integration Monitoring</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.report_stuck_integration_objs()</field>
+    </record>
+
+    <record id="cron_put_back_in_queue" model="ir.cron">
+        <field name="name">Put Back In Queue</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field eval="True" name="active"/>
+        <field ref="config_sanitex_delivery.model_stock_route_integration_intermediate" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_put_back_in_queue()</field>
+    </record>
+    
+</data>
+<data noupdate="1">
+
+    <record id="doc_type_inv" model="stock.package.document.type">
+        <field name="name">Sąskaita faktūra</field>
+        <field name="code">invoice</field>
+    </record>
+
+    <record id="doc_type_pick" model="stock.package.document.type">
+        <field name="name">Važtaraštis</field>
+        <field name="code">picking</field>
+    </record>
+
+    <record id="doc_type_cmr" model="stock.package.document.type">
+        <field name="name">CMR</field>
+        <field name="code">cmr</field>
+    </record>
+
+    <record id="doc_type_cert" model="stock.package.document.type">
+        <field name="name">Sertifikatas</field>
+        <field name="code">certificate</field>
+    </record>
+
+    <record id="doc_type_cert" model="stock.package.document.type">
+        <field name="name">ShipInvoice</field>
+        <field name="code">ShipInvoice</field>
+    </record>
+
+    <record id="temp_regular" model="stock.temperature">
+        <field name="name">Sausas (reg.)</field>
+        <field name="code">regular</field>
+    </record>
+
+    <record id="temp_cold" model="stock.temperature">
+        <field name="name">Šaldyti (-18)</field>
+        <field name="code">cold</field>
+    </record>
+
+    <record id="temp_term" model="stock.temperature">
+        <field name="name">Termo (+2+6)</field>
+        <field name="code">termo</field>
+    </record>
+
+    <record id="pack_type_euro" model="stock.package.type">
+        <field name="name">EURO Paletė</field>
+        <field name="code">euro</field>
+    </record>
+
+    <record id="pack_type_small" model="stock.package.type">
+        <field name="name">Smulki</field>
+        <field name="code">small</field>
+    </record>
+
+    <record id="pack_type_fin" model="stock.package.type">
+        <field name="name">FIN paletė</field>
+        <field name="code">fin</field>
+    </record>
+    
+</data>
+</openerp>

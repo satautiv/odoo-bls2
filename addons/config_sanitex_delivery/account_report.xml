@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="action_account_invoice_print_report" model="ir.actions.server">
+       <field name="name">Print Document</field>
+       <field name="type">ir.actions.server</field>
+       <field name="model_id" ref="account.model_account_invoice"/>
+       <field name="condition" eval="True" />
+       <field name="state">code</field>
+       <field name="sequence_no">10</field>
+       <field name="code">action = records.print_document_from_invoice()</field>
+       <field name="binding_model_id" ref="account.model_account_invoice"/>
+       <field name="binding_type">report</field>
+    </record>
+
+	<record id="account.account_invoices" model="ir.actions.report">
+	    <field name="menu" eval="False"/>
+	    <field name="binding_model_id"/>
+    </record>
+
+	<record id="account.account_invoices_without_payment" model="ir.actions.report">
+	    <field name="menu" eval="False"/>
+	    <field name="binding_model_id"/>
+    </record>
+
+</data>
+</openerp>

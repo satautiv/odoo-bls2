@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<t t-name="config_sanitex_delivey.user_warehouse">
+		<li class="dropdown" id="warehouse_dropdown">
+		    <a href="#" class="dropdown-toggle" id="a_open_warehouse_dropdown_menu"/>
+		    <ul class="dropdown-menu"/>
+	  	</li>
+	</t>
+	
+	<t t-name="config_sanitex_delivey.user_printer">
+		<li class="dropdown" id="printer_dropdown">
+		    <a href="#" class="dropdown-toggle" id="a_open_printer_dropdown_menu"/>
+		    <ul class="dropdown-menu"/>
+	  	</li>
+	  	
+	</t>
+
+	<t t-name="config_sanitex_delivey.user_region">
+		<li class="dropdown" id="region_dropdown">
+		    <a href="#" class="dropdown-toggle" id="a_open_region_dropdown_menu"/>
+		    <ul class="dropdown-menu"/>
+	  	</li>
+
+	</t>
+</templates>

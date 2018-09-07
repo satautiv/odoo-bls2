@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>	       
+
+        <record id="view_res_company_sanitex_packing_form" model="ir.ui.view">
+            <field name="name">res.company sanitex packing</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+					<page name="config" string="Configuration">
+						<group name="packaging_settings" string="Import">
+							<field name="packaging_category_id"/>
+							<field name="use_contract"/>
+							<field name="sanitex_owner_partner_id"/>
+							<field name="bls_owner_partner_id"/>
+							<field name="do_not_process_intermediate_objects"/>
+							<field name="log_cron"/>
+							<field name="cron_domain"/>
+							<field name="company_code"/>
+							<field name="unlinkt_old_objects_after_days"/>
+							<field name="default_account_id"/>
+							<field name="import_language"/>
+							<field name="use_new_numbering_method"/>
+						</group>
+						<button groups="base.group_no_one" name="open_statistics" type="object" string="Statistics" class="oe_link" />
+						<group name="ivaz_settings" string="IVAZ">
+							<field name="export_ivaz"/>
+							<field name="ivaz_export_server"/>
+							<field name="ivaz_export_token"/>
+							<field name="ivaz_source"/>
+						</group>
+						<group name="report_settings" string="Reports">
+							<field name="report_server"/>
+							<field name="report_language"/>
+							<field name="report_location"/>
+							<field name="loadlist_report_sender_id"/>
+							<field name="log_report_xml"/>
+							<field name="ssh_password" password="1"/>
+							<field name="delete_reports_after"/>
+							<field name="delete_report_history_after"/>
+							<field name="default_driver"/>
+							<field name="allowed_driver_ids"/>
+						</group>
+						<group name="tare_export_settings" string="Tare Export">
+							<field name="export_tare_document"/>
+							<field name="tare_export_server"/>
+							<field name="tare_export_token"/>
+							<field name="tare_export_source"/>
+						</group>
+						<group name="route_export_settings" string="Route Export">
+							<field name="limit_of_route_rest_export"/>
+							<field name="route_export_api_version"/>
+						</group>
+						<group name="old_objects" string="Old Object Removal">
+							<label for="delete_transportation_tasks_after"/>
+							<div class="o_row">
+								<field name="delete_transportation_tasks_after"/>
+								<label string=" using "/>
+								<field name="delete_transportation_tasks_using_date"/>
+							</div>
+							<label for="delete_invoices_after"/>
+							<div class="o_row">
+								<field name="delete_invoices_after"/>
+								<label string=" using "/>
+								<field name="delete_invoices_using_date"/>
+							</div>
+							<label for="delete_packages_after"/>
+							<div class="o_row">
+								<field name="delete_packages_after"/>
+								<label string=" using "/>
+								<field name="delete_packages_using_date"/>
+							</div>
+							<label for="delete_routes_after"/>
+							<div class="o_row">
+								<field name="delete_routes_after"/>
+								<label string=" using "/>
+								<field name="delete_routes_using_date"/>
+							</div>
+							<label for="delete_containers_after"/>
+							<div class="o_row">
+								<field name="delete_containers_after"/>
+								<label string=" using "/>
+								<field name="delete_containers_using_date"/>
+							</div>
+							<label for="delete_transportation_orders_after"/>
+							<div class="o_row">
+								<field name="delete_transportation_orders_after"/>
+								<label string=" using "/>
+								<field name="delete_transportation_orders_using_date"/>
+							</div>
+							<field name="log_delete_progress"/>
+						</group>
+						<group name="monitoring_settings" string="Monitoring">
+							<field name="stuck_integration_obj_time"/>
+							<field name="monitoring_server"/>
+							<field name="monitoring_token"/>
+						</group>
+						<group name="pod_integration_group" string="POD Integration">
+							<label string="Limits"/>
+							<field name="pod_integration_limit_ids" nolabel="1" colspan="2" style="width:30%;">
+								<tree string="Limits" editable="top">
+									<field name="function"/>
+									<field name="limit"/>
+								</tree>
+							</field>
+						</group>
+						<group name="language_synchronisation" string="Translations">
+							<field name="atlas_server_ids"/>
+						</group>
+						<group name="other_settings" string="Other Settings">
+							<field name="user_faster_export"/>
+						</group>
+					</page>
+            	</xpath>
+            	<xpath expr="//form" position="attributes">
+            		<attribute name="delete">0</attribute>
+            	</xpath>
+            </field>
+        </record>
+
+
+
+    <record id="statistics_integration_form" model="ir.ui.view">
+        <field name="name">statistics.integration.form</field>
+        <field name="model">statistics.integration</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Log">
+            	<sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Refresh" class="oe_stat_button" icon="fa-th-list" name="recount" type="object" />
+	               	</div>
+            		<group>
+		            	<field name="statistics_by"/>
+		            	<field name="value1"/>
+		            	<field name="value2"/>
+		            	<field name="value3"/>
+		            	<field name="last_update"/>
+            		</group>
+					<field name="statistics_line_ids">
+						<tree string="Lines">
+							<field name="function"/>
+							<field name="value1"/>
+							<field name="value2"/>
+		            		<field name="value3"/>
+						</tree>
+					</field>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="base.menu_action_res_company_form" model="ir.ui.menu">
+        <field eval="[(4, ref('base.group_system'))]" name="groups_id"/>
+    </record>
+
+	<record id="view_company_tree_no_delete_button_tree" model="ir.ui.view">
+		<field name="name">res.company no delete button</field>
+		<field name="model">res.company</field>
+		<field name="inherit_id" ref="base.view_company_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">29</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+   	<record id="action_res_company_form_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_company_tree_no_delete_button_tree"/>
+    	<field name="act_window_id" ref="base.action_res_company_form"/>
+	</record>
+
+    <record id="view_atlas_server_tree" model="ir.ui.view">
+        <field name="name">atlas.server.tree</field>
+        <field name="model">atlas.server</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Servers">
+            	<field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_atlas_server_search" model="ir.ui.view">
+        <field name="name">atlas.server.search</field>
+        <field name="model">atlas.server</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Servers">
+            	<field name="name"/>
+            	<field name="ip"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_atlas_server_form" model="ir.ui.view">
+        <field name="name">atlas.server.form</field>
+        <field name="model">atlas.server</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Servers">
+				<sheet>
+					<group>
+						<field name="name"/>
+						<field name="ip"/>
+						<field name="port"/>
+						<field name="database_ids">
+							<form string="Database">
+								<group>
+									<field name="name"/>
+									<field name="login"/>
+									<field name="password"/>
+									<field name="user_id"/>
+								</group>
+							</form>
+							<tree string="Databases">
+								<field name="name"/>
+							</tree>
+						</field>
+					</group>
+				</sheet>
+            </form>
+        </field>
+    </record>
+
+</data>
+</openerp>

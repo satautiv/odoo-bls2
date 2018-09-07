@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_location_import_osv_form" model="ir.ui.view">
+        <field name="name">stock.location.import.osv.form</field>
+        <field name="model">stock.location.import.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Import">
+            	<group>
+            		<field name="csv_file" />
+            	</group>
+        		 <footer>
+                    <button name="import_file" string="Import" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_location_import_osv" model="ir.actions.act_window">
+        <field name="name">Import</field>
+        <field name="res_model">stock.location.import.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_location"/>
+    </record>
+    
+</data>
+</openerp>

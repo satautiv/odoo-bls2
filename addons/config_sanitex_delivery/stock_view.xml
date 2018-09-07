@@ -1,0 +1,3001 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--record id="ir_menu_config_additional_identifier" model="ir.model.data">
+        <field name="complete_name">sandas_maintenance.menu_config</field>
+        <field name="module">sandas_maintenance</field>
+        <field name="name">menu_config</field>
+        <field name="model">ir.ui.menu</field>
+        <field name="res_id" ref="base_setup.menu_config"/>
+    </record-->
+
+    <menuitem id="base_routes" name="Routes" />
+   
+    <!--menuitem id="menu_routes_actions" parent="base_routes" name="Actions" sequence="4"/-->
+    <menuitem id="menu_picking_routes" parent="base_routes" name="Routes" sequence="3"/>
+   
+    <menuitem id="menu_sanitex_stocks" parent="base_routes" name="Reports" sequence="5" />
+
+    <record id="view_stock_routes_form" model="ir.ui.view">
+		<field name="name">stock.routes form</field>
+		<field name="model">stock.route</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Routes">
+                <header>
+      				<button name="confirm_and_print_all" type="object" string="Release and Print Documents" class="oe_highlight" states="draft"/>
+					<!--button string="Release Route" states="draft" name="action_release_confirm" type="object"/-->
+					<!--button string="Cancel Route" states="released" name="action_cancel" type="object"/-->
+					<button string="Close" name="action_close" type="object" attrs="{'invisible':['|',('hide_close_button','=',True),('state','!=','released')]}"/>
+					<field name="state" widget="statusbar" statusbar_colors='{"draft":"red","realesed":"blue"}' readonly="1"/>
+                </header>		    
+			    <sheet>
+				<div class="oe_right oe_button_box" name="buttons">
+                    <button string="Select Orders" class="oe_stat_button" icon="fa-th-list" name="%(action_stock_route_select_orders_osv)d" type="action" attrs="{'invisible': [('state','in',['closed','released'])]}" />
+                    <button string="Transfer Orders" class="oe_stat_button" icon="fa-share-square" name="%(action_stock_route_transfer_orders_osv)d" type="action" attrs="{'invisible': [('state','=','closed')]}" />
+                    <button string="Get Orders" class="oe_stat_button" icon="fa-plus-square" name="%(action_stock_route_get_orders_osv)d" type="action" attrs="{'invisible': [('state','=','closed')]}" />
+                    <button style="background-color: #99ff66 !important" string="Select Driver" class="oe_stat_button" icon="fa-automobile" name="%(action_stock_route_select_driver_osv)d" type="action" attrs="{'invisible': ['|',('state','in',['closed','released']),('driver_picked','=',False)]}" />
+                    <button string="Select Driver" class="oe_stat_button" icon="fa-automobile" name="%(action_stock_route_select_driver_osv)d" type="action" attrs="{'invisible': ['|',('state','in',['closed','released']),('driver_picked','=',True)]}" />
+                    <button string="Select Product" style="background-color: #99ff66 !important" class="oe_stat_button" icon="fa-th-list" name="%(action_stock_route_select_product_osv)d" type="action" attrs="{'invisible': ['|',('state','in',['closed','released']),('products_picked','=',False)]}" />
+                    <button string="Select Product" class="oe_stat_button" icon="fa-th-list" name="%(action_stock_route_select_product_osv)d" type="action" attrs="{'invisible': ['|',('state','in',['closed','released']),('products_picked','=',True)]}" />
+                    <!-- button style="background-color: #99ff66 !important" string="Generate Act" class="oe_stat_button" icon="fa-clipboard" name="action_product_act_generate" type="object" attrs="{'invisible': ['|',('state','in',['closed','released']),('packings_generated','=',False)]}" />
+                    <button string="Generate Act" class="oe_stat_button" icon="fa-clipboard" name="action_product_act_generate" type="object" attrs="{'invisible': ['|',('state','in',['closed','released']),('packings_generated','=',True)]}" /-->
+                    <button style="background-color: #99ff66 !important" string="Return Packing" class="oe_stat_button" icon="fa-step-backward" name="action_return_driver_packing" type="object" attrs="{'invisible': ['|',('state','in',['closed','draft']),('return_picking_created','=',False)]}" />
+                    <button string="Return Packing" class="oe_stat_button" icon="fa-step-backward" name="action_return_driver_packing" type="object" attrs="{'invisible': ['|',('state','in',['closed','draft']),('return_picking_created','!=',False)]}" />
+                    <button class="oe_stat_button" icon="fa-check-square-o" name="action_run_document_check_up" type="object" attrs="{'invisible': ['|',('fully_checked','=',True),('state','in',['draft'])]}">
+						<div class="o_field_widget o_stat_info">
+							<span class="o_stat_text">Doc. Check-Up</span>
+							<span class="o_stat_value"><field name="document_count_left_to_check_info_line" nolabel="1" widget="statinfo"/></span>
+						</div>
+					</button>
+					<button string="Document Check-Up" style="background-color: #99ff66 !important"  class="oe_stat_button" icon="fa-check-square-o" name="action_run_document_check_up" type="object" attrs="{'invisible': ['|',('fully_checked','=',False),('state','in',['draft'])]}"/>
+					<button string="Add/remove Tare" class="oe_stat_button" icon="fa-th-list" name="action_add_remove_object" type="object" attrs="{'invisible': ['|',('state','in',['closed','draft'])]}" />
+					<button string="Trans. Prod.(WH/Route)" class="oe_stat_button" icon="fa-automobile" name="%(action_stock_route_transfer_product_to_wh_osv)d" type="action" attrs="{'invisible': [('state','in',['closed','draft'])]}" />
+               	</div>                  	              	
+                    <div class="oe_title" style="width:55%">
+	                    <h1 style="display: inline-block;width:30%">
+	                        <label string="Route"/>
+	                        <field name="name" class="oe_inline" readonly="1"/>
+	                    </h1>
+	                    <h1 style="display: inline-block;width:30%">
+	                       <label string="Date"/>
+	                       <field name="date" class="oe_inline" default_focus="1"/>
+ 						</h1>
+	                    <h1 style="display: inline-block;width:30%">
+	                      <label string="ID"/>
+	                        <field name="route_id_str"/>
+	                    </h1>
+                    </div>  
+				    <group col="3">
+					    <group>
+		                    <!-- field name="type" on_change="on_change_route_type(type)"/-->
+		                    <label for="type" class="o_form_label" style="width: 50%;"/><span style="font-size: 150%;"><field nolabel="1" name="type" on_change="on_change_route_type(type)" style="width: 50%;"/> </span>					   
+			                <field name="receiver"/>
+	                        <field name="warehouse_id" on_change="on_change_source_warehouse(warehouse_id)" required="1"/>
+	                        <field name="region_id" readonly="1" attrs="{'invisible': [('region_id','=',False)]}"/>
+			                <field name="source_location_id" context="{'related_warehouse_id': warehouse_id}" attrs="{'readonly': [('warehouse_id','=',False)], 'required': [('type','=','out')]}"/>
+			                <field name="destination_filled" invisible="1" />
+	                        <!-- field name="destination_warehouse_id" context="{'get_all_warehouses': True}" attrs="{'required': [('type','in',['internal', 'mixed'])], 'readonly': [('type','=','out')], 'invisible': [('type','in',['out'])]}"/-->
+	                        <label for="destination_warehouse_id" class="o_form_label" style="width: 50%;" attrs="{'invisible': [('type','in',['out'])]}"/><span style="font-size: 150%;"><field nolabel="1" name="destination_warehouse_id" context="{'get_all_warehouses': True}" attrs="{'required': [('type','in',['internal', 'mixed'])], 'readonly': [('type','=','out')], 'invisible': [('type','in',['out'])]}" style="width: 50%;"/></span>
+	                        <field name="return_location_id" context="{'related_warehouse_id': warehouse_id}" domain="[('driver','=',False),('usage','=','internal')]" />
+ 			                <field name="hide_close_button" invisible="1"/>
+ 			                <field name="fully_checked" invisible="1"/>
+					    </group>
+					    <group>					  
+	                        <field name="sender1_id"/>
+                            <field name="location_id" class="oe_inline" context="{'form_view_ref':'config_sanitex_delivery.view_stock_location_form'}"/>
+		        			<field name="driver_name" attrs="{'invisible': [('driver_name','=',False)]}"/>
+		        			<field name="license_plate"/>	
+		        			<field name="trailer"/> 
+		        			<field name="driver_company_id"/> 
+			      		<field name="weight" readonly="1"/>                      
+	                    </group> 
+	                    <group>
+		                    <field name="release_user_id" string="User"/>
+			                <field name="departure_time" string="Date, time"/>
+			                <field name="return_time"/>
+					    </group>
+				    </group>
+                    <notebook>
+                        <page string="Tasks">
+                        	<label for="sale_ids"/>
+                        	<button string="Assign Intermediate Warehouse" states="draft" class="oe_highlight" name="action_assign_intermediate_route" type="object" />
+		                    <field name="sale_ids" widget="many2many" domain="[('has_related_document','=',True)]" context="{'check_for_replanned_tasks': active_id, 'search_by_user_sale': True, 'form_view_ref':'config_sanitex_delivery.view_sale_order_route_bls_form', 'tree_view_ref': 'config_sanitex_delivery.view_sale_order_route_colors_tree'}"/>
+                        	<label for="move_ids"/>
+							<field name="picking_number" class="oe_inline" invisible="0"/>
+							<field name="return_picking_number" class="oe_inline" invisible="1"/>
+		                    <notebook dynamic_tags_by="related_moves">
+                        		<page string="">
+									<field name="related_move_ids" context="{'tree_view_ref': 'config_sanitex_delivery.view_stock_move_sanitex_tree9'}"/>
+								</page>
+							</notebook>
+                            <div class="oe_clear"/>
+                            <field name="description" class="oe_inline" placeholder="Description..."/>               
+                        </page>
+                        <page string="Packing for client" info_field="number_of_packing_for_client_lines">
+                       	    <field name="number_of_packing_for_client_lines" invisible="1"/>
+                        	<label for="packing_for_client_ids"/>
+							<button string="Confirm Packings" states="released" class="oe_highlight" name="action_confirm_packings" type="object" />
+		                    <field name="packing_for_client_ids" context="{'wh_for_packing': warehouse_id, 'sale_ids_for_partner_search': sale_ids}" />
+                       	</page> 
+                       	<page string="Tare Pickings" groups="base.group_erp_manager">
+						    <group string="Pickings for driver">
+				                <field name="picking_ids"/>
+	                        	<field name="in_picking_id"/>
+						    </group>
+                       		<label for="transfer_to_route_id"/>
+	                        <field name="transfer_to_route_id" /> 
+						    <group string="Pickings from driver">
+				                <field name="returned_picking_ids"/>
+		                        <field name="out_picking_id"/>
+						    </group>
+                       		<label for="to_wh_or_route_picking_ids"/>
+	                        <field name="to_wh_or_route_picking_ids" />
+	                        <button string="Open Internal Routes" class="oe_highlight" name="open_internal_routes" type="object" />
+						    <group>
+	                        	<field name="company_id" />
+	                        	<field name="external_route_id" />
+	                        	<field name="intermediate_id" />
+						    </group>
+	                        <field name="related_picking_ids" />
+
+                       	</page>
+                       	<page string="Packages">
+                       		<!--label for="collection_package_ids"/>
+                       		<field name="collection_package_ids"/>
+                       		<label for="delivery_package_ids"/>
+                       		<field name="delivery_package_ids"/-->
+                       		<label for="container_line_ids"/>
+                       		<field name="container_line_ids">
+                       			<tree string="Containers">
+                       				<field name="container_id"/>
+                       				<field name="state"/>
+                       			</tree>
+                       		</field>
+                       	</page>
+                       	<page string="Documents">
+                        	<label for="invoice_ids"/>
+                       		<field name="invoice_ids" context="{'form_view_ref':'config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create', 'check_for_replanned_tasks': active_id, 'tree_view_ref': 'config_sanitex_delivery.view_account_invoice_bls_route_documents_tree'}" />
+							<group string="Reports">
+								<field name="drections_for_drive_report"/>
+							</group>
+                       	</page>
+                       	<page string="History">
+							<group string="Reports">
+								<field name="id_version"/>
+								<field name="version_id"/>
+								<field name="fully_checked"/>
+								<field name="last_user_to_reset_scannig_id"/>
+								<field name="scanning_reset_datetime"/>
+							</group>
+                    		<field name="message_ids" widget="mail_thread"/>
+                       		<field name="driver_picked" invisible="1"/>
+                       		<field name="packings_generated" invisible="1"/>
+                       		<field name="products_picked" invisible="1"/>
+                       		<field name="return_picking_created" invisible="1"/>
+                       		<field name="document_count" invisible="1"/>
+                       		<field name="document_count_left_to_check" invisible="1"/>
+                       	</page>
+                    </notebook>				    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+    
+    
+    
+    <record id="view_stock_routes_tree" model="ir.ui.view">
+		<field name="name">stock.route tree</field>
+		<field name="model">stock.route</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Routes">
+				<field name="route_id_str"/>
+		        <field name="receiver"/>
+		        <field name="name"/>
+		        <field name="date"/>
+		        <field name="departure_time"/>
+		        <field name="location_id"/>	
+		        <field name="license_plate"/>
+				<field name="sale_count" string="Orders"/>
+		        <field name="type"/>
+		        <field name="warehouse_id"/>
+		        <field name="destination_warehouse_id"/>
+				<field name="source_location_id"/>
+				<field name="act_status"/>
+		        <field name="state"/>		
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_routes_search" model="ir.ui.view">
+		<field name="name">stock.route search</field>
+		<field name="model">stock.route</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Routes">
+		        <field name="receiver"/>
+                <field name="name"/>
+                <field name="location_id"/>
+		        <field name="date"/>	
+		        <field name="state"/>
+		        <field name="warehouse_id"/>
+		        <field name="destination_warehouse_id"/>
+                <separator/>
+                <filter string="Draft Routes" domain="[('state','=','draft')]" name="draft_state"/> 
+                <filter string="Send Routes" domain="[('state','=','released')]" name="released_state"/>
+                <filter string="Current" name="current" context="{'get_current_routes': True}"/>
+                <filter string="Not Colsed" name="not_closed_state" domain="[('state','!=','closed')]"/>
+		    </search>
+		</field>
+	</record>
+	
+		    
+	<record id="action_outgoing_stock_routes" model="ir.actions.act_window">
+	    <field name="name">Outgoing Routes</field>
+	    <field name="res_model">stock.route</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="search_view_id" ref="config_sanitex_delivery.view_stock_routes_search"/>
+		<field name="context">{'no_closed_edit': True, 'search_default_not_closed_state': 1, 'search_by_user': True, 'search_by_user_type': 'outgoing', 'search_by_user_sale': False, 'remove_task_from_route': True, 'hide_print_button': True, 'close_routes_btn': True}</field>
+	</record>
+	
+   	<record id="action_stock_routes_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_routes_tree"/>
+    	<field name="act_window_id" ref="action_outgoing_stock_routes"/>
+	</record>	
+	
+	<record id="action_stock_routes_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_stock_routes_form"/>
+    	<field name="act_window_id" ref="action_outgoing_stock_routes"/>
+	</record>
+	
+	<menuitem id="menu_outgoing_action_stock_routes"
+	    name="Outgoing Routes"
+	    parent="menu_picking_routes"
+	    action="action_outgoing_stock_routes"
+	    sequence="4"/>
+
+
+
+	<record id="action_outgoing_stock_routes_all" model="ir.actions.act_window">
+	    <field name="name">All Routes</field>
+	    <field name="res_model">stock.route</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+		<field name="context"/>
+	</record>
+
+   	<record id="action_stock_all_routes_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_routes_tree"/>
+    	<field name="act_window_id" ref="action_outgoing_stock_routes_all"/>
+	</record>
+
+	<record id="action_stock_all_routes_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_stock_routes_form"/>
+    	<field name="act_window_id" ref="action_outgoing_stock_routes_all"/>
+	</record>
+
+
+	<menuitem id="menu_action_sanitex_all_routes_menu"
+	    name="Routes"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_outgoing_stock_routes_all"
+	    sequence="5"/>
+
+
+<!-- Incoming Routes -->
+
+    <record id="view_stock_incoming_routes_tree" model="ir.ui.view">
+		<field name="name">stock.route tree</field>
+		<field name="model">stock.route</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Routes" create="0">
+		    	<field name="route_id_str"/>
+		        <field name="receiver"/>
+		        <field name="name"/>
+		        <field name="date"/>
+		        <field name="departure_time"/>
+		        <field name="location_id"/>	
+		        <field name="license_plate"/>
+				<field name="sale_count" string="Orders"/>
+		        <field name="type"/>
+			    <field name="warehouse_id"/>
+			    <field name="destination_warehouse_id"/>
+				<field name="source_location_id"/>
+		        <field name="state" invisible="1"/>				
+		        <field name="state_receive"/>
+		    </tree>
+		</field>
+	</record>
+
+    <record id="view_stock_incoming_routes_form" model="ir.ui.view">
+		<field name="name">stock.routes form</field>
+		<field name="model">stock.route</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Routes" create="0" edit="0">
+                <header>
+	                    <button name="action_receive" type="object" string="Receive" class="oe_highlight" states="released"/>
+		        		<field name="state" invisible="1"/>				
+	                    <field name="state_receive" widget="statusbar" readonly="1"/>            
+                </header>		    
+			    <sheet>                	
+                    <div class="oe_title" style="width:55%">
+	                    <h1 style="display: inline-block;width:30%">
+	                        <label string="Route"/>
+	                        <field name="name" class="oe_inline" readonly="1"/>
+	                    </h1>
+	                    <h1 style="display: inline-block;width:30%">
+	                       <label string="Date"/>
+	                       <field name="date" class="oe_inline" readonly="1"/>
+ 						</h1>
+ 						<h1 style="display: inline-block;width:30%">
+	                      <label string="ID"/>
+	                        <field name="route_id_str"/>
+	                    </h1>
+                    </div>  
+				    <group col="3">
+					    <group>
+		                    <label for="type" class="o_form_label" style="width: 50%;"/><span style="font-size: 150%;"><field nolabel="1" name="type" on_change="on_change_route_type(type)" readonly="1" style="width: 50%;"/> </span>					   
+			                <field name="receiver" readonly="1"/>
+	                        <field name="warehouse_id" on_change="on_change_source_warehouse(warehouse_id)" readonly="1"/>
+	                        <field name="region_id" readonly="1" attrs="{'invisible': [('region_id','=',False)]}"/>
+			                <field name="source_location_id" context="{'related_warehouse_id': warehouse_id}" readonly="1"/>
+			                <field name="destination_filled" invisible="1" />
+	                        <label for="destination_warehouse_id" attrs="{'invisible': [('type','in',['out','mixed'])]}" class="o_form_label" style="width: 50%;"/><span style="font-size: 150%;"><field nolabel="1" name="destination_warehouse_id" context="{'get_all_warehouses': True}" attrs="{'required': [('type','=','internal')], 'readonly': ['|',('destination_filled','=',True),('type','=','out')], 'invisible': [('type','in',['out','mixed'])]}" readonly="1" style="width: 50%;"/></span>
+	                        <field name="return_location_id" domain="[('driver','=',False),('usage','=','internal')]" readonly="1" />
+ 			                
+					    </group>
+					    <group>					  
+	                        <field name="sender1_id" readonly="1"/>
+                            <field name="location_id" class="oe_inline" context="{'form_view_ref':'config_sanitex_delivery.view_stock_location_form'}" readonly="1"/>
+		        			<field name="driver_name" attrs="{'invisible': [('driver_name','=',False)]}" readonly="1"/>
+		        			<field name="license_plate" readonly="1"/>	
+		        			<field name="trailer" readonly="1"/> 
+		        			<field name="driver_company_id" readonly="1"/> 
+			      		<field name="weight" readonly="1"/>                      
+	                    </group> 
+	                    <group>
+							<field name="release_user_id" string="User"/>
+			                <field name="departure_time" string="Date, time"/>
+			                <field name="return_time"/>
+					    </group>
+				    </group>
+                    <notebook>
+                        <page string="Documents">
+                        	<label for="sale_ids"/>
+		                    <field name="sale_ids" domain="[('state','not in',['cancel'])]" widget="many2many" readonly="1" context="{'search_by_user_sale': False, 'tree_view_ref': 'config_sanitex_delivery.view_sale_order_route_colors_tree', 'form_view_ref':'config_sanitex_delivery.view_sale_order_route_bls_form'}"/>
+                       	</page>
+                       	<page string="Packages">
+                       		<!--label for="collection_package_ids"/>
+                       		<field name="collection_package_ids"/>
+                       		<label for="delivery_package_ids"/>
+                       		<field name="delivery_package_ids"/-->
+                       		<label for="container_line_ids"/>
+                       		<field name="container_line_ids">
+                       			<tree string="containers">
+                       				<field name="container_id"/>
+                       				<field name="state"/>
+                       			</tree>
+                       		</field>
+                       	</page>
+                       	<page string="Documents">
+                        	<label for="invoice_ids"/>
+                       		<field name="invoice_ids" context="{'tree_view_ref': 'account.invoice_tree'}" />
+                       	</page>
+                       	<page string="History">  
+                    		<field name="message_ids" widget="mail_thread"/>
+                       		<field name="driver_picked" invisible="1"/>
+                       		<field name="packings_generated" invisible="1"/>
+                       		<field name="products_picked" invisible="1"/>
+                       	</page>                
+                    </notebook>				    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+
+    <record id="view_stock_routes_search_incoming" model="ir.ui.view">
+		<field name="name">stock.route search Incoming</field>
+		<field name="model">stock.route</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Routes">
+		        <field name="receiver"/>
+                <field name="name"/>
+                <field name="location_id"/>
+		        <field name="date"/>
+		        <field name="state"/>
+		        <field name="warehouse_id"/>
+		        <field name="destination_warehouse_id"/>
+                <separator/>
+                <filter string="Draft Routes" domain="[('state','=','draft')]" name="draft_state"/>
+                <filter string="Send Routes" domain="[('state','=','released')]" name="released_state"/>
+                <filter string="Current" name="current" context="{'get_current_routes': True}"/>
+                <filter string="Incoming" name="incoming" context="{'get_incoming_routes': True}"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_routes" model="ir.actions.act_window">
+	    <field name="name">Incoming Routes</field>
+	    <field name="res_model">stock.route</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="search_view_id" ref="config_sanitex_delivery.view_stock_routes_search_incoming"/>
+	    <field name="view_mode">tree,form</field>
+		<field name="context">{'check_for_replanned_tasks': True, 'no_closed_edit': True, 'search_default_incoming': 1, 'search_by_user': True, 'search_by_user_type': 'incoming', 'search_by_user_sale': False, 'hide_print_button': True}</field>
+	</record>
+	
+   	<record id="action_incoming_stock_routes_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_incoming_routes_tree"/>
+    	<field name="act_window_id" ref="action_stock_routes"/>
+	</record>
+	
+	<record id="action_incoming_stock_routes_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_stock_incoming_routes_form"/>
+    	<field name="act_window_id" ref="action_stock_routes"/>
+	</record>
+	
+	<menuitem id="menu_action_stock_routes"
+	    name="Incoming Routes"
+	    parent="menu_picking_routes"
+	    action="action_stock_routes"
+	    sequence="5"/>
+		    
+	
+	<record id="menu_action_stock_my_warehouse_not_released_routes" model="ir.actions.act_window">
+	    <field name="name">My Warehouse Not Released Routes</field>
+	    <field name="res_model">stock.route</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="domain">[('state','=','draft')]</field>
+	</record>
+	
+	<!--menuitem id="menu_menu_action_stock_my_warehouse_not_released_routes"
+	    name="My Warehouse Not Released Routes"
+	    parent="menu_picking_routes"
+	    action="menu_action_stock_my_warehouse_not_released_routes"
+	    sequence="5"/--> 
+
+	<record id="action_stock_routes_draft" model="ir.actions.act_window">
+	    <field name="name">Draft My Warehouse Stock Routes</field>
+	    <field name="res_model">stock.route</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="domain">[('state','=','draft')]</field>
+	</record>
+	
+	<!--menuitem id="menu_action_stock_routes_draft"
+	    name="Draft My Warehouse Routes"
+	    parent="menu_picking_routes"
+	    action="action_stock_routes_draft"
+	    sequence="5"/--> 
+	    
+        <!-- record id="view_stock_picking_locations" model="ir.ui.view">
+            <field name="name">stock.picking Locations</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                	<attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                	<attribute name="invisible">0</attribute>
+                </xpath>
+            </field>
+        </record-->	
+	    
+        <record id="view_stock_move_sanitex_tree" model="ir.ui.view">
+            <field name="name">stock.move Sanitex Tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uom']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="replace">
+                </xpath>
+                <!--xpath expr="//field[@name='string_availability_info']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='product_uos_qty']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='product_uos']" position="replace">
+                </xpath-->
+                <xpath expr="//field[@name='state']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="before">
+                	<field name="product_code"/>
+                </xpath>
+                <!--xpath expr="//button[@type='action']" position="replace">
+                </xpath-->
+            </field>
+        </record>
+        
+	    <record id="view_stock_move_sanitex_tree9" model="ir.ui.view">
+			<field name="name">stock.move sanitex tree9</field>
+			<field name="model">stock.move</field>
+			<field name="type">tree</field>
+			<field name="priority">16</field>
+			<field name="arch" type="xml">
+				<tree string="Moves">
+					<field name="id" invisible="1"/>
+					<field name="reference" invisible="0"/>
+					<field name="product_code"/>
+					<field name="product_id"/>
+					<field name="product_uom_qty"/>
+					<field name="state" invisible="1"/>
+			    </tree>
+			</field>
+		</record>
+        
+	    <record id="view_stock_move_sanitex_form" model="ir.ui.view">
+			<field name="name">stock.move sanitex form</field>
+			<field name="model">stock.move</field>
+			<field name="type">form</field>
+			<field name="priority">2</field>
+			<field name="arch" type="xml">
+				<form string="Move">
+					<sheet>
+						<group>
+							<field name="product_code"/>
+							<field name="product_id"/>
+							<field name="product_uom_qty"/>
+							<field name="price_unit"/>
+							<field name="picking_id"/>
+							<field name="state" invisible="1"/>
+						</group>
+					</sheet>		
+			    </form>
+			</field>
+		</record>
+		
+		<record id="view_stock_move_reconcile_form3" model="ir.ui.view">
+            <field name="name">stock.move Sanitex reconcile 3</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+					<notebook colspan="4">
+						<page string="Info">
+						</page>
+						<page string="Reconcile">
+							<group>
+								<field name="open"/>
+								<field name="left_qty"/>
+							</group>
+							<label for="reconcile_to_ids"/>
+							<field name="reconcile_to_ids" colspan="4">
+								<tree>
+									<field name="move_to_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_to_id"  context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+							<label for="reconcile_from_ids"/>
+							<field name="reconcile_from_ids" colspan="4">
+								<tree>
+									<field name="move_from_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_from_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+						</page>
+					</notebook>
+                </xpath>
+            </field>
+        </record>
+		
+		<record id="view_stock_move_reconcile_form2" model="ir.ui.view">
+            <field name="name">stock.move Sanitex reconcile 2</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+					<notebook colspan="4">
+						<page string="Info">
+						</page>
+						<page string="Reconcile">
+							<group>
+								<field name="open"/>
+								<field name="left_qty"/>
+							</group>
+							<label for="reconcile_to_ids"/>
+							<field name="reconcile_to_ids" colspan="4">
+								<tree>
+									<field name="move_to_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_to_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+							<label for="reconcile_from_ids"/>
+							<field name="reconcile_from_ids" colspan="4">
+								<tree>
+									<field name="move_from_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_from_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+						</page>
+					</notebook>
+                </xpath>
+            </field>
+        </record>
+		
+        <!--record id="view_stock_move_reconcile_form" model="ir.ui.view">
+            <field name="name">stock.move Ssanitex reconcile</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='quants_grp']" position="after">
+					<notebook colspan="4">
+						<page string="Info">
+						</page>
+						<page string="Reconcile">
+							<group>
+								<field name="open"/>
+								<field name="left_qty"/>
+							</group>
+							<label for="reconcile_to_ids"/>
+							<field name="reconcile_to_ids" colspan="4">
+								<tree>
+									<field name="move_to_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_to_id"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+							<label for="reconcile_from_ids"/>
+							<field name="reconcile_from_ids" colspan="4">
+								<tree>
+									<field name="move_from_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_from_id"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+						</page>
+					</notebook>
+                </xpath>
+            </field>
+        </record-->	
+		
+	    <record id="stock.view_move_form" model="ir.ui.view">
+			<field name="priority">3</field>
+		</record>
+		
+		<record id="view_stock_move_sanitex_alternative_tree" model="ir.ui.view">
+				<field name="name">stock.move sanitex alt tree</field>
+				<field name="model">stock.move</field>
+				<field name="type">tree</field>
+				<field name="priority">100</field>
+				<field name="arch" type="xml">
+				    <tree string="Moves">
+	                	<field name="product_code"/>
+	                	<field name="product_id"/>
+	                	<field name="product_qty"/>
+				        <field name="location_id"/>
+				        <field name="location_dest_id"/>	
+				        <field name="date"/>		
+				        <field name="address_id"/>	
+				        <field name="state"/>		
+				    </tree>
+				</field>
+			</record>
+<!-- Stock Location -->
+	    
+        <record id="view_stock_location_list" model="ir.ui.view">
+            <field name="name">stock.location</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="usage" position="before">
+                    <field name="code"/>  
+                    <field name="gate_id"/>
+                    <field name="load_address"/>
+                </field>
+                <field name="return_location" position="after">
+                    <field name="mismatch_location"/>  
+                    <field name="product_exchange_location"/>          
+                </field>
+            </field>
+        </record>	    
+
+        <record id="view_stock_warehouse_form" model="ir.ui.view">
+            <field name="name">stock.warehouse</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="attributes">
+                	<attribute name="string">Code</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[2]/group/group[1]" position="replace">
+                    <group name="locations" string="Locations">
+                        <field name="wh_output_stock_loc_id" context="{'related_warehouse_id': active_id}" string="Realease Location" readonly="0" domain="[('driver','=',False)]"/>
+                        <field name="wh_return_stock_loc_id" context="{'related_warehouse_id': active_id}" readonly="0"  domain="[('driver','=',False)]"/>
+                        <field name="wh_mismatch_loc_id" context="{'related_warehouse_id': active_id}" domain="[('mismatch_location','=',True),('driver','=',False)]"/>
+                        <field name="product_exchange_location_id" context="{'related_warehouse_id': active_id}" domain="[('product_exchange_location','=',True),('driver','=',False)]" />
+                        <field name="lot_stock_id" readonly="0" required="0"  domain="[('driver','=',False)]"/>
+                    </group>
+                </xpath>
+                <xpath expr="//notebook/page[2]/group/group[2]" position="replace">
+                    <group name="types" string="Picking Types" invisible="1">
+                        <field name="in_type_id" readonly="0"/>
+                        <field name="int_type_id" readonly="0"/>
+                        <field name="pick_type_id" readonly="0"/>
+                        <field name="pack_type_id" readonly="0"/>
+                        <field name="out_type_id" readonly="0"/>
+                    </group>
+                </xpath>
+                <!--<xpath expr="//notebook//group[@name='locations']" position="before">-->
+                    <!--<group name="sequences" string="Sequences">-->
+                        <!--<field name="sequence_for_route_id" />-->
+                        <!--<field name="sequence_for_driver_picking_id" />-->
+                        <!--<field name="sequence_for_client_packing_id" />-->
+                        <!--<field name="sequence_for_corection_id" />-->
+                    <!--</group>-->
+                <!--</xpath>-->
+				<xpath expr="//notebook/page[2]/group" position="before">
+					<separator string="Sequences"/>
+					<field name="document_setting_line_ids">
+						<tree string="Document Types">
+							<field name="name"/>
+							<field name="active_lines"/>
+							<field name="inactive_lines"/>
+						</tree>
+						<form string="Document Type">
+							<group>
+								<field name="document_type_settings_ids" options="{'no_create': True}" widget="many2many_tags" domain="[('sequence_by','=','wh')]"/>
+							</group>
+							<label for="sequences_ids"/>
+							<field name="sequences_ids">
+								<tree string="Sequences" editable="top" decoration-muted="number_next_actual&gt;last_number" default_Order="priority">
+									<field name="priority"/>
+									<field name="prefix" required="1"/>
+									<field name="number_next_actual"/>
+									<field name="last_number"/>
+									<field name="left_qty" readonly="1" zero_to_dash="1"/>
+									<field name="padding" readonly="1"/>
+									<field name="finished" invisible="1"/>
+								</tree>
+							</field>
+						</form>
+					</field>
+				</xpath>
+                <xpath expr="//notebook/page[2]" position="attributes">
+					<attribute name="groups"></attribute>
+                </xpath>
+                <xpath expr="//notebook/page[1]" position="attributes">
+                	<attribute name="string">Warehouse Configuration</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[1]" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[1]" position="before">
+                	<page string="Product List">
+                		<group>
+	                    	<field name="region_id"/>
+                		</group>
+                		<label for="product_ids"/>
+	                    <field name="product_ids" domain="[('type_of_product','=','package')]"/> 
+                		<label for="responsible_user_ids"/>
+	                    <field name="responsible_user_ids"/>
+						<group>
+	                    	<field name="printer_ids" widget="many2many_tags"/>
+						</group>
+                	</page>  
+                </xpath> 
+                <xpath expr="//notebook" position="inside">
+                   	<page string="History">  
+                		<field name="message_ids" widget="mail_thread"/>
+                   	</page>
+                </xpath>
+                <xpath expr="//notebook" position="attributes">
+                	<attribute name="groups"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form" position="attributes">
+                	<attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_warehouse_tree" model="ir.ui.view">
+            <field name="name">stock.warehouse.tree BLS</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                	<field name="wh_return_stock_loc_id"/>
+					<field name="region_id"/>
+					<field name="active"/>
+                </xpath>
+            </field>
+        </record>
+
+		<record id="view_stock_warehouse_tree_no_delete_button_tree" model="ir.ui.view">
+			<field name="name">stock.warehouse.tree BLS no delete button</field>
+			<field name="model">stock.warehouse</field>
+			<field name="inherit_id" ref="view_stock_warehouse_tree"/>
+			<field name="mode">primary</field>
+			<field name="priority">24</field>
+			<field name="arch" type="xml">
+				<xpath expr="//tree" position="attributes">
+					<attribute name="delete">0</attribute>
+				</xpath>
+			</field>
+		</record>
+
+   	<record id="action_view_stock_warehouse_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_warehouse_tree_no_delete_button_tree"/>
+    	<field name="act_window_id" ref="stock.action_warehouse_form"/>
+	</record>
+
+	<record id="stock.action_warehouse_form" model="ir.actions.act_window">
+	    <field name="context">{'warehouse_menu': True}</field>
+	    <field name="domain">[('dos_warehouse','=',False)]</field>
+	</record>
+	              
+<!-- Stock Packing -->
+	          
+    <!--menuitem 
+    	id="base_loading" 
+    	name="Loading" /-->
+   
+    <!--menuitem 
+    	id="menu_return_from_client" 
+    	parent="base_routes" 
+    	name="Loading" /--> 
+	
+	<record id="view_stock_packing_form" model="ir.ui.view">
+		<field name="name">stock.packing form</field>
+		<field name="model">stock.packing</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Packing" create="0">
+                <header>
+                    <button name="action_done" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_colors="{'draft':'red','done':'blue'}" />
+                </header>		    
+			    <sheet>
+                    <group>
+                    	<div>
+                    		<h2 style="margin-top: 0px;">
+                    			<label for="number" class="oe_inline" attrs="{'invisible': [('number','=',False)]}"/>
+                    			<field name="number" class="oe_inline" attrs="{'invisible': [('number','=',False)]}"/>
+                    		</h2>
+                    		<h2 style="margin-top: 0px;">
+                    			<label for="partner_id" class="oe_inline"/>
+                    			<field name="partner_id" domain="[('id','in',domain_partner_ids)]" class="oe_inline" readonly="context.get('no_edit', False)" attrs="{'readonly': [('route_state','!=','draft')]}"/>
+                    			<field name="address_id" domain="[('parent_id','=',partner_id),('id','in',domain_address_ids)]" class="oe_inline"  readonly="context.get('no_edit', False)" attrs="{'readonly': [('route_state','!=','draft')]}"/>
+                    		</h2>
+                    	</div>
+                    </group>    
+				    <group>
+				    	<field name="route_id" invisible="1"/>	
+				    	<field name="domain_partner_ids" invisible="1" />
+				    	<field name="domain_address_ids" invisible="1"/>
+				    	<field name="warehouse_id" invisible="1"/>
+				    	<field name="owner_id"/>
+		                <field name="manual_packing" readonly="context.get('no_edit', False)"/>
+		                <field name="route_state" invisible="1"/>
+	                </group>
+                	<notebook>
+                		<page string="Lines">
+			                <label for="line_ids" />
+	                        <field name="line_ids" readonly="context.get('no_edit', False)">
+	                        	<tree string="Lines" editable="bottom">
+	                        		<field name="product_code"/>
+	                        		<field name="product_id" domain="[('type_of_product','=','package')]" context="{'search_by_warehouse_id': parent.warehouse_id}" readonly="1"/>
+	                        		<field name="final_qty"/>
+	                        		<field name="product_filled" invisible="1"/>
+		                        	<field name="customer_posid_qty"/> 
+		                        	<field name="give_to_customer_qty" /> 
+	                        		<field name="return_to_driver_qty" />
+	                        		<field name="difference_qty"/>
+	                        	</tree>
+		                    </field>
+		                </page>
+		                <page string="Moves">
+			                <label for="move_ids" />
+	                        <field name="move_ids" readonly="context.get('no_edit', False)"/>
+		                </page>   
+                       	<page string="History">  
+                    		<field name="message_ids" widget="mail_thread"/>
+                       	</page>
+		            </notebook>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+	
+	<record id="view_stock_packing_no_edit_button_form" model="ir.ui.view">
+		<field name="name">stock.packing no edit button</field>
+		<field name="model">stock.packing</field>
+		<field name="inherit_id" ref="view_stock_packing_form"/>
+		<field name="mode">primary</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+			<xpath expr="//form" position="attributes">
+				<attribute name="edit">0</attribute>
+			</xpath>
+		</field>
+	</record>
+        
+    <record id="view_stock_packing_tree" model="ir.ui.view">
+		<field name="name">stock.packing tree</field>
+		<field name="model">stock.packing</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Routes" limit="100">
+		        <field name="number"/>
+		        <field name="partner_id"/>
+		        <field name="route_id"/>	
+		        <field name="address_id"/>
+		        <field name="posid"/>
+		        <field name="complete_operation_exist"/>
+		        <field name="state"/>		
+		    </tree>
+		</field>
+	</record>
+
+
+	<record id="view_stock_packing_no_create_button_tree" model="ir.ui.view">
+		<field name="name">stock.packing no create button</field>
+		<field name="model">stock.packing</field>
+		<field name="inherit_id" ref="view_stock_packing_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">20</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="view_stock_packing_search" model="ir.ui.view">
+		<field name="name">stock.packing search</field>
+		<field name="model">stock.packing</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Routes">
+		        <field name="number"/>
+		        <field name="partner_name" string="Partner"/>
+		        <field name="route_id"/>	
+		        <field name="posid" filter_domain="[('posid','=',self)]" string="Partner POSID Address"/>
+		        <field name="state"/>
+                <filter string="Draft Packings" domain="[('state','=','draft')]" name="draft_state"/> 
+                <filter string="Done Packings" domain="[('state','=','done')]" name="done_state"/>   
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_packings" model="ir.actions.act_window">
+	    <field name="name">Client Returns</field>
+	    <field name="res_model">stock.packing</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="context">{'no_edit': True}</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+   	<record id="action_stock_packings_menu_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_packing_no_create_button_tree"/>
+    	<field name="act_window_id" ref="action_stock_packings"/>
+	</record>
+
+	<record id="action_stock_packings_menu_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_stock_packing_no_edit_button_form"/>
+    	<field name="act_window_id" ref="action_stock_packings"/>
+	</record>
+	     	     
+	<menuitem id="menu_stock_packing"
+	    name="Client Returns"
+	    parent="menu_sanitex_stocks"
+	    action="action_stock_packings"
+	    groups="config_sanitex_delivery.stock_route_managament_group"
+	    sequence="7"/>
+
+<!-- Stock Packing Line -->
+	
+	<record id="view_stock_packing_line_form" model="ir.ui.view">
+		<field name="name">stock.packing.line form</field>
+		<field name="model">stock.packing.line</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+        	<form string="Line" create="0" edit="0">
+        		<notebook>
+        			<page string="Info">
+		 				<label for="packing_id"/>
+				        <field name="packing_id" readonly="1"/>
+		 				<label for="product_id"/>
+		                <h2><field readonly="context.get('no_edit', False)" name="product_id" context="{'search_by_warehouse_id': warehouse_id}" on_change="on_change_product_id(product_id, partner_id, address_id, return_to_driver_qty, give_to_customer_qty)"/></h2>
+		 				<label for="partner_id"/>
+		 				<field name="partner_id" readonly="context.get('no_edit', False)"/> 
+		 				<label for="address_id"/>  
+		        		<field name="address_id" readonly="context.get('no_edit', False)"/>
+			        	<field name="warehouse_id" invisible="1"/>
+		                <group>
+			        		<field name="return_to_driver_qty" readonly="context.get('no_edit', False)" on_change="on_change_return_qty(return_to_driver_qty, ,give_to_customer_qty, customer_posid_qty)"/>   
+			        		<field name="give_to_customer_qty" readonly="context.get('no_edit', False)" on_change="on_change_give_qty(give_to_customer_qty, return_to_driver_qty, customer_posid_qty)"/>   
+			        		<field name="customer_qty" readonly="context.get('no_edit', False)"/>
+			        		<field name="customer_posid_qty" readonly="context.get('no_edit', False)"/>   
+			        		<field name="final_qty" readonly="context.get('no_edit', False)"/>
+		            	</group>
+		            </page>
+                   	<page string="History">  
+                		<field name="message_ids" widget="mail_thread"/>
+                   	</page>
+        		</notebook>
+            </form>
+		</field>
+	</record>
+        
+    <record id="view_stock_packing_line_tree" model="ir.ui.view">
+		<field name="name">stock.packing.line tree</field>
+		<field name="model">stock.packing.line</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+			<tree string="Lines" create="0">
+				<field name="product_id" /> 
+        		<field name="partner_id"/>   
+        		<field name="address_id"/>
+				<field name="final_qty"/>
+		    	<field name="customer_posid_qty"/>  
+				<field name="return_to_driver_qty" />   
+				<field name="give_to_customer_qty" />   
+				<field name="customer_qty"/>
+			</tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_packing_line_search" model="ir.ui.view">
+		<field name="name">stock.packing.line search</field>
+		<field name="model">stock.packing.line</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Routes">
+		        <field name="product_id"/>
+		        <field name="partner_id"/>	
+		        <field name="address_id"/>	
+		        <field name="packing_id"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<!--record id="action_stock_packing_lines" model="ir.actions.act_window">
+	    <field name="name">Client Packing Lines</field>
+	    <field name="res_model">stock.packing.line</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'no_edit': True}</field>
+	</record>
+	     	     
+	<menuitem id="menu_stock_packing_line"
+	    name="Client Packing Lines"
+	    parent="menu_sanitex_stocks"
+	    groups="config_sanitex_delivery.stock_route_managament_group"
+	    action="action_stock_packing_lines"
+	    sequence="8"/-->
+
+<!-- Stock Correction -->
+	
+	<record id="view_stock_packing_correction_form" model="ir.ui.view">
+		<field name="name">stock.packing.correction form</field>
+		<field name="model">stock.packing.correction</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Correction">
+                <header>
+                    <button name="action_done_and_print" states="draft" string="Confirm and Print" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_colors="{'draft':'red','done':'blue'}" class="oe_inline"/> 
+                </header>		    
+			    <sheet>
+                    <hgroup>
+                    	
+                        <h1><separator string="Not Confirmed" attrs="{'invisible': [('state','=','done')]}"/></h1>
+ 						<label for="number" class="oe_edit_only"/>
+                        <h1><field name="number"/></h1>
+ 						<label for="location_id" class="oe_edit_only"/>
+                        <h2><field name="location_id" attrs="{'readonly': [('lines_filled_in','=',True)]}" domain="[('driver','=',True)]" context="{'drivers_allowed_in_region': not show_all_drivers, 'form_view_ref':'config_sanitex_delivery.view_stock_location_form', 'show_driver_company_info_in_name': True}" /></h2>
+ 					</hgroup>	    
+				    <group>
+				    	<field name="show_all_drivers"/>
+				    	<field name="reason" attrs="{'readonly': [('lines_filled_in','=',True)]}" />
+		                <field name="return_to_warehouse_id"/>
+		                <field name="stock_source_location_id" attrs="{'invisible': ['|',('reason','=','tare_return'),('reason','=',False)]}" context="{'related_warehouse_id': return_to_warehouse_id}"/>
+                        <field name="stock_return_location_id" attrs="{'invisible': ['|',('reason','=','transfer_to_driver'),('reason','=',False)]}" context="{'related_warehouse_id': return_to_warehouse_id}" />
+		                <field name="date"/>
+		                <field name="owner_id" attrs="{'invisible': [('owner_id','=',False)]}"/>
+		                <field name="owner_ids" widget="many2many_tags" attrs="{'invisible': [('owner_id','!=',False)]}"/>
+				    	<field name="lines_filled_in" invisible="1"/>
+				    	<field name="user_confirm_id"/>
+	                </group>
+				    <group attrs="{'invisible': [('state','=','draft')]}">
+				    	<field name="picking_to_warehouse_ids" attrs="{'invisible': [('reason','=','transfer_to_driver')]}"/>
+		                <field name="picking_to_driver_ids" attrs="{'invisible': [('reason','=','tare_return')]}"/>
+
+	                </group>
+	               	<notebook>
+	               		<page string="Info">
+			                <label for="line_ids" />
+			                <button name="button_generate_lines" string="Generate Lines" type="object" class="oe_highlight"/>    
+		                    <field name="line_ids">
+		                    	<tree string="Lines" editable="top">
+		                    		<field name="product_code"/>
+		                    		<field name="product_id" context="{'search_by_warehouse_id': parent.return_to_warehouse_id}"/>
+		                    		<field name="drivers_debt" force_save="1"/>
+		                    		<field name="move_id" domain="[('product_id','=',product_id),('state','=','done'),('open','=',True),('location_dest_id','=',parent.location_id)]" attrs="{'readonly': [('correction_qty','>',0),('move_id','=',False)]}"/>
+		                    		<field name="correction_qty"/>
+		                    	</tree>
+		                    	<form string="Line">
+			                        <group>
+			                    		<field name="product_id" context="{'search_by_warehouse_id': parent.return_to_warehouse_id}"/>
+		                    			<field name="drivers_debt" force_save="1"/>
+			                    		<field name="move_id" domain="[('product_id','=',product_id),('state','=','done'),('open','=',True),('location_dest_id','=',parent.location_id)]" attrs="{'readonly': [('correction_qty','>',0),('move_id','=',False)]}"/>
+			                    		<field name="correction_qty"/>
+		                        	</group>
+		                        </form>
+		                   </field>
+					    </page>
+	                   	<page string="History">  
+	                		<field name="message_ids" widget="mail_thread"/>
+	                   	</page>
+			    	</notebook>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_stock_packing_correction_tree" model="ir.ui.view">
+		<field name="name">stock.packing.correction tree</field>
+		<field name="model">stock.packing.correction</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Corrections">
+		        <field name="number"/>
+		        <field name="date"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+		        <field name="driver_name"/>
+		        <field name="reason"/>
+		        <field name="state"/>		
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_packing_correction_search" model="ir.ui.view">
+		<field name="name">stock.packing.correction search</field>
+		<field name="model">stock.packing.correction</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Correction">
+		        <field name="number"/>
+		        <field name="location_id"/>
+		        <field name="reason"/>	
+		        <field name="return_to_warehouse_id"/>
+		        <field name="owner_codes"/>
+		        <field name="status_name"/>
+                <filter string="Draft Packings" domain="[('state','=','draft')]" name="draft_state"/> 
+                <filter string="Done Packings" domain="[('state','=','done')]" name="done_state"/>   
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_packing_corrections" model="ir.actions.act_window">
+	    <field name="name">Tare Release/Return</field>
+	    <field name="res_model">stock.packing.correction</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'search_corrections_by_warehouse': True, 'hide_save_button': True, 'end_edit_mode_states': ['done']}</field>
+	</record>
+	
+    <menuitem 
+    	id="menu_corrections" 
+    	parent="base_routes" 
+    	name="Internal Operations" sequence="4"/>
+	  
+	<menuitem id="menu_stock_packing_correction"
+	    name="Tare Release/Return"
+	    parent="menu_corrections"
+	    action="action_stock_packing_corrections"
+	    sequence="5"/> 
+
+<!-- Stock Package -->
+	
+	<record id="view_stock_package_form" model="ir.ui.view">
+		<field name="name">stock.package form</field>
+		<field name="model">stock.package</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Package" create="0">
+                <header>
+	                 <field name="state" widget="statusbar"/>   
+                </header>	    
+			    <sheet>
+					<h1>
+						<label for="internal_order_number" class="oe_edit_only"/>
+			        	<field name="internal_order_number"/>
+					</h1>
+					<h2>
+						<label for="packet_date" class="oe_edit_only"/>
+			        	<field name="packet_date"/>
+					</h2>
+					<group col="4">
+			        	<field name="planned_packet"/>
+			        	<field name="planned_collection"/>
+			        	<field name="orignal_packet_number"/>
+			        	<field name="returnend"/>
+			        	<field name="parcel_type"/>
+			        	<field name="owner_id"/>
+			        	<field name="picking_warehouse_id"/>
+			        </group>
+			        <notebook>
+			        	<page string="Package Info">
+					    	<group>
+						    	<group name="sender_info" string="Sender Info">
+						        	<field name="sender_id" domain="[('company_type','=','company')]" attrs="{'required': [('planned_collection','=',True)]}"/>
+						        	<field name="sender_address_id" domain="sender_id and [('parent_id','=',sender_id)] or [('company_type','!=','company')]"/>
+						        	<field name="sender_posid"/>
+						        	<field name="no_collection"/>
+						        	<field name="pickup_date"/>
+						        	<field name="collection_direction"/>
+						        </group>
+						    	<group name="receiver_info" string="Receiver Info">
+						        	<field name="buyer_id" domain="[('company_type','=','company')]"/>
+						        	<field name="buyer_address_id" domain="buyer_id and [('parent_id','=',buyer_id)] or [('company_type','!=','company')]"/>
+						        	<field name="buyer_posid"/>
+						        	<field name="no_delivery"/>
+						        	<field name="delivery_date"/>
+						        	<field name="delivery_direction"/>
+						        </group>
+					        </group>
+					                                    <div>
+                                <span style="width:40%% !important;display:inline-block"/>
+                                <span style="width:60%% !important;display:inline-block">    
+                                    <group>
+			                			<field name="packet_temp_mode_id" colspan="4"/>
+			                		</group>
+                                </span>
+                            </div>
+                            <div>
+                                <span style="width:38% !important;display:inline-block">
+					        		<group string="Documents">
+									    <label for="document_ids" class="oe_edit_only"/>
+					            		<field name="document_ids" nolabel="1" colspan="4">
+										    <tree string="Documents" editable="top">
+								            	<field name="document_number"/>
+								            	<field name="document_type_id"/>
+										    </tree>
+										    <form string="Document">
+							        			<group>
+									            	<field name="document_number"/>
+								            		<field name="acount_invoice_id"/>
+									            	<field name="document_type_id"/>
+								            		<field name="external_document_id"/>
+							            		</group>
+										    </form>
+									    </field>
+					            	</group>
+                                </span>
+                                <span style="width:2%% !important;display:inline-block"/>
+                                <span style="width:60%% !important;display:inline-block">
+					    		    <group string="Packets">
+									    <label string="Packets" class="oe_edit_only"/>
+					            		<field name="container_ids" nolabel="1" colspan="4">
+										    <tree string="Containers">
+								            	<field name="container_no"/>
+							            		<field name="packet_type_id"/>
+								            	<field name="weight" sum="1"/>
+								            	<field name="factual_weight" sum="1"/>
+										    </tree>
+										    <!--form string="Container">
+							        			<group>
+									            	<field name="container_number"/>
+									            	<field name="container_weight"/>
+									            	<field name="factual_container_weight"/>
+								            		<field name="external_container_id"/>
+							            		</group>
+										    </form-->
+									    </field>
+					            	</group>
+                                </span>
+					        </div>
+					        <field name="comment" placeholder="Comment..."/>
+					    </page>
+	                   	<page string="Routes">
+	                		<group>
+	                			<field name="collection_route_id"/>
+	                		</group>
+	                   		<label for="delivery_route_ids"/>
+	                		<field name="delivery_route_ids"/>
+	                   		<label for="task_ids"/>
+	                		<field name="task_ids" context="{'form_view_ref':'config_sanitex_delivery.view_sale_order_route_bls_form', 'tree_view_ref': 'config_sanitex_delivery.view_sale_order_route_colors_tree'}"/>
+	                   	</page>
+	                   	<page string="History">  
+					    	<group>
+					        	<field name="external_package_id"/>
+					        	<field name="intermediate_id"/>
+					        	<field name="company_id"/>
+					        </group>
+	                		<field name="message_ids" widget="mail_thread"/>
+	                   	</page>
+                   	</notebook>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+
+    <record id="view_stock_package_tree" model="ir.ui.view">
+		<field name="name">stock.package tree</field>
+		<field name="model">stock.package</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Packages" create="0">
+	        	<field name="sender_id"/>
+	        	<field name="sender_address_id"/>
+	        	<field name="sender_posid"/>
+				<field name="delivery_date"/>
+	        	<field name="buyer_id"/>
+	        	<field name="buyer_address_id"/>
+	        	<field name="buyer_posid"/>
+				<field name="owner_id"/>
+	        	<field name="total_weight"/>
+        		<field name="documents_count" string="Documents"/>
+        		<field name="state" />
+		    </tree>
+		</field>
+	</record>
+
+    <record id="view_stock_package_search" model="ir.ui.view">
+		<field name="name">stock.package search</field>
+		<field name="model">stock.package</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Package">
+	        	<field name="orignal_packet_number"/>
+	        	<field name="internal_order_number"/>
+	        	<field name="packet_date"/>
+	        	<field name="sender_name" string="Sender"/>
+	        	<field name="sender_posid" string="Sender Address"/>
+	        	<field name="buyer_name" string="Buyer"/>
+	        	<field name="buyer_posid" string="Buyer Address"/>
+                <filter string="Not in Route" name="not_in_route" context="{'not_in_route': True}"/>
+                <filter string="Planned Collection" domain="[('planned_collection','=','True')]" name="filter_planned_collection"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_package" model="ir.actions.act_window">
+	    <field name="name">Packages</field>
+	    <field name="res_model">stock.package</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'search_packages_by_warehouse': True}</field>
+	</record>
+	  
+	<menuitem id="menu_stock_package"
+	    name="Packages"
+	    parent="menu_sanitex_stocks"
+	    action="action_stock_package"
+	    sequence="1"/>
+
+<!-- Documents -->
+	
+	
+    <record id="view_stock_package_document_tree" model="ir.ui.view">
+		<field name="name">stock.package.document tree</field>
+		<field name="model">stock.package.document</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Documents">
+		    	<field name="owner_code" string="Own."/>
+	        	<field name="package_id"/>
+	        	<field name="document_number"/>
+	        	<field name="document_type_id"/>
+		    </tree>
+		</field>
+	</record>
+
+	<record id="view_stock_package_document_no_create_button_tree" model="ir.ui.view">
+		<field name="name">stock.package.document no create button 2</field>
+		<field name="model">stock.package.document</field>
+		<field name="inherit_id" ref="view_stock_package_document_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">24</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">0</attribute>
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_document_form" model="ir.ui.view">
+		<field name="name">stock.package.document form</field>
+		<field name="model">stock.package.document</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Document" create="0" delete="0">
+	        	<sheet>
+	        		<notebook>
+	        			<page string="Info">
+			        		<group>
+					        	<field name="package_id"/>
+					        	<field name="document_number"/>
+					        	<field name="document_type_id"/>
+					        	<field name="external_document_id"/>
+				        	</group>
+				        </page>
+	                   	<page string="History">  
+	                		<field name="message_ids" widget="mail_thread"/>
+	                   	</page>
+	             	</notebook>
+	        	</sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_document_search" model="ir.ui.view">
+		<field name="name">stock.package.document search</field>
+		<field name="model">stock.package.document</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Document">
+	        	<field name="package_id"/>
+	        	<field name="document_number"/>
+	        	<field name="document_type_id"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_package_document" model="ir.actions.act_window">
+	    <field name="name">Documents</field>
+	    <field name="res_model">stock.package.document</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+   	<record id="action_stock_package_document_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_package_document_no_create_button_tree"/>
+    	<field name="act_window_id" ref="action_stock_package_document"/>
+	</record>
+	  
+	<menuitem id="menu_stock_package_document"
+	    name="Documents"
+	    parent="menu_stock_package"
+	    action="action_stock_package_document"
+	    sequence="5"/>  
+	
+	
+	<menuitem id="menu_package_settings"
+	    name="Package Settings"
+	    parent="sandas_maintenance.menu_config"
+	    sequence="5"/>
+<!-- Document Type -->
+	
+	
+    <record id="view_stock_package_document_type_tree" model="ir.ui.view">
+		<field name="name">stock.package.document.type tree</field>
+		<field name="model">stock.package.document.type</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Document Types">
+	        	<field name="name"/>
+	        	<field name="code"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_document_type_form" model="ir.ui.view">
+		<field name="name">stock.package.document.type form</field>
+		<field name="model">stock.package.document.type</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Document Type">
+	        	<sheet>
+	        		<group>
+			        	<field name="name"/>
+			        	<field name="code"/>
+		        	</group>
+	        	</sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_document_type_search" model="ir.ui.view">
+		<field name="name">stock.package.document.type search</field>
+		<field name="model">stock.package.document.type</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Document Type">
+	        	<field name="name"/>
+	        	<field name="code"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_package_document_type" model="ir.actions.act_window">
+	    <field name="name">Documents</field>
+	    <field name="res_model">stock.package.document.type</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	  
+	<menuitem id="menu_stock_package_document_type"
+	    name="Document Types"
+	    parent="menu_package_settings"
+	    action="action_stock_package_document_type"
+	    sequence="5"/> 
+
+<!-- Packets -->
+	
+	
+    <!--record id="view_stock_package_container_tree" model="ir.ui.view">
+		<field name="name">stock.package.container tree</field>
+		<field name="model">stock.package.container</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Containers">
+	        	<field name="package_id"/>
+	        	<field name="container_number"/>
+	        	<field name="container_weight"/>
+	        	<field name="factual_container_weight"/>
+		    </tree>
+		</field>
+	</record>
+    <record id="view_stock_package_container_form" model="ir.ui.view">
+		<field name="name">stock.package.container form</field>
+		<field name="model">stock.package.container</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Container">
+	        	<sheet>
+        			<notebook>
+        				<page string="Info">
+	        				<group>
+					        	<field name="package_id"/>
+					        	<field name="container_number"/>
+					        	<field name="container_weight"/>
+					        	<field name="factual_container_weight"/>
+					        	<field name="external_container_id"/>
+		        			</group>
+				        </page>
+	                   	<page string="History">  
+	                		<field name="message_ids" widget="mail_thread"/>
+	                   	</page>
+                   	</notebook>
+	        	</sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_container_search" model="ir.ui.view">
+		<field name="name">stock.package.container search</field>
+		<field name="model">stock.package.container</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Container">
+	        	<field name="package_id"/>
+	        	<field name="container_number"/>
+	        	<field name="container_weight"/>
+	        	<field name="factual_container_weight"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_package_container" model="ir.actions.act_window">
+	    <field name="name">Packets</field>
+	    <field name="res_model">stock.package.container</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	  
+	<menuitem id="menu_stock_package_container"
+	    name="Packets"
+	    parent="menu_package_settings"
+	    action="action_stock_package_container"
+	    sequence="6"/--> 
+
+<!-- Stock Temperature -->
+	
+	
+    <record id="view_stock_temperature_tree" model="ir.ui.view">
+		<field name="name">stock.temperature tree</field>
+		<field name="model">stock.temperature</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Temperatures">
+	        	<field name="name"/>
+	        	<field name="code"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_temperature_form" model="ir.ui.view">
+		<field name="name">stock.temperature form</field>
+		<field name="model">stock.temperature</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Temperature">
+		    	<sheet>
+		    		<group>
+			        	<field name="name"/>
+			        	<field name="code"/>
+		    		</group>
+		    	</sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_temperature_search" model="ir.ui.view">
+		<field name="name">stock.temperature search</field>
+		<field name="model">stock.temperature</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Temperatures">
+	        	<field name="name"/>
+	        	<field name="code"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_temperature" model="ir.actions.act_window">
+	    <field name="name">Temperatures</field>
+	    <field name="res_model">stock.temperature</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	  
+	<menuitem id="menu_stock_temperature"
+	    name="Temperatures"
+	    parent="menu_package_settings"
+	    action="action_stock_temperature"
+	    sequence="7"/>  
+
+<!-- Stock Package Type -->
+	
+	
+    <record id="view_stock_package_type_tree" model="ir.ui.view">
+		<field name="name">stock.package.type tree</field>
+		<field name="model">stock.package.type</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Temperatures">
+	        	<field name="name"/>
+	        	<field name="code"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_type_form" model="ir.ui.view">
+		<field name="name">stock.package.type form</field>
+		<field name="model">stock.package.type</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Temperature">
+		    	<sheet>
+		    		<group>
+			        	<field name="name"/>
+			        	<field name="code"/>
+		    		</group>
+		    	</sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_package_type_search" model="ir.ui.view">
+		<field name="name">stock.package.type search</field>
+		<field name="model">stock.package.type</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Temperatures">
+	        	<field name="name"/>
+	        	<field name="code"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_package_type" model="ir.actions.act_window">
+	    <field name="name">Packet Types</field>
+	    <field name="res_model">stock.package.type</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	  
+	<menuitem id="menu_stock_package_type"
+	    name="Packet Types"
+	    parent="menu_package_settings"
+	    action="action_stock_package_type"
+	    sequence="8"/>  
+	    
+	  
+<!--   
+
+    <record id="view_stock_picking_button" model="ir.ui.view">
+        <field name="name">stock.picking.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+            	<attribute name="state">assigned,confirmed,partially_available,draft,waiting,done</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="after">
+            	<button name="action_return_to_draft" type="object" states="cancel" string="Return o Draft"/>
+            </xpath>
+            <xpath expr="//button[@type='action']" position="replace">
+            </xpath>
+        </field>
+    </record>-->
+     
+    <!-- Intermediate -->
+	
+	<record id="view_stock_route_integration_intermediate_form" model="ir.ui.view">
+		<field name="name">stock.route.integration.intermediate form</field>
+		<field name="model">stock.route.integration.intermediate</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Intermediate" create="0" edit="0">
+			    <sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Open Releated Objects" class="oe_stat_button" icon="fa-folder-open" name="open_related_objects" type="object" attrs="{'invisible': [('processed','=',False)]}"/>
+	                    <button string="Process" class="oe_stat_button" icon="fa-cogs" name="process" type="object" attrs="{'invisible': [('processed','=',True)]}"/>
+	                    <button string="Check Status" class="oe_stat_button" icon="fa-cogs" name="check_status" type="object" attrs="{'invisible': ['|',('processed','=',True),('function','not in',['TareDocumentExport'])]}"/>
+	                </div> 
+			    	<group>
+                    	<field name="processed"/>
+                    	<field name="datetime"/>
+                    	<field name="function"/>
+                    	<field name="start_time"/>
+                    	<field name="end_time"/>
+                    	<field name="duration" string="Process Duration"/>
+                    	<field name="duration2" string="Duration Since Import"/>
+                    	<field name="repeat" attrs="{'invisible': [('function','!=','TareDocumentExport')]}"/>
+                    	<field name="tare_document_id" attrs="{'invisible': [('function','!=','TareDocumentExport')]}"/>
+                    	<field name="tare_document_source" attrs="{'invisible': [('function','!=','TareDocumentExport')]}"/>
+                    	<field name="next_process_at" />
+                    	<field name="next_process_in" />
+			    	</group>
+			    	<notebook>
+			    		<page string="Get">
+					    	<label for="received_values"/>
+		                    <field name="received_values_show"/>
+		                </page>
+			    		<page string="Return">
+					    	<label for="return_results"/>
+		                    <field name="return_results"/>
+		                    <field name="traceback_string"/>
+		                </page>
+			    	</notebook>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_stock_route_integration_intermediate_tree" model="ir.ui.view">
+		<field name="name">stock.route.integration.intermediate tree</field>
+		<field name="model">stock.route.integration.intermediate</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Intermediates" decoration-danger="skip==True" create="0">
+            	<field name="datetime"/>
+            	<field name="function"/>
+            	<field name="processed"/>
+				<field name="duration" string="Process Duration"/>
+				<field name="duration2" string="Duration Since Import"/>
+            	<field name="skip" invisible="1"/>	
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_route_integration_intermediate_search" model="ir.ui.view">
+		<field name="name">stock.route.integration.intermediate search</field>
+		<field name="model">stock.route.integration.intermediate</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Intermediates">
+            	<field name="datetime"/> 
+                <field name="received_values"/>
+            	<field name="function"/>  
+                <filter string="Processed" domain="[('processed','=','True')]" name="processed"/>
+                <filter string="Not Processed" domain="[('processed','!=','True')]" name="not_processed"/>
+                <filter string="Error" domain="[('processed','!=','True'),('skip','=',True)]" name="with_errord"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_route_integration_intermediate" model="ir.actions.act_window">
+	    <field name="name">Intermediate Objects</field>
+	    <field name="res_model">stock.route.integration.intermediate</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+		<field name="context">{'search_default_not_processed': 1}</field>
+	</record>
+	
+    <menuitem 
+    	id="menu_integration" 
+    	parent="base_routes" 
+    	name="Integration" />
+    	
+	<menuitem id="menu_stock_route_integration_intermediate"
+	    name="Intermediate Objects"
+	    parent="menu_integration"
+	    action="action_stock_route_integration_intermediate"
+	    sequence="5"/> 
+    	
+   <!-- Stock Location -->
+
+
+    <record id="viewstock_location_sanitex_tree" model="ir.ui.view">
+         <field name="name">stock.location.sanitex.tree</field>
+          <field name="model">stock.location</field>
+          <field name="inherit_id" ref="stock.view_location_tree2"/>
+          <field name="arch" type="xml">
+
+              <xpath expr="//field[@name='display_name']" position="replace">
+           		   <field name="name"/>
+           		   <field name="location_id"/>
+           		   <field name="code"/>
+              </xpath>
+              <xpath expr="//field[@name='usage']" position="after">
+           		   <field name="comment" string="Notes"/>
+           		   <field name="active"/>
+             </xpath>
+          </field>
+      </record>
+
+   <record id="view_stock_location_form" model="ir.ui.view">
+		<field name="name">stock.location driver_form</field>
+		<field name="model">stock.location</field>
+		<field name="type">form</field>
+		<field name="priority">25</field>
+		<field name="arch" type="xml">
+		    <form string="Driver">
+			    <sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Drivers Debt" class="oe_stat_button" icon="fa-folder-open" name="open_drivers_open_moves" type="object"/>
+	               </div> 
+			    	<notebook>
+			    		<page string="Info">
+					    	<group>
+								<group>
+									<field name="name" string="Driver Name"/>
+									<field name="car_capacity"/>
+									<field name="license_plate"/>
+									<field name="trailer"/>
+									<field name="contract_no"/>
+									<field name="driver"/>
+									<field name="external_driver_id"/>
+									<field name="owner_selected" invisible="1"/>
+								</group>
+		                    	<group colspan="4" col="4">
+		                    		<field name="owner_id" options="{'no_create':True}" domain="[('is_company','=',True),('ref','!=',False),('ref','!=',''),('customer','=',True)]" attrs="{'readonly': [('owner_selected','=',True)], 'required': [('owner_id','=',False)]}"/>
+			                    	<button name="%(action_stock_location_change_owner_osv)d" type="action" string="Change Drivers Company" attrs="{'invisible': [('owner_selected','!=',True)]}"/>  
+					    		</group>
+								<group>
+									<field name="owner_code"/>
+									<field name="total_debt"/>
+									<field name="region_ids" widget="many2many_tags"/>
+									<field name="username"/>
+									<field name="password" password="1"/>
+									<field name="phone"/>
+									<field name="email"/>
+									<field name="enabled"/>
+									<field name="active"/>
+								</group>
+					    	</group>
+					    </page>
+	                   	<page string="History">  
+	                		<field name="message_ids" widget="mail_thread"/>
+	                   	</page>
+			    	</notebook>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+        
+    <record id="view_stock_location_tree" model="ir.ui.view">
+		<field name="name">stock.location driver_tree</field>
+		<field name="model">stock.location</field>
+		<field name="type">tree</field>
+		<field name="priority">25</field>
+		<field name="arch" type="xml">
+		    <tree string="Drivers">
+            	<field name="name" string="Driver Name"/>
+            	<field name="owner_name"/>
+            	<field name="owner_code"/>
+				<field name="contract_no"/>
+	            <field name="license_plate"/>
+				<field name="trailer"/>
+				<field name="total_debt"/>
+				<field name="active"/>
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_location_search" model="ir.ui.view">
+		<field name="name">stock.location driver_search</field>
+		<field name="model">stock.location</field>
+		<field name="type">search</field>
+		<field name="priority">25</field>
+		<field name="arch" type="xml">
+		    <search string="Drivers">
+            	<field name="name" string="Driver Name"/>
+	            <field name="license_plate"/>
+            	<field name="owner_name"/>
+            	<field name="owner_code"/>
+				<filter string="Debtors" domain="[('total_debt','>',0)]" name="debtors"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_drivers" model="ir.actions.act_window">
+	    <field name="name">Drivers</field>
+	    <field name="res_model">stock.location</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="domain">[('driver','=',True)]</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="context">{'driver_menu': True, 'active_test': False}</field>
+        <field name="search_view_id" ref="view_stock_location_search"/>
+	</record>
+	
+    <record id="action_drivers_tree_view1" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_stock_location_tree"/>
+        <field name="act_window_id" ref="action_drivers"/>
+    </record>
+    
+    <record id="action_drivers_form_view2" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_location_form"/>
+        <field name="act_window_id" ref="action_drivers"/>
+    </record>
+    
+    <!--record id="action_drivers_search_view2" model="ir.actions.act_window.view">
+        <field eval="3" name="sequence"/>
+        <field name="view_mode">search</field>
+        <field name="view_id" ref="view_stock_location_search"/>
+        <field name="act_window_id" ref="action_drivers"/>
+    </record-->
+	
+    <record id="action_original_location_tree_view1" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="stock.view_location_tree2"/>
+        <field name="act_window_id" ref="stock.action_location_form"/>
+    </record>
+    
+    <record id="action_original_location_form_view1" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="stock.view_location_form"/>
+        <field name="act_window_id" ref="stock.action_location_form"/>
+    </record>
+	
+    <!--menuitem
+    	id="menu_drivers" 
+    	parent="base_routes" 
+    	name="Drivers" /-->
+    	
+	<menuitem id="menu_action_drivers"
+	    name="Drivers"
+	    parent="menu_sanitex_stocks"
+	    action="action_drivers"
+	    sequence="120"/>
+	
+    <record id="stock.action_location_form" model="ir.actions.act_window">
+    	<field name="name">Statuses</field>
+    	<field name="context">{'search_default_in_location':1, 'allow_to_edit_location': True}</field>
+    </record>
+	
+    <record id="stock.menu_action_location_form" model="ir.ui.menu">
+    	<field name="name">Statuses</field>
+    </record>
+    
+    <!-- Stock Move Report -->
+
+	 <record id="view_stock_move_report_form" model="ir.ui.view">
+		<field name="name">stock.move_driver_debt_report form</field>
+		<field name="model">stock.move</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Move" create="0" edit="0">
+			    <sheet>
+					<notebook>
+						<page string="Main Info">
+							<group>
+								<field name="product_code"/>
+								<field name="product_id" readonly="1"/>
+								<field name="location_dest_id" readonly="1" string="Driver" context="{'form_view_ref':'config_sanitex_delivery.view_stock_location_form'}"/>
+								<field name="location_id" readonly="1" string="Taken from"/>
+								<field name="product_uom_qty" readonly="1" string="Taken Quantity"/>
+								<field name="price_unit" readonly="1" />
+								<field name="left_qty"/>
+								<field name="driver_code"/>
+								<field name="driver_company_code"/>
+								<field name="driver_company_name"/>
+								<field name="state" invisible="1"/>	
+								<field name="date"/>
+								<field name="picking_id" string="Document Number"/>
+							</group>
+						</page>
+						<page string="Reconciliation" groups="config_sanitex_delivery.stock_route_managament_group">
+							<label for="reconcile_to_ids"/>
+							<field name="reconcile_to_ids" colspan="4">
+								<tree>
+									<field name="move_to_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_to_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+							<label for="reconcile_from_ids"/>
+							<field name="reconcile_from_ids" colspan="4">
+								<tree>
+									<field name="move_from_id"/>
+									<field name="quantity"/>
+								</tree>
+								<form>
+									<group>
+										<field name="move_from_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+										<field name="quantity"/>
+									</group>
+								</form>
+							</field>
+						</page>
+					</notebook>			    
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+    
+    
+    
+    <record id="view_stock_move_report_tree" model="ir.ui.view">
+		<field name="name">stock.move_driver_debt_report tree</field>
+		<field name="model">stock.move</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Moves" create="0">
+				<field name="product_code"/>
+				<field name="product_id"/>
+				<field name="owner_code_of_product_code"/>
+				<field name="destination_location_name" string="Driver"/>
+				<field name="location_id" string="Taken from"/>
+				<field name="product_uom_qty" sum="1" string="Taken Quantity"/>
+				<field name="left_qty" sum="1"/>
+				<field name="price_unit"/>
+				<field name="driver_code"/>
+				<field name="driver_company_code"/>
+				<field name="driver_company_name"/>
+				<field name="date"/>
+				<field name="picking_id" string="Document Number" />
+				<field name="state" invisible="1"/>	
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_move_report_search" model="ir.ui.view">
+		<field name="name">stock.move_driver_debt_report search</field>
+		<field name="model">stock.move</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Routes">
+				<field name="product_code"/>
+				<field name="product_name" string="Product"/>
+				<field name="owner_code_of_product_code"/>
+				<field name="location_dest_id" string="Driver"/>
+				<field name="location_id" string="Taken from"/>
+				<field name="product_uom_qty"/>
+				<field name="driver_code"/>
+				<field name="driver_company_code"/>
+				<field name="picking_id" string="Document Number"/>
+				<field name="destination_location_name" string="Driver Name"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_move_driver_report" model="ir.actions.act_window">
+	    <field name="name">Driver debt Report</field>
+	    <field name="res_model">stock.move</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="context">{'export_filter_value': 'driver_debt_menu'}</field>
+	    <field name="domain">[('state','=','done'),('location_dest_id.driver','=',True),('open','=',True),('tare_movement','=',True)]</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="search_view_id" ref="view_stock_move_report_search"/>
+	</record>
+	    
+    <record id="action_stock_move_driver_report_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_stock_move_report_tree"/>
+        <field name="act_window_id" ref="action_stock_move_driver_report"/>
+    </record>
+    
+    <record id="action_stock_move_driver_report_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_move_report_form"/>
+        <field name="act_window_id" ref="action_stock_move_driver_report"/>
+    </record>
+	
+	<menuitem id="menu_stock_move_driver_report"
+	    name="Driver Debt Report"
+	    parent="menu_sanitex_stocks"
+	    action="action_stock_move_driver_report"
+	    sequence="2"/>
+	    
+	    
+    <record id="view_stock_move_report_all_tree" model="ir.ui.view">
+        <field name="name">stock.move report tree</field>
+        <field name="model">stock.move</field>
+		<field name="type">tree</field>
+        <field name="arch" type="xml">
+		    <tree string="Moves" create="0">
+				<field name="source_location_name" string="Sender"/>
+				<field name="destination_location_name" string="Receiver"/>
+				<field name="partner_name"/>
+				<field name="partner_code"/>
+				<field name="owner_code_of_product_code"/>
+				<field name="product_code"/>
+				<field name="product_id"/>
+				<field name="date"/>
+				<field name="picking_id" string="Picking"/>
+				<field name="product_uom_qty"/>
+				<field name="move_type" />
+				<field name="user_warehouse_name" />
+				<field name="create_user_name" />
+				<field name="price_unit"/>
+				<field name="state" invisible="1"/>	
+		    </tree>
+        </field>
+    </record>
+
+    <record id="view_stock_move_report_all_search" model="ir.ui.view">
+        <field name="name">stock.move report search</field>
+        <field name="model">stock.move</field>
+		<field name="type">search</field>
+        <field name="arch" type="xml">
+		    <search string="Moves">
+                <field name="location_id" string="Stock Location" filter_domain="['|',('location_id','ilike',self),('location_dest_id','ilike',self)]"/>
+				<!--field name="location_id" string="Sender"/>
+				<field name="location_dest_id" string="Receiver"/-->
+				<field name="partner_name"/>
+				<field name="partner_code"/>
+				<field name="owner_code_of_product_code"/>
+				<field name="product_code"/>
+				<field name="product_name" string="Product"/>
+				<field name="picking_id" />
+				<filter string="Open" domain="[('open','=',True)]" name="open_move"/>
+				<group expand="0" string="Group By" colspan="4">
+					<filter string="Source" domain="[]" context="{'group_by':'location_id'}"/>
+					<filter string="Destination" domain="[]" context="{'group_by':'location_dest_id'}"/>
+				</group>
+		    </search>
+        </field>
+    </record>
+    
+    <record id="view_stock_move_report_all_form" model="ir.ui.view">
+        <field name="name">stock.move report form</field>
+        <field name="model">stock.move</field>
+		<field name="type">form</field>
+        <field name="arch" type="xml">
+		    <form string="Moves" create="0" edit="0">
+		    	<notebook>
+		    		<page string="Main Info">
+		    			<group>
+							<field name="location_id" string="Sender" readonly="1"/>
+							<field name="location_dest_id" string="Receiver" readonly="1"/>
+							<field name="partner_name"/>
+							<field name="partner_code"/>
+							<field name="product_code"/>
+							<field name="product_id"/>
+							<field name="date"/>
+							<field name="picking_id" string="Picking"/>
+							<field name="product_uom_qty" readonly="1"/>
+							<field name="move_type" />
+							<field name="price_unit" readonly="1"/>
+							<field name="state" invisible="1"/>
+							<field name="owner_code_of_product_code" readonly="1"/>
+						</group>
+					</page>
+					<page string="Reconciliation" groups="config_sanitex_delivery.stock_route_managament_group">
+						<label for="reconcile_to_ids"/>
+						<field name="reconcile_to_ids" colspan="4">
+							<tree>
+								<field name="move_to_id"/>
+								<field name="quantity"/>
+							</tree>
+							<form>
+								<group>
+									<field name="move_to_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+									<field name="quantity"/>
+								</group>
+							</form>
+						</field>
+						<label for="reconcile_from_ids"/>
+						<field name="reconcile_from_ids" colspan="4">
+							<tree>
+								<field name="move_from_id"/>
+								<field name="quantity"/>
+							</tree>
+							<form>
+								<group>
+									<field name="move_from_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+									<field name="quantity"/>
+								</group>
+							</form>
+						</field>
+					</page>
+				</notebook>
+		    </form>
+        </field>
+    </record>	 
+        
+		    
+	<record id="action_stock_move_all_report" model="ir.actions.act_window">
+	    <field name="name">Product Move Report</field>
+	    <field name="res_model">stock.move</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="domain">[('state','=','done'),('tare_movement','=',True)]</field>
+	    <field name="context">{'export_filter_value': 'move_report_menu'}</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="search_view_id" ref="view_stock_move_report_all_search"/>
+	</record>
+	    
+    <record id="action_stock_move_all_report_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_stock_move_report_all_tree"/>
+        <field name="act_window_id" ref="action_stock_move_all_report"/>
+    </record>
+    
+    <record id="action_stock_move_all_report_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_move_report_all_form"/>
+        <field name="act_window_id" ref="action_stock_move_all_report"/>
+    </record>
+	
+	<menuitem id="menu_stock_move_all_report"
+	    name="Product Move Report"
+	    parent="menu_sanitex_stocks"
+	    action="action_stock_move_all_report"
+	    sequence="3"/>
+	    
+	<!-- Misiing Links-->
+	
+	<record id="view_stock_route_integration_intermediate_link_form" model="ir.ui.view">
+		<field name="name">stock.route.integration.intermediate.missing_links form</field>
+		<field name="model">stock.route.integration.intermediate.missing_links</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Link" create="0">
+			    <sheet>
+			    	<group>
+		            	<field name="object_from"/>
+		            	<field name="object_to"/>
+		            	<field name="field"/>	
+		            	<field name="exernal_id_from"/>
+		            	<field name="exernal_id_to"/>	
+			    	</group>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_route_integration_intermediate_link_tree" model="ir.ui.view">
+		<field name="name">stock.route.integration.intermediate.missing_links tree</field>
+		<field name="model">stock.route.integration.intermediate.missing_links</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Links" create="0">
+            	<field name="object_from"/>
+            	<field name="object_to"/>
+            	<field name="field"/>	
+            	<field name="exernal_id_from"/>
+            	<field name="exernal_id_to"/>	
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_route_integration_intermediate_link_search" model="ir.ui.view">
+		<field name="name">stock.route.integration.intermediate.missing_links search</field>
+		<field name="model">stock.route.integration.intermediate.missing_links</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Links">
+            	<field name="object_from"/>
+            	<field name="object_to"/>
+            	<field name="field"/>	
+            	<field name="exernal_id_from"/>
+            	<field name="exernal_id_to"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_route_integration_intermediate_link" model="ir.actions.act_window">
+	    <field name="name">Missing Links</field>
+	    <field name="res_model">stock.route.integration.intermediate.missing_links</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_stock_route_integration_intermediate_link"
+	    name="Missing Links"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_stock_route_integration_intermediate_link"
+	    sequence="5"/> 
+	    
+	<!-- Misiing Links New-->
+
+	<record id="view_stock_route_integration_link_new_form" model="ir.ui.view">
+		<field name="name">stock.route.integration.missing_links.new form</field>
+		<field name="model">stock.route.integration.missing_links.new</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Link" create="0">
+			    <sheet>
+			    	<group>
+		            	<field name="object_from_external_id"/>
+		            	<field name="object_to_external_id"/>
+		            	<field name="type"/>
+		            	<field name="stock_number_id"/>	
+		            	<field name="delivery_type"/>
+		            	<field name="shipping_warehouse"/>	
+		            	<field name="picking_warehouse"/>
+		            	<field name="order_number"/>
+		            	<field name="values"/>
+			    	</group>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+	
+    <record id="view_stock_route_integration_link_new_tree" model="ir.ui.view">
+		<field name="name">stock.route.integration.missing_links.new tree</field>
+		<field name="model">stock.route.integration.missing_links.new</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Links" create="0">
+	        	<field name="object_from_external_id"/>
+	        	<field name="object_to_external_id"/>
+				<field name="order_number"/>
+	        	<field name="type"/>	
+		    </tree>
+		</field>
+	</record>
+	
+    <record id="view_stock_route_integration_link_new_search" model="ir.ui.view">
+		<field name="name">stock.route.integration.missing_links.new search</field>
+		<field name="model">stock.route.integration.missing_links.new</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Links">
+	        	<field name="object_from_external_id"/>
+				<field name="order_number"/>
+	        	<field name="type"/>
+		    </search>
+		</field>
+	</record>
+		    
+	<record id="action_stock_route_integration_link_new" model="ir.actions.act_window">
+	    <field name="name">Missing Links</field>
+	    <field name="res_model">stock.route.integration.missing_links.new</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_stock_route_integration_link_new"
+	    name="Missing Links 2"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_stock_route_integration_link_new"
+	    sequence="6"/> 
+    	
+ <!--  STOCK PICKING -->
+ 
+ 	<!-- <record id="view_stock_picking_sanitext_form" model="ir.ui.view">
+		<field name="name">view.stock.picking.sanitext.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+        	
+            <xpath expr="//field[@name='location_id']" position="attributes">
+            	<attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_dest_id']" position="attributes">
+            	<attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+            	<attribute name="state">assigned,confirmed,partially_available,draft,waiting,done</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="after">
+            	<button name="action_return_to_draft" type="object" states="cancel" string="Return o Draft"/>
+            </xpath>
+            <xpath expr="//button[@type='action']" position="replace">
+            </xpath>
+        </field>
+    </record> -->
+    
+    <record id="stock.view_picking_form" model="ir.ui.view">
+		<field name="name">stock.picking.form.sanitex_override</field>
+		<field name="model">stock.picking</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+    		<form string="Transfer">
+                <header>
+                    <button name="action_confirm" states="draft" string="Mark as Todo" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="action_assign" states="confirmed,waiting" string="Reserve" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="force_assign" states="confirmed,waiting,partially_available" string="Force Availability" type="object" groups="base.group_user"/>
+                    <button name="do_new_transfer" states="draft,partially_available,assigned" string="Validate" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
+                    <button name="do_print_picking" string="Print" groups="stock.group_stock_user" type="object" attrs="{'invisible': [('state', 'not in', ('assigned', 'partially_available'))]}"/>
+                    <button name="action_cancel" states="assigned,confirmed,partially_available,draft,waiting,done" string="Cancel" groups="base.group_user" type="object"/>
+                    <button name="action_return_to_draft" type="object" states="cancel" string="Return o Draft"/>
+                    <button name="do_unreserve" string="Unreserve" groups="base.group_user" type="object" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,partially_available,assigned,done" statusbar_colors="{&quot;shipping_except&quot;:&quot;red&quot;,&quot;invoice_except&quot;:&quot;red&quot;,&quot;waiting_date&quot;:&quot;blue&quot;}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <h1 class="hidden-xs">
+                        <field name="name" attrs="{'invisible': [('name','=','/')]}" readonly="1"/>
+                    </h1>
+                    <group class="hidden-xs">
+                        <group>
+                            <field name="partner_id" attrs="{'invisible': [('picking_type_code', '=', 'internal')]}" on_change="onchange_picking_type(picking_type_id,partner_id)"/>
+                            <field name="location_id" groups="stock.group_locations"/>
+                            <field name="location_dest_id" groups="stock.group_locations"/>
+                            <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+                            <label for="owner_id" groups="stock.group_tracking_owner"/>
+                            <div groups="stock.group_tracking_owner">
+                                <field name="owner_id"/>
+                                <button name="action_assign_owner" string="Assign Owner" type="object" attrs="{'invisible': [('state', 'not in', ('draft','assigned','confirmed'))]}" class="oe_link oe_edit_only"/>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="move_lines" options="{'reload_on_button': True}" mode="tree,kanban" context="{'address_in_id': partner_id, 'form_view_ref':'config_sanitex_delivery.move_form_view_from_picking', 'tree_view_ref':'stock.view_move_picking_tree', 'default_picking_type_id': picking_type_id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}" invisible="0">
+                                    <kanban class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="availability"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="location_dest_id"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <strong><span><t t-esc="record.product_id.value"/></span></strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-8 text-muted">
+                                                        <span><t t-esc="record.availability.value"/> on <t t-esc="record.product_uom_qty.value"/> <t t-esc="record.product_uom.value"/></span>
+                                                    </div>
+                                                    <div class="col-xs-4 text-muted">
+                                                        <span class="pull-right text-right"><t t-esc="record.location_dest_id.value"/></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                        </page>
+                        <page string="Additional Info" name="extra">
+                            <group>
+                                <group>
+                                    <field name="move_type"/>
+                                    <field name="picking_type_id" on_change="onchange_picking_type(picking_type_id,partner_id)"/>
+                                    <field name="picking_type_code" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                    <field name="group_id"/>
+                                    <field name="priority"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- LOT FORM   -->
+    <record id="view_production_lot_sanitex_form" model="ir.ui.view">
+         <field name="name">stock.production.lot.sanitex.form</field>
+          <field name="model">stock.production.lot</field>
+          <field name="inherit_id" ref="stock.view_production_lot_form"/>
+          <field name="arch" type="xml">
+              <field name ="ref" position="after">
+           		   <field name="expiry_date"/>            		
+             </field> 
+          </field>
+      </record>
+
+	<record id="move_form_view_from_picking" model="ir.ui.view">
+		<field name="name">stock.move BLS view from picking</field>
+		<field name="model">stock.move</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form string="Transfer Line">
+                <header>
+					<field name="state" widget="statusbar"/>
+				</header>
+				<notebook>
+					<page name="move_info" string="Move Information">
+						<group>
+							<field name="location_id"/>
+							<field name="location_dest_id"/>
+							<field name="product_code"/>
+							<field name="product_id"/>
+							<field name="date"/>
+						</group>
+						<group>
+							<field name="picking_id" string="Picking"/>
+							<field name="product_uom_qty" readonly="1"/>
+							<field name="move_type"/>
+							<field name="price_unit" readonly="1"/>
+						</group>
+					</page>
+					<page string="Reconciliation" name="reconcile_info" groups="config_sanitex_delivery.stock_route_managament_group">
+						<label for="reconcile_to_ids"/>
+						<field name="reconcile_to_ids" colspan="4">
+							<tree>
+								<field name="move_to_id"/>
+								<field name="quantity"/>
+							</tree>
+							<form>
+								<group>
+									<field name="move_to_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+									<field name="quantity"/>
+								</group>
+							</form>
+						</field>
+						<label for="reconcile_from_ids"/>
+						<field name="reconcile_from_ids" colspan="4">
+							<tree>
+								<field name="move_from_id"/>
+								<field name="quantity"/>
+							</tree>
+							<form>
+								<group>
+									<field name="move_from_id" context="{'form_view_ref':'config_sanitex_delivery.view_stock_move_report_form'}"/>
+									<field name="quantity"/>
+								</group>
+							</form>
+						</field>
+					</page>
+				</notebook>
+			</form>
+		</field>
+	</record>
+
+
+
+	<!-- Regions-->
+
+	<record id="view_stock_region_region_form" model="ir.ui.view">
+		<field name="name">stock.region.region form</field>
+		<field name="model">stock.region</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Region" delete="0">
+			    <sheet>
+					<div class="oe_button_box" name="button_box">
+					   	<button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+							<field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+						</button>
+					</div>
+			    	<group>
+		            	<field name="name"/>
+		            	<field name="location_id" attrs="{'required': [('location_required','=',True)]}"/>
+		            	<field name="return_location_id" attrs="{'required': [('return_location_required','=',True)]}"/>
+		            	<field name="location_required" invisible="1"/>
+		            	<field name="return_location_required" invisible="1"/>
+		            	<field name="warehouse_of_region_ids" widget="many2many_tags"/>
+		            	<field name="responsible_user_ids"/>
+		            	<field name="product_ids"/>
+		            	<field name="driver_ids"/>
+			    	</group>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+
+	<record id="view_stock_region_region_tree" model="ir.ui.view">
+		<field name="name">stock.region.region tree</field>
+		<field name="model">stock.region</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Regions">
+				<field name="name"/>
+				<field name="location_id"/>
+				<field name="return_location_id"/>
+				<field name="active"/>
+		    </tree>
+		</field>
+	</record>
+
+	<record id="view_stock_region_region_tree_no_delete_button_tree" model="ir.ui.view">
+		<field name="name">stock.region no delete button</field>
+		<field name="model">stock.region</field>
+		<field name="inherit_id" ref="view_stock_region_region_tree"/>
+		<field name="mode">primary</field>
+		<field name="priority">29</field>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="delete">0</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_stock_region_region_search" model="ir.ui.view">
+		<field name="name">stock.region.region search</field>
+		<field name="model">stock.region</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Regions">
+	        	<field name="name"/>
+		    </search>
+		</field>
+	</record>
+
+	<record id="action_stock_region_region" model="ir.actions.act_window">
+	    <field name="name">Regions</field>
+	    <field name="res_model">stock.region</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+    	<field name="search_view_id" ref="view_stock_region_region_search"/>
+	</record>
+
+   	<record id="action_action_stock_region_region_view1" model="ir.actions.act_window.view">
+    	<field eval="1" name="sequence"/>
+    	<field name="view_mode">tree</field>
+    	<field name="view_id" ref="view_stock_region_region_tree_no_delete_button_tree"/>
+    	<field name="act_window_id" ref="action_stock_region_region"/>
+	</record>
+
+   	<record id="action_action_stock_region_region_view2" model="ir.actions.act_window.view">
+    	<field eval="2" name="sequence"/>
+    	<field name="view_mode">form</field>
+    	<field name="view_id" ref="view_stock_region_region_form"/>
+    	<field name="act_window_id" ref="action_stock_region_region"/>
+	</record>
+
+	<menuitem id="menu_stock_warehouse_regions"
+	    name="Regions"
+	    parent="stock.menu_warehouse_config"
+	    action="action_stock_region_region"
+	    sequence="1"/>
+
+	<!-- NUMBER -->
+
+	<record id="view_stock_route_number_form" model="ir.ui.view">
+		<field name="name">stock.route.number form</field>
+		<field name="model">stock.route.number</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Route Number">
+			    <sheet>
+					<div class="oe_button_box" name="button_box">
+					   	<button name="action_open_sales" type="object" class="oe_stat_button" icon="fa-archive"/>
+					</div>
+			    	<group>
+		            	<field name="name"/>
+		            	<field name="id"/>
+		            	<field name="external_route_id"/>
+		            	<field name="license_plate"/>
+		            	<field name="driver"/>
+		            	<field name="date"/>
+		            	<field name="intermediate_id"/>
+			    	</group>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+	
+	
+	<!-- Fleet (Truck, trailer) -->
+	
+	<record id="view_stock_fleet_form" model="ir.ui.view">
+		<field name="name">stock.fleet form</field>
+		<field name="model">stock.fleet</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+		    <form string="Fleet">
+			    <sheet>
+			    	<group>
+		            	<field name="number"/>
+		            	<field name="type"/>
+		            	<field name="carrier_id"/>
+		            	<field name="active"/>
+		            	<field name="capacity"/>
+		            	<field name="id_external"/>
+		            	<field name="odometer_reading" attrs="{'invisible':[('type','!=','truck')]}"/>
+		            	<field name="run_hours" attrs="{'invisible':[('type','!=','truck')]}"/>
+			    	</group>
+			    </sheet>
+		    </form>
+		</field>
+	</record>
+	
+	<record id="view_stock_fleet_tree" model="ir.ui.view">
+		<field name="name">stock.fleet tree</field>
+		<field name="model">stock.fleet</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+		    <tree string="Fleet">
+            	<field name="number"/>
+            	<field name="type"/>
+            	<field name="carrier_id"/>
+            	<field name="capacity"/>
+            	<field name="odometer_reading"/>
+            	<field name="run_hours"/>
+		    </tree>
+		</field>
+	</record>
+	
+	<record id="view_stock_fleet_search" model="ir.ui.view">
+		<field name="name">stock.fleet search</field>
+		<field name="model">stock.fleet</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+		    <search string="Fleet">
+            	<field name="number"/>
+            	<field name="type"/>
+		    </search>
+		</field>
+	</record>
+	
+	<record id="action_stock_fleet" model="ir.actions.act_window">
+	    <field name="name">Fleet</field>
+	    <field name="res_model">stock.fleet</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+    	<field name="search_view_id" ref="view_stock_fleet_search"/>
+	</record>
+
+	<menuitem id="menu_stock_fleet"
+	    name="Fleet"
+	    parent="menu_sanitex_stocks"
+	    action="action_stock_fleet"
+	    sequence="130"/>
+	    
+
+
+	<menuitem id="menu_account_invoice_containers"
+	    name="Containers"
+	    parent="menu_stock_package"
+	    action="action_account_invoice_container"
+	    sequence="5"/>
+
+	<menuitem id="menu_account_invoice_bls_documents"
+	    name="Documents"
+	    parent="menu_sanitex_stocks"
+	    action="action_account_invoice_bls_documents"
+	    sequence="90"/>
+
+	<!-- Gaunami movementai -->
+
+	<!--<record id="view_stock_picking_incoming_movements_form" model="ir.ui.view">-->
+		<!--<field name="name">stock.picking received movements form</field>-->
+		<!--<field name="model">stock.picking</field>-->
+		<!--<field name="type">form</field>-->
+		<!--<field name="priority">32</field>-->
+		<!--<field name="arch" type="xml">-->
+		    <!--<form string="Picking">-->
+                <!--<header>-->
+                    <!--<button name="action_receive" string="Receive" type="object" class="oe_highlight" attrs="{'invisible': [('received_by_user_id','!=',False)]}"/>-->
+                <!--</header>-->
+			    <!--<sheet>-->
+                    <!--<h1 class="hidden-xs">-->
+                        <!--<field name="name"/>-->
+                    <!--</h1>-->
+                    <!--<h2 class="hidden-xs">-->
+                        <!--<field name="date"/>-->
+                    <!--</h2>-->
+			    	<!--<group>-->
+						<!--<group>-->
+							<!--<field name="location_id"/>-->
+						<!--</group>-->
+						<!--<group>-->
+							<!--<field name="location_dest_id"/>-->
+						<!--</group>-->
+					<!--</group>-->
+                    <!--<notebook>-->
+                        <!--<page string="Lines">-->
+                            <!--<field name="move_lines">-->
+								<!--<tree>-->
+									<!--<field name="product_code"/>-->
+									<!--<field name="product_id"/>-->
+									<!--<field name="product_uom_qty"/>-->
+									<!--<field name="price_unit"/>-->
+									<!--<field name="state" invisible="1"/>-->
+								<!--</tree>-->
+								<!--<form>-->
+									<!--<group>-->
+										<!--<field name="product_code"/>-->
+										<!--<field name="product_id"/>-->
+										<!--<field name="product_uom_qty"/>-->
+										<!--<field name="price_unit"/>-->
+										<!--<field name="state" invisible="1"/>-->
+									<!--</group>-->
+								<!--</form>-->
+							<!--</field>-->
+						<!--</page>-->
+                        <!--<page string="Additional Info" name="extra">-->
+                            <!--<group>-->
+								<!--<group>-->
+									<!--<field name="create_uid"/>-->
+								<!--</group>-->
+								<!--<group>-->
+									<!--<field name="received_by_user_id"/>-->
+									<!--<field name="receive_time"/>-->
+								<!--</group>-->
+								<!--<field name="state" invisible="1"/>-->
+							<!--</group>-->
+						<!--</page>-->
+					<!--</notebook>-->
+			    <!--</sheet>-->
+		    <!--</form>-->
+		<!--</field>-->
+	<!--</record>-->
+
+	<!--<record id="view_stock_picking_incoming_movements_tree" model="ir.ui.view">-->
+		<!--<field name="name">stock.picking received movements tree</field>-->
+		<!--<field name="model">stock.picking</field>-->
+		<!--<field name="type">tree</field>-->
+		<!--<field name="priority">32</field>-->
+		<!--<field name="arch" type="xml">-->
+		    <!--<tree string="Pickings">-->
+            	<!--<field name="name"/>-->
+            	<!--<field name="date"/>-->
+            	<!--<field name="location_id"/>-->
+            	<!--<field name="location_dest_id"/>-->
+            	<!--<field name="state" invisible="1"/>-->
+		    <!--</tree>-->
+		<!--</field>-->
+	<!--</record>-->
+
+	<!--<record id="view_stock_picking_incoming_movements_search" model="ir.ui.view">-->
+		<!--<field name="name">stock.picking received movements search</field>-->
+		<!--<field name="model">stock.picking</field>-->
+		<!--<field name="type">search</field>-->
+		<!--<field name="priority">32</field>-->
+		<!--<field name="arch" type="xml">-->
+		    <!--<search string="Fleet">-->
+            	<!--<field name="name"/>-->
+            	<!--<field name="location_id"/>-->
+		    <!--</search>-->
+		<!--</field>-->
+	<!--</record>-->
+
+	<!--<record id="action_stock_picking_incoming_movements" model="ir.actions.act_window">-->
+	    <!--<field name="name">Incoming Movements</field>-->
+	    <!--<field name="res_model">stock.picking</field>-->
+	    <!--<field name="type">ir.actions.act_window</field>-->
+	    <!--<field name="view_type">form</field>-->
+	    <!--<field name="view_mode">tree,form</field>-->
+	    <!--<field name="search_view_id" ref="config_sanitex_delivery.view_stock_picking_incoming_movements_search"/>-->
+	    <!--<field name="domain">[('internal_movement','=',True),('received_by_user_id','=',False)]</field>-->
+	<!--</record>-->
+
+   	<!--<record id="action_stock_picking_incoming_movements_view1" model="ir.actions.act_window.view">-->
+    	<!--<field eval="1" name="sequence"/>-->
+    	<!--<field name="view_mode">tree</field>-->
+    	<!--<field name="view_id" ref="view_stock_picking_incoming_movements_tree"/>-->
+    	<!--<field name="act_window_id" ref="action_stock_picking_incoming_movements"/>-->
+	<!--</record>-->
+
+	<!--<record id="action_stock_picking_incoming_movements_view2" model="ir.actions.act_window.view">-->
+    	<!--<field eval="2" name="sequence"/>-->
+    	<!--<field name="view_mode">form</field>-->
+    	<!--<field name="view_id" ref="view_stock_picking_incoming_movements_form"/>-->
+    	<!--<field name="act_window_id" ref="action_stock_picking_incoming_movements"/>-->
+	<!--</record>-->
+
+	<!--<menuitem id="menu_stock_picking_incoming_movements"-->
+	    <!--name="Incoming Movements"-->
+	    <!--parent="menu_corrections"-->
+	    <!--action="action_stock_picking_incoming_movements"-->
+	    <!--sequence="50"/>-->
+	     
+ <!-- 1.2 etapo testavimo menu -->
+    <menuitem id="menu_1_2_test"
+	    name="1.2 TEST"
+        groups="base.group_system"
+	    sequence="40"/>
+
+
+</odoo>

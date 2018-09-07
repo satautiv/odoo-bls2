@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>	       
+	
+	<!--INTEGRATION LOG-->
+    
+    <record id="delivery_integration_log_tree" model="ir.ui.view">
+        <field name="name">delivery.integration.log.tree</field>
+        <field name="model">delivery.integration.log</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Log" create="0">
+            	<field name="create_date"/>
+            	<field name="function"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="delivery_integration_log_form" model="ir.ui.view">
+        <field name="name">delivery.integration.log.form</field>
+        <field name="model">delivery.integration.log</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Log" create="0" edit="0">
+            	<sheet>
+            		<group>
+		            	<field name="create_date"/>
+		            	<field name="function"/>
+            		</group>
+            		<notebook>
+            			<page string="Info">
+		            		<group>
+			            		<group string="Received Information">
+					            	<field name="received_information" nolabel="1"/>
+			            		</group>
+			            		<group string="Returned Information">
+					            	<field name="returned_information" nolabel="1"/>
+			            		</group>
+		            		</group>
+            			</page>
+            			<!--page string="Created Objects" >
+							<label for="created_product_ids" attrs="{'invisible': [('function','=','CreateRoute')]}"/>
+		                    <field name="created_product_ids" attrs="{'invisible': [('function','=','CreateRoute')]}"/>
+					    	<label for="created_partner_ids" attrs="{'invisible': [('function','in',['create_packing','CreateRoute'])]}"/>
+		                    <field name="created_partner_ids" attrs="{'invisible': [('function','in',['create_packing','CreateRoute'])]}"/>
+					    	<label for="created_sale_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+		                    <field name="created_sale_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+					    	<label for="created_sale_line_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+		                    <field name="created_sale_line_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+					    	<label for="created_invoice_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+		                    <field name="created_invoice_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+					    	<label for="created_invoice_line_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+		                    <field name="created_invoice_line_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+					    	<label for="created_route_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+		                    <field name="created_route_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+					    	<label for="created_driver_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+		                    <field name="created_driver_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+					    	<label for="created_customer_stocks" attrs="{'invisible': [('function','!=','quantity_by_customer')]}"/>
+		                    <field name="created_customer_stocks" attrs="{'invisible': [('function','!=','quantity_by_customer')]}"/>
+					    	<label for="created_package_ids" />
+		                    <field name="created_package_ids" />
+		                    <label for="created_package_line_ids" />
+		                    <field name="created_package_line_ids" />
+					    </page>
+            			<page string="Updated Objects" >
+							<label for="updated_product_ids" attrs="{'invisible': [('function','=','CreateRoute')]}"/>
+		                    <field name="updated_product_ids" attrs="{'invisible': [('function','=','CreateRoute')]}"/>
+					    	<label for="updated_partner_ids" attrs="{'invisible': [('function','in',['create_packing','CreateRoute'])]}"/>
+		                    <field name="updated_partner_ids" attrs="{'invisible': [('function','in',['create_packing','CreateRoute'])]}"/>
+					    	<label for="updated_sale_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+		                    <field name="updated_sale_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+					    	<label for="updated_sale_line_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+		                    <field name="updated_sale_line_ids" attrs="{'invisible': [('function','!=','CreateOrder')]}"/>
+					    	<label for="updated_invoice_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+		                    <field name="updated_invoice_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+					    	<label for="updated_invoice_line_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+		                    <field name="updated_invoice_line_ids" attrs="{'invisible': [('function','!=','CreateInvoice')]}"/>
+					    	<label for="updated_route_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+		                    <field name="updated_route_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+					    	<label for="updated_driver_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+		                    <field name="updated_driver_ids" attrs="{'invisible': [('function','!=','CreateRoute')]}"/>
+					    	<label for="updated_customer_stocks" attrs="{'invisible': [('function','!=','quantity_by_customer')]}"/>
+		                    <field name="updated_customer_stocks" attrs="{'invisible': [('function','!=','quantity_by_customer')]}"/>
+					    	<label for="updated_package_ids" />
+		                    <field name="updated_package_ids" />
+		                    <label for="updated_package_line_ids" />
+		                    <field name="updated_package_line_ids" />
+            			</page-->
+            		</notebook>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="delivery_integration_log_search" model="ir.ui.view">
+        <field name="name">delivery.integration.log.search</field>
+        <field name="model">delivery.integration.log</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Log">
+            	<field name="create_date"/>
+            	<field name="function"/>
+            	<field name="received_information"/>
+            	<field name="returned_information"/>
+                <filter string="Quantity Update" domain="[('function','=','quantity_by_customer')]" name="function_quantity"/>
+                <filter string="Route Import" domain="[('function','=','create_route')]" name="function_route"/>
+                <filter string="Product Import" domain="[('function','=','create_packing')]" name="function_product"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="delivery_integration_log_history" model="ir.actions.act_window">
+        <field name="name">Integration Log</field>
+        <field name="res_model">delivery.integration.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+	<menuitem id="menu_action_delivery_integration_log"
+	    name="Integration Log"
+	    parent="menu_integration"
+	    action="delivery_integration_log_history"
+	    sequence="50"/> 
+        
+</data>
+</openerp>

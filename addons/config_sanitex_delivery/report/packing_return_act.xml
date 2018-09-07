@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="packing_return_act">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+
+        <t t-set="info" t-value="get_info" />
+
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+	            <div class="header">
+	                <div class="text-right">
+			            <ul class="list-inline">
+			              <span>Page No.</span> <span class="page"/> <span>from</span> <span class="topage"/>
+			            </ul>
+			        </div>
+               </div>
+                <div class="page">
+                    <style>
+                        p {
+                          font-size:22px;
+                          margin: 0px;
+                          padding: 0px;
+                          font-face: arial
+                        }
+                        span {
+                          font-size:22px;
+                          margin: 0px;
+                          padding: 0px;
+                          font-family:'Courier New'
+                        }
+                        pre {
+                          border: 0;
+                          background-color: transparent;
+                          font-size:22px;
+                          color: black;
+                          margin: 0px;
+                          padding: 0px;
+                          font-family:'Courier New'
+                        }
+                        th {
+                          font-weight: normal;
+                          margin: 0px;
+                          padding: 0px;
+                        }
+                        td {
+                          font-weight: normal;
+                          margin: 0px;
+                          padding: 0px;
+                          padding-left: 10px;
+                        }
+                        table {
+                            border-collapse: collapse;
+                        }
+                        h3 {
+                          margin: 2px;
+                          padding: 2px;
+                        }
+                        tr {
+                          margin: 0px;
+                          padding: 0px;
+                        }
+                    </style>
+                    <h3 class="text-center"><b>Product return act: </b><span t-esc="info[o.id]['name']"/></h3>
+                    <p class="text-center" t-if="duplicate">(Dublicate)</p>
+                    <p class="text-right" style="padding: 0px; margin: 0px; margin-right: 200px; font-size:20px; margin-top: 20px;"> Printing date, time:  <span t-esc="info[o.id]['time_now']"/></p>
+                    <hr style="margin: 0px; padding: 0px; border: none; border-bottom: 1px dotted black;"/>
+                    <table style="width:100%; margin-bottom: 30px;">
+                        <tr>
+                            <td style="width: 50%"><p>Document No. <span t-field="o.name"/></p></td>
+                            <td style="width: 50%" colspan="2"><p>Record: </p></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid black"><p>Receiver: <span t-esc="info[o.id]['receiver']['name']"/></p></td>
+                            <td colspan="2"><p>Sender: <span t-esc="info[o.id]['sender']['Name']"/></p></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid black"><p>Personal Code: <span t-esc="info[o.id]['receiver']['personal_no']"/></p></td>
+                            <td colspan="2"><p>Comp. Code: <span t-esc="info[o.id]['sender']['RegCode']"/></p></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid black"><p>Loading Time: <span t-esc="info[o.id]['time_now']"/></p></td>
+                            <td colspan="2"><p>VAT Code: <span t-esc="info[o.id]['sender']['VATCode']"/></p></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid black"/>
+                            <td style="width: 25%"><p>Tel.: <span t-esc="info[o.id]['sender']['LogisticsEMail']"/></p></td>
+                            <td style="width: 25%"><p>Fax: <span t-esc="info[o.id]['sender']['Fax']"/></p></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%; border: 1px solid black;">
+                        <tr style="border: 1px solid black;">
+                            <td style="border: 1px solid black; width: 9%" class="text-center"><p>Code</p></td>
+                            <td style="border: 1px solid black; width: 34%" class="text-center"><p>Name</p></td>
+                            <td style="border: 1px solid black; width: 17%" class="text-center"><p>Price without VAT</p></td>
+                            <td style="border: 1px solid black; width: 12%" class="text-center"><p>Quantity</p></td>
+                            <td style="border: 1px solid black; width: 14%" class="text-center"><p>Sum</p></td>
+                            <td style="border: 1px solid black; width: 24%" class="text-center"><p>Brutto weight, kg</p></td>
+                        </tr>
+                        <tr style="border: 1px solid black;" t-foreach="info[o.id]['lines']" t-as="l">
+                            <td style="border: 1px solid black;" class="text-center"><span t-esc="l['code']"/></td>
+                            <td style="border: 1px solid black;" class="text-center"><span t-esc="l['name']"/></td>
+                            <td style="border: 1px solid black;" class="text-center"><span t-esc="round(0.0-l['wo_vat'], 2)"/></td>
+                            <td style="border: 1px solid black;" class="text-center"><span t-esc="int(round(0.0-l['quantity'], 0))"/></td>
+                            <td style="border: 1px solid black;" class="text-center"><span t-esc="round(0.0-l['wo_vat']*l['quantity'], 2)"/></td>
+                            <td style="border: 1px solid black;" class="text-center"><span t-esc="round(0.0-l['brutto'], 2)"/></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%; margin-bottom: 30px;">
+                        <tr>
+                            <td style="width: 60%" align="right"><p>Total Quantity: </p></td>
+                            <td style="width: 12%" class="text-center"><span t-esc="int(round(0.0-info[o.id]['unit'], 0))"/></td>
+                            <td style="width: 14%" class="text-right"><p>Total Weight: </p></td>
+                            <td style="width: 24%" class="text-center"><span t-esc="round(0.0-info[o.id]['brutto_weight'], 2)"/></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%; margin-bottom: 30px;">
+                        <tr>
+                            <td style="width:30%;"><p>Formed by: <span t-esc="user.name"/></p></td>
+                            <td style="width:40%;"/>
+                            <td style="width:20%;"/>
+                            <td style="width:10%;"/>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p>Checked by: </p></td>
+                            <td colspan="2"/>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p>Products Issued by: </p></td>
+                            <td colspan="2"/>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p>Route: <span t-field="o.receiver"/></p></td>
+                            <td class="text-right"><p>Products: </p></td>
+                            <td><span t-esc="round(-1.0*info[o.id]['price'], 2)"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p>Transport(brand, license plate): <span t-field="o.license_plate"/></p></td>
+                            <td class="text-right"><p>TOTAL: </p></td>
+                            <td><span t-esc="round(-1.0*info[o.id]['price'], 2)"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p>Carrier: <span t-esc="info[o.id]['carrier']"/></p></td>
+                            <td/>
+                            <td/>
+                        </tr>
+                        <tr>
+                            <td><p>Driver: </p></td>
+                            <td style="border-bottom: 1px solid black"><span t-field="o.location_id"/></td>
+                            <td colspan="2"/>
+                        </tr>
+                        <tr >
+                            <td/>
+                            <td style="padding-bottom: 20px"><p style="font-size: 15px">name, surname, personal no.,      signature</p></td>
+                            <td colspan="2"/>
+                        </tr>
+                        <tr>
+                            <td colspan="2"/>
+                            <td colspan="2"/>
+                        </tr>
+                        <tr>
+                            <td><p>Products Received by: </p></td>
+                            <td style="border-bottom: 1px solid black"/>
+                            <td colspan="2"/>
+                        </tr>
+                    </table></div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <template id="config_sanitex_delivery.login_layout" name="config_sanitex_delivery Login Layout" inherit_id="web.login_layout" >
+			<xpath expr="//t/div/div//img" position="attributes">
+			  <attribute name="style">margin-top:30px;</attribute>
+			</xpath>
+			<xpath expr="//t/div/div/div[2]" position="replace"/>
+	    </template>
+	    <template id="config_sanitex_delivery.layout" name="config_sanitex_delivery Web layout" inherit_id="web.layout" >
+			<xpath expr="//title" position="replace">
+			     <title t-esc="title or 'Atlas'"/>
+			</xpath>
+			<xpath expr="//link" position="replace">
+			     <link type="image/x-icon" rel="shortcut icon" t-att-href="x_icon or '/config_sanitex_delivery/static/src/img/atlas_icon.ico'"/>
+			</xpath>
+	    </template>
+</odoo>	

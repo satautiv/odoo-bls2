@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="printer_tree" model="ir.ui.view">
+        <field name="name">printer.tree</field>
+        <field name="model">printer</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Printers">
+            	<field name="name"/>
+            	<field name="ip_address"/>
+            	<field name="printer"/>
+            	<field name="port"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="printer_form" model="ir.ui.view">
+        <field name="name">printer.form</field>
+        <field name="model">printer</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Log">
+                <header>
+					<button string="Register Printer" name="add_printer" type="object" attrs="{'invisible': [('registered','=',True)]}"/>
+                </header>
+            	<sheet>
+            		<group>
+		            	<field name="name"/>
+		            	<field name="ip_address"/>
+		            	<field name="printer"/>
+            			<field name="port"/>
+                        <field name="registered"/>
+            		</group>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="printer_search" model="ir.ui.view">
+        <field name="name">printer.search</field>
+        <field name="model">printer</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Log">
+            	<field name="name"/>
+            	<field name="ip_address"/>
+            	<field name="printer"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="printer_history" model="ir.actions.act_window">
+        <field name="name">Integration Log</field>
+        <field name="res_model">printer</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+	<menuitem id="menu_action_printer"
+	    name="Printers"
+	    parent="sandas_maintenance.menu_config"
+	    action="printer_history"
+	    sequence="50"/>
+
+        <record id="view_printer_view_form2" model="ir.ui.view">
+            <field name="name">printer form 2</field>
+            <field name="model">printer</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.printer_form"/>
+            <field name="arch" type="xml">
+                <field name="port" position="after">
+                    <field name="driver" attrs="{'invisible': [('registered','=',True)]}"/>
+                    <field name="driver_string" attrs="{'invisible': [('registered','=',False)]}"/>
+                    <field name="a4"/>
+                    <field name="staple"/>
+                    <field name="warehouse_ids" widget="many2many_tags"/>
+                    <field name="options" attrs="{'invisible': [('registered','=',False)]}"/>                 
+                </field>
+            </field>
+        </record>  
+
+        <record id="view_printer_view_form3" model="ir.ui.view">
+            <field name="name">printer form 3</field>
+            <field name="model">printer</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.printer_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='printer']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('registered','=',True)]}</attribute>                                  
+                </xpath>
+                <xpath expr="//field[@name='ip_address']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('registered','=',True)]}</attribute>                                  
+                </xpath>
+            </field>
+        </record>
+
+    <record id="base.menu_administration" model="ir.ui.menu">
+        <field eval="[(4, ref('config_sanitex_delivery.stock_route_managament_group'))]" name="groups_id"/>
+    </record>
+    
+    <record id="base.menu_administration" model="ir.ui.menu">
+        <field eval="[(4, ref('config_sanitex_delivery.stock_route_operator_group'))]" name="groups_id"/>
+    </record>
+
+    <!--record id="base.menu_config" model="ir.ui.menu">
+        <field eval="[(4, ref('base.group_system'))]" name="groups_id"/>
+    </record-->
+
+    <record id="base.menu_translation" model="ir.ui.menu">
+        <field eval="[(4, ref('base.group_system'))]" name="groups_id"/>
+    </record>
+
+    <record id="sandas_maintenance.menu_config" model="ir.ui.menu">
+        <field eval="[(4, ref('base.group_system'))]" name="groups_id"/>
+    </record>
+
+
+    <record id="mail.mail_channel_menu_root_chat" model="ir.ui.menu">
+        <field eval="[(6, 0, [ref('sandas_maintenance.group_no_one_sandas')])]" name="groups_id"/>
+    </record>
+    
+    
+    
+    <!-- Number of Copies -->
+    
+    <record id="view_number_of_copies_tree" model="ir.ui.view">
+        <field name="name">view.number.of.copies.tree</field>
+        <field name="model">number.of.copies</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Number of Copies" editable="top">
+            	<field name="notes"/>
+            	<field name="report_id" domain="[('keep_log','=',True)]"/>
+            	<field name="number_of_copies"/>
+            	<field name="warehouse_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_number_of_copies_form" model="ir.ui.view">
+        <field name="name">view.number.of.copies.form</field>
+        <field name="model">number.of.copies</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Number of Copies">
+            	<group colspan="4" col="4">
+	            	<field name="notes"/>
+	            	<field name="report_id" domain="[('keep_log','=',True)]"/>
+	            	<field name="number_of_copies"/>
+	            	<br/>
+	            	<label for="warehouse_ids" />
+	            	<field name="warehouse_ids" widget="many2many_tags" nolabel="1" colspan="4"/>
+            	</group>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_number_of_copies" model="ir.actions.act_window">
+        <field name="name">Number of Copies</field>
+        <field name="res_model">number.of.copies</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem id="menu_action_number_of_copies"
+	    name="Number of Copies"
+	    parent="sandas_maintenance.menu_config"
+	    action="action_number_of_copies"
+	    sequence="60"/>
+    
+</odoo>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record id="report_print_log_xml_tree" model="ir.ui.view">
+        <field name="name">report.print.log.xml.tree</field>
+        <field name="model">report.print.log.extended</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Log" create="0">
+            	<field name="main_log_id"/>
+            	<field name="report_server"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="report_print_log_xml_form" model="ir.ui.view">
+        <field name="name">report.print.log.xml.form</field>
+        <field name="model">report.print.log.extended</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Log" create="0" edit="0">
+            	<sheet>
+            		<group>
+						<field name="main_log_id"/>
+						<field name="report_server"/>
+            		</group>
+            		<field name="sent_xml"/>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="report_print_log_extended_history" model="ir.actions.act_window">
+        <field name="name">Printed Reports Log XML</field>
+        <field name="res_model">report.print.log.extended</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('main_log_id','=',active_id)]</field>
+    </record>
+	<!--INTEGRATION LOG-->
+    
+    <record id="report_print_log_tree" model="ir.ui.view">
+        <field name="name">report.print.log.tree</field>
+        <field name="model">report.print.log</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Log" create="0" edit="0">
+            	<field name="print_date"/>
+            	<field name="print_time"/>
+            	<field name="warehouse_id"/>
+            	<field name="receiver"/>
+            	<field name="printed_record_name"/>
+            	<field name="report_id"/>
+            	<field name="number_of_copies"/>
+            	<field name="print_user_id"/>
+            	<field name="reason_for_reprinting"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="report_print_log_form" model="ir.ui.view">
+        <field name="name">report.print.log.form</field>
+        <field name="model">report.print.log</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Log" create="0">
+            	<sheet>
+					<div class="oe_right oe_button_box" name="buttons">
+	                    <button string="Show Object" class="oe_stat_button" icon="fa-th-list" name="open_object" type="object" />
+	               	</div>
+            		<group>
+		            	<field name="print_datetime"/>
+		            	<field name="print_user_id"/>
+		            	<field name="number_of_copies"/>
+		            	<field name="report_id"/>
+		            	<field name="report_number"/>
+		            	<field name="printer_id"/>
+		            	<field name="object"/>
+		            	<field name="rec_id"/>
+		            	<field name="printed_record_name"/>
+		            	<field name="reason_for_reprinting"/>
+						<button name="%(config_sanitex_delivery.report_print_log_extended_history)d" type="action" string="XML" class="oe_link" />
+            		</group>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="report_print_log_search" model="ir.ui.view">
+        <field name="name">report.print.log.search</field>
+        <field name="model">report.print.log</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Log">
+            	<field name="print_datetime"/>
+            	<field name="print_user_id"/>
+            	<field name="printer_id"/>
+            	<field name="object"/>
+            	<field name="rec_id"/>
+            	<field name="printed_record_name"/>
+            	<field name="report_id"/>
+            	<filter string="Reprints" name="reprint" domain="[('reprint','=','True')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_print_log_history" model="ir.actions.act_window">
+        <field name="name">Printed Reports Log</field>
+        <field name="res_model">report.print.log</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('rec_id','>',0)]</field>
+    </record>
+    
+	<menuitem id="menu_action_printed_report_log"
+	    name="Printed Reports Log"
+	    parent="menu_sanitex_stocks"
+	    action="report_print_log_history"
+	    sequence="140"/>
+        
+</data>
+</openerp>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <report id="report_client_packing_from_picking"
+        model="stock.picking"
+        name="config_sanitex_delivery.client_packing_from_picking"
+        file="config_sanitex_delivery/report/product_packing.odt"
+        string="Packing Transfer-Return Act (Internal op.)"
+        menu="False"
+        report_type="qweb-pdf"/>
+
+	<record id="report_client_packing_from_picking" model="ir.actions.report">
+	    <field name="keep_log" eval="True"/>
+    </record>
+
+</data>
+</openerp>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+	<!--INTEGRATION LOG-->
+
+    <record id="document_tree" model="ir.ui.view">
+        <field name="name">document.attachment.tree</field>
+        <field name="model">document.attachment</field>
+        <field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Documents">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="document_form" model="ir.ui.view">
+        <field name="name">document.attachment.form</field>
+        <field name="model">document.attachment</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Document">
+            	<sheet>
+            		<group>
+		            	<field name="name"/>
+		            	<field name="file_name" invisible="1"/>
+		            	<field name="file" filename="file_name"/>
+            		</group>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="document_search" model="ir.ui.view">
+        <field name="name">document.attachment.search</field>
+        <field name="model">document.attachment</field>
+        <field name="type">search</field>
+		<field name="arch" type="xml">
+            <search string="Documents">
+            	<field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="document_action" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">document.attachment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+	<menuitem id="menu_document"
+	    name="Documents"
+	    parent="base.menu_administration"
+	    sequence="1"/>
+
+	<menuitem id="menu_document_action"
+	    name="User‘s manual"
+	    parent="menu_document"
+	    action="document_action"
+	    sequence="50"/>
+
+</data>
+</openerp>

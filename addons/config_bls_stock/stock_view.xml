@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!-- ________ WAREHOUSE ________ -->
+
+        <record id="view_stock_warehouse_bls_stock_form" model="ir.ui.view">
+            <field name="name">view.stock.warehouse.bls.stock.form</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_stock_warehouse_form"/>
+            <field name="arch" type="xml">
+                <field name="lot_stock_id" position="after">
+                	<field name="asn_location_id"/>
+                </field>
+            </field>
+        </record>
+        
+	<!-- ________ LOCATION ________ -->
+
+        <record id="view_stock_location_bls_stock_form" model="ir.ui.view">
+            <field name="name">view.stock.location.bls.stock.form</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_stock_location_list"/>
+            <field name="arch" type="xml">
+                <field name="product_exchange_location" position="after">
+                	<field name="asn_location"/>
+                </field>
+            </field>
+        </record>
+        
+    <!-- ________ Route Template ________ -->
+    
+    <!-- Prideta 'create_invoice_btn' reiksme i kontexta, kad rodytu INVOICE mygtuka-->
+    <record id="config_sanitex_delivery.route_template_action" model="ir.actions.act_window">
+        <field name="context">{'search_default_current': 1, 'search_by_user': True, 'search_by_user_sale': False, 'search_for_template_view': True, 'hide_unnecessary_header_sums':['weight_in_warehouse'], 'create_route_btn': True, 'create_invoice_btn': True}</field>
+    </record>
+    
+    <!-- Dokumentu generavimas kirvuku -->
+    <record id="action_route_template_do_invoice_allow_splitting" model="ir.actions.server">
+       <field name="name">Invoice (Allow splitting)</field>
+       <field name="type">ir.actions.server</field>
+       <field name="model_id" ref="config_sanitex_delivery.model_stock_route_template"/>
+       <field name="condition" eval="True" />
+       <field name="state">code</field>
+       <field name="sequence_no">9999</field>
+       <field name="code">action = records.do_invoice(allow_splitting=True)</field>
+       <field name="binding_model_id" ref="config_sanitex_delivery.model_stock_route_template"/>
+    </record>
+    
+    <record id="view_stock_route_template_bls_stock_form" model="ir.ui.view">
+         <field name="name">view.stock.warehouse.bls.stock.form</field>
+         <field name="model">stock.route.template</field>
+         <field name="inherit_id" ref="config_sanitex_delivery.route_template_tree"/>
+         <field name="arch" type="xml">
+             <field name="shipping_warehouses_recalc" position="after">
+             	<field name="fully_received_lines"/>
+             	<field name="documents_counter_status"/>
+             </field>
+         </field>
+     </record>
+
+	<!-- ________ ROTUE ________ -->
+
+    <record id="view_stock_routes_bls_stock_form" model="ir.ui.view">
+        <field name="name">view.stock.route.bls.stock.form</field>
+        <field name="model">stock.route</field>
+        <field name="inherit_id" ref="config_sanitex_delivery.view_stock_routes_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_run_document_check_up']" position="after">
+                <button class="oe_stat_button" icon="fa-check-square-o" name="action_call_cmr_wizard" type="object" />
+            </xpath>
+        </field>
+    </record>
+          
+</odoo>

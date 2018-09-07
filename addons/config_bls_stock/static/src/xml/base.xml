@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+     <t t-extend="ListView.buttons">
+	       <t t-jquery="button.btn_create_route" t-operation="after">
+		        <span id="invoice_create_vertical_separator" style="margin-right:1em;margin-left:1em;">
+		        	<span style="border-left:2px solid #aaacb5;"/>
+		        </span>
+		        
+		        <button id="button_create_invoice" class="btn btn-sm btn-default">Invoice</button>
+	       </t>
+	 </t>
+	 
+	 <t t-extend="FormView.buttons">
+	 	<t t-jquery="button.btn_create_route" t-operation="after">
+ 			<button id="button_create_invoice" class="btn btn-sm btn-default">Invoice</button>
+	 	</t>
+	 </t>
+
+</templates>

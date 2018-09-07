@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    
+    <record id="view_transportation_order_bls_tree" model="ir.ui.view">
+        <field name="name">view.transportation.order.bls.tree</field>
+        <field name="model">transportation.order</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transportation Order" delete="0" create="0" edit="0">
+           		<!-- field name="location_id" string="Whs"/-->
+				<field name="transport_type_id"/>
+				<!-- field name="route_id"/>
+				<field name="car_number"/>
+				<field name="carrier_id"/-->
+				<field name="owner_partner_id"/>
+				<field name="name"/>
+				<field name="buyer_id"/>
+				<field name="delivery_address_id"/>
+				<field name="product_count"/>
+				<field name="issue_datetime"/>
+				<field name="state"/>
+				<field name="posid_code"/>
+            </tree>
+        </field>
+    </record>
+    
+   <record id="view_transportation_order_bls_form" model="ir.ui.view">
+        <field name="name">view.transportation.order.bls.form</field>
+        <field name="model">transportation.order</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transportation Order" delete="0" create="0" edit="0">
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="blank,being_collected,need_invoice,invoiced"/>
+                </header>
+                <sheet>
+                	<group name="head_fields" col="4">
+      		            <div>
+	                        <h1 class="mt0">
+	                            <field name="name" class="oe_inline"/>
+	                        </h1>
+	                    </div>
+	                    <group col="2">
+	                    	<field name="owner_partner_id"/>
+	                    	<field name="buyer_id" attrs="{'invisible': [('one_time_buyer_id','!=',False)]}"/>
+	                    	<field name="one_time_buyer_id" attrs="{'invisible': [('one_time_buyer_id','=',False)]}"/>
+	                    	<field name="delivery_address_id"/>
+	                    	<field name="posid_code"/>
+	                    	<field name="seller_id"/>
+	                    </group>
+	                    <group col="2">
+							<field name="location_id"/>
+	                    	<field name="warehouse_id"/>
+	                    	<field name="issue_datetime"/>
+	                    	<field name="carrier_id"/>
+	                    	<field name="transport_type_id"/>
+	                    </group>
+	                </group>
+                    <notebook>
+                        <page string="Lines">
+	                        <field name="line_ids">
+		                        <tree string="Transportation Order Lines">
+		                            <field name="product_code"/>
+		                            <field name="product_id"/>
+		                            <field name="uom_id"/>
+		                            <field name="quantity"/>
+		                            <field name="picked_qty"/>
+		                            <field name="unit_price"/>
+		                            <field name="discount"/>
+		                            <field name="tax_id"/>
+		                        </tree>
+		                        <form string="Transportation Order Line">
+									<group name="main_line_fields" col="4">
+					                    <group col="2">
+					                    	<field name="product_id"/>
+					                    	<field name="quantity"/>
+					                    	<field name="uom_id"/>
+					                    	<field name="seller_product_code"/>
+					                    	<field name="unit_price"/>
+					                    	<field name="tax_id"/>
+					                    	<field name="prod_type"/>
+					                    	<field name="put_away_strategy"/>
+					                    	<field name="min_delivery_qty"/>
+					                    	<field name="invoice_group_index"/>
+					                    	<field name="waybill_group_index"/>
+					                    	<field name="calculate"/>
+					                    	<field name="include_to_totals"/>
+					                    </group>
+					                    <group col="2">
+											<field name="product_code"/>
+					                    	<field name="picked_qty"/>
+					                    	<field name="manufacturer_product_code"/>
+					                    	<field name="buyer_product_code"/>
+					                    	<field name="discount"/>
+					                    	<field name="payment_term_method"/>
+					                    	<field name="payment_term"/>
+					                    	<field name="payment_term_date"/>
+					                    	<field name="min_exp_date"/>
+					                    	<field name="max_exp_date"/>
+					                    	<field name="min_exp_days"/>
+					                    	<field name="max_exp_days"/>
+					                    </group>
+			                		</group>
+			                		<group name="multiline_fields" col="4">
+			                			<label for="order_line_warehouse_ids"/>
+	                					<field name="order_line_warehouse_ids" colspan="4" nolabel="1"/>
+	                					<label for="subitem_line_ids"/>
+	                					<field name="subitem_line_ids" colspan="4" nolabel="1"/>
+	                					<label for="container_line_ids"/>
+	                					<field name="container_line_ids" colspan="4" nolabel="1"/>
+			                		</group>
+		                        </form>
+		                    </field>
+	                    </page>
+	                    <page string="Other Info">
+							<group name="other_info_fields" col="4">
+			                    <group col="2">
+			                    	<field name="lang"/>
+			                    	<field name="declare_to_vmi"/>
+			                    	<field name="seperate_picking"/>
+			                    	<field name="urgent_order"/>
+			                    	<field name="clear_after_close"/>
+			                    	<field name="picking_from_stock_leftovers"/>
+			                    	<field name="picking_from_inbound"/>
+			                    	<field name="pincking_from_inbound_id_receive_document"/>
+			                    	<field name="wms_process_type"/>
+			                    	<field name="currency_id"/>
+			                    </group>
+			                    <group col="2">
+									<field name="delivery_terms"/>
+			                    	<field name="several_deliveries_split"/>
+			                    	<field name="parcel_company"/>
+			                    	<field name="valid_client_start_time"/>
+			                    	<field name="valid_client_stop_time"/>
+			                    	<field name="route_id"/>
+			                    	<field name="payment_channel"/>
+			                    	<field name="car_number"/>
+			                    </group>
+	                		</group>
+	                		<group name="Documents" col="4">
+	                			<label for="document_ids"/>
+	                			<field name="document_ids" colspan="4" nolabel="1"/>
+	                		</group>
+	                    </page>
+                    </notebook> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    
+    
+     <record id="action_transportation_order_bls" model="ir.actions.act_window">
+	    <field name="name">Transportation Order</field>
+	    <field name="res_model">transportation.order</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="domain">[('imported','=',True)]</field>
+	</record>
+	
+    <record id="action_transportation_order_bls_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_transportation_order_bls_tree"/>
+        <field name="act_window_id" ref="action_transportation_order_bls"/>
+    </record>
+	
+	<menuitem id="menu_1_2_test_order" name="Order"
+        parent="config_sanitex_delivery.menu_1_2_test" sequence="20" />
+        
+    <menuitem id="menu_action_transportation_order_bls"
+	    name="Transportation Order"
+	    parent="menu_1_2_test_order"
+	    action="action_transportation_order_bls"
+	    sequence="100"/>
+    
+</data>
+</openerp>

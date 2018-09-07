@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_stock_correction">
+ <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+
+        <t t-set="info" t-value="get_info"/>
+
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <style>
+                        p {
+                          font-size:22px;
+                          margin: 0px;
+                          padding: 0px;
+                          font-face: arial
+                        }
+                        span {
+                          font-size:22px;
+                          margin: 0px;
+                          padding: 0px;
+                          font-family:'Courier New'
+                        }
+                        pre {
+                          border: 0;
+                          background-color: transparent;
+                          font-size:22px;
+                          color: black;
+                          margin: 0px;
+                          padding: 0px;
+                          font-family:'Courier New'
+                        }
+                        th {
+                          font-weight: normal;
+                          margin: 0px;
+                          padding: 0px;
+                        }
+                        td {
+                          font-weight: normal;
+                          margin: 10px;
+                          padding: 10px;
+                        }
+                    </style>
+                    <p class="text-right" style="padding: 0px; margin: 0px; margin-right: 150px; font-size:20px;"> Date/Time:  <span t-esc="time.strftime('%Y-%m-%d/%H:%M')"/></p>
+                    <hr style="margin: 0px; padding: 0px; border: none; border-bottom: 1px solid black;"/>
+                    <h1 class="text-center">Internal Picking</h1>
+                    <p class="text-center" t-if="duplicate">(Dublicate)</p>
+                    <table style="width:100%; margin-bottom: 30px;">
+                        <tr style="border-top: 1px solid black; border-bottom: 1px solid black">
+                            <td><p>Document No. <span t-esc="o.get_name_for_report()"/></p><p>Received according to</p></td>
+                            <td><p>Record: </p></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid black">
+                            <td style="border-right: 1px solid black"><pre>Receiver: <span t-esc="info[o.id]['receiver']"/></pre></td>
+                            <td><pre>Sender: <span t-esc="info[o.id]['sender']"/></pre></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%; border: 1px solid black;">
+                        <tr>
+                            <td style="width: 12%" class="text-center"><p>Code</p></td>
+                            <td style="width: 42%" class="text-center"><p>Name</p></td>
+                            <td style="width: 20%" class="text-center"><p>Price without VAT</p></td>
+                            <td style="width: 16%" class="text-center"><p>Quantity</p></td>
+                            <td style="width: 10%" class="text-center"><p>Sum</p></td>
+                        </tr>
+                        <tr t-foreach="o.line_ids" t-as="l">
+                            <td class="text-center"><span t-field="l.product_code"/></td>
+                            <td class="text-center"><span t-field="l.product_id"/></td>
+                            <td class="text-center"><span t-field="l.product_id.standard_price"/></td>
+                            <td class="text-center"><span t-field="l.correction_qty"/></td>
+                            <td class="text-center"><span t-esc="l.product_id.standard_price * l.correction_qty"/></td>
+                        </tr>
+                    </table>
+                    <table style="width:100%; margin-bottom: 30px;">
+                        <tr>
+                            <td style="width: 74%" class="text-right"><p>TOTAL PACKAGES: </p></td>
+                            <td style="width: 16%" class="text-center"><span t-esc="sum(o.line_ids.mapped('correction_qty'))"/></td>
+                            <td style="width: 10%" class="text-center"/>
+                        </tr>
+                    </table>
+                    <table style="width:100%; margin-bottom: 30px;">
+                        <tr>
+                            <td style="width: 50%"><p>Formed by: <span t-esc="user.name"/></p></td>
+                            <td style="width: 40%" class="text-right"><p>Total products value without VAT: </p></td>
+                            <td style="width: 10%" class="text-center"><span t-esc="round(sum(map(lambda line: line.product_id.standard_price * line.correction_qty, o.line_ids)), 2)"/></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%; padding-top: 20px; "><p>Products issued by: <u style="white-space:pre;">                                     </u></p></td>
+                            <td style="width: 40%" class="text-right"><p>VAT: </p></td>
+                            <td style="width: 10%" class="text-center"><span t-esc="round(0.21 * sum(map(lambda line: line.product_id.standard_price * line.correction_qty, o.line_ids)), 2)"/></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%; padding-top: 20px;"><p>Products received by: <u style="white-space:pre;">                                     </u></p></td>
+                            <td style="width: 40%" class="text-right"><p>Products: </p></td>
+                            <td style="width: 10%" class="text-center"><span t-esc="round(sum(o.line_ids.mapped('correction_qty')), 2)"/></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%"/>
+                            <td style="width: 40%" class="text-right"><p>SUM: </p></td>
+                            <td style="width: 10%" class="text-center"><span t-esc="round(sum(map(lambda line: line.product_id.standard_price * line.correction_qty, o.line_ids)) + 0.21 * sum(map(lambda line: line.product_id.standard_price * line.correction_qty, o.line_ids)), 2)"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

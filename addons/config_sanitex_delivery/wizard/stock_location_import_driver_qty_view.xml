@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_location_import_driver_qty_form" model="ir.ui.view">
+        <field name="name">stock.location.import_driver_qty.form</field>
+        <field name="model">stock.location.import_driver_qty</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Import">
+            	<group>
+            		<field name="csv_file" />
+            	</group>
+        		 <footer>
+                    <button name="import_file" string="Import" type="object"   class="oe_highlight"/>
+                    <button name="import_file2" string="Import 2" type="object"   class="oe_highlight"/>
+                    <button name="assign_id" string="Import IDs" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_location_import_driver_qty" model="ir.actions.act_window">
+        <field name="name">Import Driver Returns</field>
+        <field name="res_model">stock.location.import_driver_qty</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <menuitem id="menu_action_stock_location_import_driver_qty"
+	    name="Import Driver Returns"
+	    parent="sandas_maintenance.next_id_11"
+	    action="action_stock_location_import_driver_qty"
+	    sequence="70"/>
+
+    
+</data>
+</openerp>

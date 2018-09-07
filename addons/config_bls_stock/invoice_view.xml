@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Container Line -->
+	<record id="view_container_line_despatch_tree" model="ir.ui.view">
+        <field name="name">view.container.line.despatch.tree</field>
+        <field name="model">account.invoice.container.line</field>
+        <field name="type">tree</field>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            <tree string="Container Lines" delete="0">
+           		<field name="product_code"/>
+				<field name="product_id"/>
+				<field name="uom_id"/>
+				<field name="qty"/>
+				<field name="ordered_qty"/>
+				<field name="expiry_date"/>
+				<field name="lots_str"/>
+				<field name="certificates_str"/>
+            </tree>
+        </field>
+    </record>
+
+
+<!-- Invoice -->
+
+        <record id="view_acc_invoice_bls_stock_document_form" model="ir.ui.view">
+            <field name="name">view.acc.invoice.bls.stock.document.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_account_invoice_bls_documents_form_no_create"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//notebook/page[@name='route_info_page']" position="after">
+					<page string="Other Information" name="other_info_page">
+	<group>
+							<field name="one_time_partner_id"/>
+							<field name="sending_type"/>
+							<field name="document_form_id"/>
+							<field name="print_copies"/>
+							<field name="delivery_conditions"/>
+						</group>
+					</page>
+            	</xpath>
+            	<field name="partner_id" position="before">
+					<field name="category" readonly='1'/>
+            	</field>
+            	<field name="posid" position="attributes">
+            	  <attribute name='readonly'>1</attribute>
+            	</field>
+
+            	<field name="partner_shipping_id" position="attributes">
+            	  <attribute name='readonly'>1</attribute>
+            	</field>
+            	<field name="partner_id" position="attributes">
+            	  <attribute name='readonly'>1</attribute>
+            	</field>
+            	<field name="picking_location_id" position="attributes">
+            	  <attribute name='readonly'>1</attribute>
+            	</field>
+            	<field name="partner_shipping_id" position="attributes">
+            	  <attribute name='readonly'>1</attribute>
+            	</field>
+            	<field name="picking_warehouse_id" position="attributes">
+            	  <attribute name='readonly'>1</attribute>
+            	</field>
+            	<!-- **** EILUTES **** -->
+            	<xpath expr="//field[@name='invoice_line_ids']/form//field[@name='external_invoice_line_id']" position="after">
+					<field name="transportation_order_line_id"/>
+					<field name="uom_id"/>
+					<field name="discount"/>
+					<label for="invoice_line_tax_ids"/>
+					<field name="invoice_line_tax_ids" colspan="4" nolabel="1" readonly='1'/>
+					<label for="container_line_ids"/>
+					<field name="container_line_ids" colspan="4" nolabel="1" readonly='1'/>
+            	</xpath>
+            	<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_code']" position="before">
+            		<field name="line_number"/>
+            	</xpath>
+            	<xpath expr="//button[@name='action_open_related_tasks']" position="before">
+            		<button class="oe_stat_button" icon="fa-eur" name="action_update_prices" string="Update Prices" type="object"/>
+            	</xpath>
+
+				<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+					<field name="category" invisible="1"/>
+					<field name="discount" attrs="{'invisible':[('category','=', 'waybill')]}"/>
+					<field name="price_after_disc" attrs="{'invisible':[('category','=', 'waybill')]}"/>
+					<field name="price_subtotal" string="Sum without VAT" attrs="{'invisible':[('category','=', 'waybill')]}"/>
+					<field name="invoice_line_tax_ids" widget="many2many_tags" string="Tax"/>
+				</xpath>
+
+				<xpath expr="//field[@name='invoice_line_ids']/form//field[@name='product_id']" position="attributes">
+				  <attribute name="readonly">1</attribute>
+				  </xpath>
+				  <xpath expr="//field[@name='invoice_line_ids']/form//field[@name='uom_id']" position="attributes">
+				  <attribute name="readonly">1</attribute>
+				  </xpath>
+
+				  <xpath expr="//field[@name='invoice_line_ids']/form//field[@name='uom_id']" position="attributes">
+				  <attribute name="readonly">1</attribute>
+				  </xpath>
+
+
+				<field name="state" position="before">
+            		<field name="edit_mode" colspan="0" invisible="1"/>
+            		<button name="document_edit_button" string="Edit" type="object" attrs="{'invisible': [('edit_mode','=',True)]}"/>
+            		<button name="document_save_button" string="Save" type="object" attrs="{'invisible': [('edit_mode','!=',True)]}"/>
+            		<button name="document_cancel_edit_button" string="Cancel" type="object" attrs="{'invisible': [('edit_mode','!=',True)]}"/>
+            		<button name="document_annul_button" string="Annul" type="object" attrs="{'invisible': [('edit_mode','=',True)]}"/>
+            	</field>
+            </field>
+        </record>
+
+        <record id="action_acc_invoice_bls_stock_document_atlas_generated" model="ir.actions.act_window">
+		    <field name="name">Documents (Generated in ATLAS)</field>
+		    <field name="res_model">account.invoice</field>
+		    <field name="type">ir.actions.act_window</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">tree,form</field>
+		    <field name="domain">[('generated_in_atlas','=',True)]</field>
+		    <field name="context">{'hide_print_button': True, 'hide_save_button': True, 'hide_cancel_button': True}</field>
+		</record>
+
+	<record id="action_acc_invoice_bls_stock_document_atlas_generated_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="config_sanitex_delivery.view_account_invoice_bls_documents_tree_no_create"/>
+        <field name="act_window_id" ref="action_acc_invoice_bls_stock_document_atlas_generated"/>
+    </record>
+
+    <record id="action_acc_invoice_bls_stock_document_atlas_generated_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_acc_invoice_bls_stock_document_form"/>
+        <field name="act_window_id" ref="action_acc_invoice_bls_stock_document_atlas_generated"/>
+    </record>
+
+	<menuitem id="menu_acc_invoice_bls_stock_document_atlas_generated"
+	    name="Documents (Generated in ATLAS)"
+	    parent="menu_1_2_test_order"
+	    action="action_acc_invoice_bls_stock_document_atlas_generated"
+	    sequence="300"/>
+
+
+	<!-- Today Printed Documents -->
+
+		<record id="view_acc_invoice_bls_stock_today_document_tree" model="ir.ui.view">
+            <field name="name">view.acc.invoice.bls.stock.today.document.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="config_sanitex_delivery.view_account_invoice_bls_documents_tree_no_create"/>
+            <field name="arch" type="xml">
+            	<field name="all_document_numbers" position="after">
+					<field name="document_package_no"/>
+            	</field>
+            </field>
+        </record>
+
+
+	    <record id="action_acc_invoice_bls_stock_today_printed_document" model="ir.actions.act_window">
+		    <field name="name">Today Printed Documents</field>
+		    <field name="res_model">account.invoice</field>
+		    <field name="type">ir.actions.act_window</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">tree,form</field>
+		    <field name="domain">[('generated_in_atlas','=',True), '|','&amp;',('printing_datetime','&lt;',datetime.date.today().strftime('%Y-%m-%d 23:59:59')),('printing_datetime','&gt;=',datetime.date.today().strftime('%Y-%m-%d 00:00:00')),'&amp;',('create_date','&lt;',datetime.date.today().strftime('%Y-%m-%d 23:59:59')),('create_date','&gt;=',datetime.date.today().strftime('%Y-%m-%d 00:00:00'))]</field>
+		    <field name="context">{'multi_checkbox': True, 'hide_print_button': True, 'group_by': 'document_package_no', 'hide_save_button': True, 'hide_cancel_button': True}</field>
+		</record>
+
+	<record id="action_acc_invoice_bls_stock_today_printed_document_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_acc_invoice_bls_stock_today_document_tree"/>
+        <field name="act_window_id" ref="action_acc_invoice_bls_stock_today_printed_document"/>
+    </record>
+
+    <record id="action_acc_invoice_bls_stock_today_printed_document_form" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_acc_invoice_bls_stock_document_form"/>
+        <field name="act_window_id" ref="action_acc_invoice_bls_stock_today_printed_document"/>
+    </record>
+
+	<menuitem id="menu_acc_invoice_bls_today_printed_documents"
+	    name="Today Printed Documents"
+	    parent="menu_1_2_test_order"
+	    action="action_acc_invoice_bls_stock_today_printed_document"
+	    sequence="400"/>
+
+
+	 <!-- DOKUMENTU FORMAVIMO MYGTUKAS -->
+	 <!-- record id="action_account_invoice_send_document" model="ir.actions.server">
+       <field name="name">Send Document</field>
+       <field name="type">ir.actions.server</field>
+       <field name="model_id" ref="account.model_account_invoice"/>
+       <field name="condition" eval="True" />
+       <field name="state">code</field>
+       <field name="sequence_no">10</field>
+       <field name="code">action = records.send_document()</field>
+       <field name="binding_model_id" ref="account.model_account_invoice"/>
+    </record-->
+
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+	
+	<delete model="ir.translation" search="[('source','=','Statuses'),('name','=','ir.actions.act_window,name'),('value','=','Atsargų vietos')]" />	
+		
+    <record id="action_config_sanitex_location_action_name" model="ir.translation">
+        <field name="lang">lt_LT</field>
+        <field name="src">Statuses</field>
+        <field name="name">ir.actions.act_window,name</field>
+        <field name="res_id" ref="stock.action_location_form"/>
+        <field name="module">stock</field>
+        <field name="value">Statusai</field>
+        <field name="type">model</field>
+        <field name="state">translated</field>
+    </record>
+	
+	<delete model="ir.translation" search="[('source','=','Statuses'),('name','=','ir.ui.menu,name'),('value','=','Atsargų vietos')]" />	
+		
+    <record id="action_config_sanitex_location_menu_name" model="ir.translation">
+        <field name="lang">lt_LT</field>
+        <field name="src">Statuses</field>
+        <field name="name">ir.ui.menu,name</field>
+        <field name="res_id" ref="stock.menu_action_location_form"/>
+        <field name="module">stock</field>
+        <field name="value">Statusai</field>
+        <field name="type">model</field>
+        <field name="state">translated</field>
+    </record>
+	
+</data>
+</openerp>

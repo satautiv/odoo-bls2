@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <record id="stock_route_select_driver_osv_form" model="ir.ui.view">
+        <field name="name">stock.route.select_driver.osv.form</field>
+        <field name="model">stock.route.select_driver.osv</field>
+        <field name="type">form</field>
+		<field name="arch" type="xml">
+            <form string="Select Driver">
+				<group>
+					<field name="driver_id" context="{'drivers_allowed_in_region': not show_all_drivers, 'form_view_ref':'config_sanitex_delivery.view_stock_location_form', 'default_driver': 1, 'show_driver_company_info_in_name': True}"  domain="[('driver','=',True)]"/>
+					<field name="show_all_drivers" />
+                    <field name="license_plate" />
+					<field name="trailer" />
+					<field name="driver_company_id" />
+				</group>
+                <footer>
+                    <button name="select" string="Next" type="object"   class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_route_select_driver_osv" model="ir.actions.act_window">
+        <field name="name">Select Driver</field>
+        <field name="res_model">stock.route.select_driver.osv</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</data>
+</openerp>
